@@ -1,0 +1,445 @@
+---
+import Site from '../layouts/Site.astro';
+import Hero from '../components/Hero.astro';
+import ComparisonTable from '../components/ComparisonTable.astro';
+import BlockAForm from '../components/BlockAForm.astro';
+import BlockBForm from '../components/BlockBForm.astro';
+import FallEinreichenForm from '../components/FallEinreichenForm.astro';
+
+const szenarien = [
+  {
+    az: 'AZ. PG-01',
+    title: 'Pflegegrad-Prüfung mit kurzer Frist',
+    body: 'Der MD fordert eine Stellungnahme innerhalb weniger Tage. Verstreicht die Frist, gilt oft die Einstufung der Kasse — eine Herabstufung mit direkten Einbußen bei der Vergütung.',
+  },
+  {
+    az: 'AZ. §275-02',
+    title: '§275 SGB V Abrechnungsprüfung',
+    body: 'Die Kasse zweifelt abgerechnete Leistungen an. Ohne belegte Antwort drohen Rückforderungen bereits ausgezahlter Vergütung — rückwirkend, oft über mehrere Monate.',
+  },
+  {
+    az: 'AZ. FR-03',
+    title: 'Stellungnahmen mit Frist',
+    body: 'Formlose Anfragen, MDK-Gutachten, Widersprüche — wer die Frist verstreichen lässt, verliert meist das Widerspruchsrecht. Die Entscheidung der Kasse steht dann endgültig fest.',
+  },
+];
+
+const wasEsNichtIst = [
+  {
+    mark: 'KEIN',
+    rest: 'automatisierter Verwaltungsakt',
+    body: 'Jede Antwort geht erst nach Ihrer Freigabe raus — nie automatisiert an Kasse oder MD.',
+  },
+  {
+    mark: 'KEIN',
+    rest: '§203-Bruch',
+    body: 'Unterlagen werden nur im Rahmen einer unterschriebenen AVV verarbeitet — niemals in ein offenes KI-Tool kopiert.',
+  },
+  {
+    mark: 'KEINE',
+    rest: 'Rechtsberatung',
+    body: 'Wir unterstützen bei der organisatorischen Aufbereitung. Die rechtliche Bewertung bleibt bei Ihnen oder Ihrer Rechtsberatung.',
+  },
+];
+---
+<Site>
+  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "pflegenachweis.de",
+    "url": "https://pflegenachweis.de",
+    "parentOrganization": {
+      "@type": "Organization",
+      "name": "DataFortress.cloud GmbH"
+    },
+    "description": "KI-gestützte, §203-konforme Unterstützung bei Pflegegrad-Prüfungen, §275 SGB V Abrechnungsprüfungen und Prüfanfragen für Pflegedienste, MVZ und Arztpraxen."
+  })} />
+
+  <Hero
+    title="Prüfanfrage mit Frist auf dem Tisch?"
+    subtitle="Verpasste Fristen bedeuten Rückforderungen oder Herabstufungen — nicht nur verlorene Zeit. Mit unserer KI-Prüfvorbereitung: 30–45 Minuten bis zum fertigen Entwurf — quellenbelegbar, ohne §203-Risiko. Die ersten 3 Fälle sind kostenlos."
+    ctaText="Erste 3 Fälle kostenlos ausprobieren"
+    ctaHref="#ki-pruefvorbereitung"
+    stats={[
+      { value: '3', label: 'Fälle kostenlos' },
+      { value: '€49', label: 'danach pro Fall' },
+      { value: '5 Tage', label: 'Bearbeitung' }
+    ]}
+  />
+
+  <!-- KOSTENLOSE STARTHILFE — für die, die noch nicht bereit sind, echte Daten hochzuladen -->
+  <section id="starthilfe" class="py-12 bg-paper-deep border-y-[1.5px] border-line scroll-mt-20">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mb-8">
+        <span class="tag tag-az">Kostenlos starten — keine Dateneingabe nötig</span>
+        <h2 class="mt-3 font-display text-2xl sm:text-3xl font-black tracking-tight text-ink">Kostenlose Starthilfe</h2>
+        <p class="mt-2 text-lg text-ink-soft">Noch nicht bereit für den Live-Fall? Holen Sie sich die bewährten Muster für §203-Vereinbarung und Auftragsverarbeitung. Sofort einsatzbereit, juristisch geprüft.</p>
+      </div>
+
+      <div class="max-w-xl">
+        <BlockAForm />
+      </div>
+
+      <div id="starthilfe-download" class="hidden mt-8 max-w-2xl">
+        <div class="bg-paper border-[1.5px] border-file p-6 sm:p-8">
+          <span class="tag tag-file">Akte freigegeben</span>
+          <h3 class="mt-3 font-display text-xl font-bold text-ink">Ihre Starthilfe-Akte ist bereit.</h3>
+          <p class="mt-1 text-sm text-ink-soft">Entwürfe zur Prüfung durch Ihre Geschäftsführung / Datenschutzbeauftragte — siehe Hinweis in jedem Dokument.</p>
+          <ul class="mt-5 space-y-3">
+            <li>
+              <a href="/downloads/203-mustervereinbarung.md" download class="flex items-center gap-3 text-ink font-semibold hover:text-stamp">
+                <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/></svg>
+                §203-Mustervereinbarung herunterladen
+              </a>
+            </li>
+            <li>
+              <a href="/downloads/muster-avv.md" download class="flex items-center gap-3 text-ink font-semibold hover:text-stamp">
+                <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/></svg>
+                Muster-AVV (Art. 28 DSGVO) herunterladen
+              </a>
+            </li>
+            <li>
+              <a href="/downloads/mdr-abgrenzungsnotiz.md" download class="flex items-center gap-3 text-ink font-semibold hover:text-stamp">
+                <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/></svg>
+                MDR-Abgrenzungsnotiz herunterladen
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STUFE 1 — KI-PRÜFVORBEREITUNG, die Kernleistung -->
+  <section id="ki-pruefvorbereitung" class="py-16 sm:py-20 bg-paper scroll-mt-20">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mb-12">
+        <span class="tag tag-az">Stufe 1 / 3 · Die Kernleistung</span>
+        <h2 class="mt-4 font-display text-3xl sm:text-4xl font-black tracking-tight text-ink">KI-Prüfvorbereitung</h2>
+        <p class="mt-3 text-lg text-ink-soft">Laden Sie einen anonymisierten Fall hoch — wir bereiten die Antwort vor. Quellenbelegbar, gesetzeskonform, in Ihrer Verantwortung.</p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8 mb-12">
+        <div>
+          <h3 class="font-display text-lg font-bold text-ink mb-4">So funktioniert es</h3>
+          <ol class="space-y-4 text-ink-soft">
+            <li class="flex gap-3">
+              <span class="font-mono font-bold text-stamp shrink-0">01</span>
+              <span>Sie laden eine geschwärzte Prüfanfrage und relevante Dokumentation hoch.</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="font-mono font-bold text-stamp shrink-0">02</span>
+              <span>Unsere KI erstellt einen Antwortentwurf mit Quellenverweisen aus Ihren Unterlagen.</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="font-mono font-bold text-stamp shrink-0">03</span>
+              <span>Sie prüfen, ergänzen ggf. und versenden — Sie bleiben der Absender.</span>
+            </li>
+          </ol>
+
+          <div class="mt-8 p-4 bg-paper-deep border-l-4 border-stamp">
+            <p class="text-sm text-ink-soft"><strong class="text-ink">Preise:</strong></p>
+            <ul class="mt-2 space-y-1 text-sm text-ink-soft">
+              <li><strong class="text-ink">Erste 3 Fälle:</strong> kostenlos</li>
+              <li><strong class="text-ink">Danach:</strong> €49 zzgl. USt pro Fall</li>
+              <li><strong class="text-ink">Lieferung:</strong> in der Regel 5 Werktage</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-paper-deep border-[1.5px] border-ink/80 p-6 sm:p-8">
+          <span class="font-mono text-xs uppercase tracking-widest text-ink-faint">Beispiel — Ablauf</span>
+          <div class="mt-4 space-y-3 text-sm">
+            <div class="flex items-center gap-2">
+              <span class="h-2 w-2 bg-stamp"></span>
+              <span class="text-ink">Pflegegrad-Prüfung, MD-Schreiben + Akte</span>
+            </div>
+            <div class="flex items-center gap-2 text-ink-faint">
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-4.5-9a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm9 0a1.5 1.5 0 110 3 1.5 1.5 0 010-3z"/></svg>
+              <span>KI-Entwurf mit Quellenangaben</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="h-2 w-2 bg-stamp"></span>
+              <span class="text-ink">Ihre Prüfung + Versand an MD</span>
+            </div>
+          </div>
+          <p class="mt-6 font-mono text-[11px] text-ink-faint">AZ. PN-2026-001 · Stufe 1 von 3</p>
+        </div>
+      </div>
+
+      <!-- Das eigentliche Fall-Upload-Formular -->
+      <div class="max-w-2xl">
+        <h3 class="font-display text-xl font-bold text-ink mb-4">Laden Sie einen Fall hoch</h3>
+        <FallEinreichenForm />
+      </div>
+
+      <div id="fall-eingereicht" class="hidden mt-8 bg-file text-paper p-6 sm:p-8 text-center border-[1.5px] border-file scroll-mt-20">
+        <h3 class="font-display text-xl font-bold">Fall eingereicht.</h3>
+        <p class="mt-2">Wir bereiten den Antwortentwurf vor und senden ihn Ihnen in der Regel innerhalb von <strong>5 Werktagen</strong> per E-Mail zu.</p>
+        <p class="mt-3 text-sm text-paper/75">Falls Sie Fragen haben, erreichen Sie uns jederzeit über <a href="/kontakt" class="underline font-semibold">Kontakt</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Warum die KI hilft: Szenarien + Vergleich + Prozess -->
+  <section class="py-20 bg-paper-deep border-y-[1.5px] border-line">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mb-14">
+        <h2 class="font-display text-3xl sm:text-4xl font-black tracking-tight text-ink">Drei Situationen, die jede Woche passieren</h2>
+        <p class="mt-3 text-lg text-ink-soft">Nicht nur Zeit steht auf dem Spiel. Jede verpasste Frist hat eine finanzielle Konsequenz.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-line border-[1.5px] border-line">
+        {szenarien.map(s => (
+          <div class="bg-paper p-7">
+            <span class="font-mono text-xs text-stamp font-semibold tracking-wider">{s.az}</span>
+            <h3 class="mt-3 font-display text-lg font-bold text-ink leading-snug">{s.title}</h3>
+            <p class="mt-2.5 text-sm text-ink-soft leading-relaxed">{s.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-paper">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mb-12">
+        <h2 class="font-display text-3xl sm:text-4xl font-black tracking-tight text-ink">Manuell. Rohes ChatGPT. Oder richtig.</h2>
+      </div>
+      <ComparisonTable />
+    </div>
+  </section>
+
+  <section class="py-20 bg-paper-deep border-y-[1.5px] border-line">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mb-14">
+        <h2 class="font-display text-3xl sm:text-4xl font-black tracking-tight text-ink">So funktioniert es — von Eingang zu Absender</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-14">
+        <div>
+          <span class="font-mono text-3xl font-bold text-stamp">01</span>
+          <h3 class="mt-3 font-display text-lg font-bold text-ink">Fall hochladen</h3>
+          <p class="mt-2 text-ink-soft leading-relaxed">Sie senden die geschwärzte Prüfanfrage über unser sicheres Formular.</p>
+        </div>
+        <div>
+          <span class="font-mono text-3xl font-bold text-stamp">02</span>
+          <h3 class="mt-3 font-display text-lg font-bold text-ink">KI-gestützter Entwurf</h3>
+          <p class="mt-2 text-ink-soft leading-relaxed">Wir erstellen einen Antwortentwurf mit Quellenverweisen aus Ihrer Pflegedokumentation.</p>
+        </div>
+        <div>
+          <span class="font-mono text-3xl font-bold text-stamp">03</span>
+          <h3 class="mt-3 font-display text-lg font-bold text-ink">Prüfung & Versand</h3>
+          <p class="mt-2 text-ink-soft leading-relaxed">Sie prüfen, ergänzen und versenden — Sie bleiben der Absender. Optional: buchen Sie Human-Check für extra Sicherheit.</p>
+        </div>
+      </div>
+
+      <div class="max-w-3xl border-[1.5px] border-ink/80 bg-paper p-6 sm:p-8 flex gap-4">
+        <svg class="h-6 w-6 text-stamp shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        <p class="text-sm text-ink-soft leading-relaxed">
+          <strong class="text-ink">Art. 26 AI Act & §630a BGB:</strong> Der Entwurf ist Organisationshilfe, keine automatisierte Entscheidung. Die Dokumentationspflicht nach §630a BGB und die Transparenzpflichten nach Art. 26 AI Act bleiben bei Ihnen — wir unterstützen, wir entscheiden nicht.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-paper">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mb-14">
+        <h2 class="font-display text-3xl sm:text-4xl font-black tracking-tight text-ink">Was es NICHT ist</h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-10">
+        {wasEsNichtIst.map(item => (
+          <div>
+            <h3 class="font-display text-lg font-bold text-ink leading-snug">
+              <span class="mark-redact">{item.mark}</span> {item.rest}
+            </h3>
+            <p class="mt-2 text-sm text-ink-soft leading-relaxed">{item.body}</p>
+          </div>
+        ))}
+      </div>
+      <p class="mt-10 font-mono text-xs text-ink-faint">
+        Details siehe <a href="/rdg-hinweis" class="text-stamp font-semibold hover:underline">RDG-Hinweis</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- STUFE 2 — Human-Check Paket als kleine, günstige Upgrade-Option -->
+  <section class="py-14 bg-paper-deep border-y-[1.5px] border-line">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="border-[1.5px] border-file bg-paper flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-8 p-6 sm:p-8">
+        <div class="flex-1">
+          <span class="tag tag-file">Stufe 2 / 3 · €390</span>
+          <h3 class="mt-3 font-display text-2xl font-bold text-ink">Human-Check-Paket</h3>
+          <p class="mt-2 text-ink-soft leading-relaxed"><strong>5 Fälle</strong> mit Prüfung durch eine registrierte Pflegefachkraft — ≈ €78 pro Fall.</p>
+          <p class="mt-3 text-sm text-ink"><strong>Kein unüberwachtes KI-Urteil:</strong> Der KI-Entwurf wird von einem Pflegefachkraft-Auge geprüft. Sie entscheiden nicht allein.</p>
+        </div>
+        <a
+          href="/kontakt?interesse=stufe2"
+          data-tier-cta="stufe2"
+          class="shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3.5 text-base font-semibold text-paper bg-file hover:bg-file-bright transition-colors whitespace-nowrap"
+        >
+          Details & Rechnung
+          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-paper border-y-[1.5px] border-line">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="font-display text-2xl sm:text-3xl font-bold text-ink leading-snug">
+        „Die Software macht die Arbeit schnell.<br class="hidden sm:block" /> Der Vertrag macht sie erlaubt."
+      </p>
+    </div>
+  </section>
+
+  <!-- PREISÜBERSICHT — der ganze Weg auf einen Blick, vor dem großen Ticket -->
+  <section class="py-20 bg-paper-deep border-b-[1.5px] border-line">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mb-14">
+        <h2 class="font-display text-3xl sm:text-4xl font-black tracking-tight text-ink">Der ganze Weg auf einen Blick</h2>
+        <p class="mt-3 text-lg text-ink-soft">Vier Stufen, jede für sich buchbar — vom kostenlosen Download bis zum vollständigen Audit.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-line border-[1.5px] border-line">
+        <div class="bg-paper p-7 flex flex-col">
+          <span class="tag tag-az">Starthilfe</span>
+          <div class="mt-4 font-display text-3xl font-black text-ink">€0</div>
+          <p class="mt-1 text-xs text-ink-faint">keine Dateneingabe nötig</p>
+          <p class="mt-4 text-sm text-ink-soft leading-relaxed grow">§203-Mustervereinbarung, Muster-AVV, MDR-Abgrenzungsnotiz — sofort als Download.</p>
+          <a href="#starthilfe" data-tier-cta="starthilfe" class="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-ink hover:text-stamp transition-colors">
+            Vorlagen holen
+            <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
+          </a>
+        </div>
+
+        <div class="bg-paper p-7 flex flex-col">
+          <span class="tag tag-az">Stufe 1 · Kernleistung</span>
+          <div class="mt-4 font-display text-3xl font-black text-ink">€49<span class="text-base font-semibold text-ink-faint">/Fall</span></div>
+          <p class="mt-1 text-xs text-ink-faint">erste 3 Fälle kostenlos</p>
+          <p class="mt-4 text-sm text-ink-soft leading-relaxed grow">KI-Entwurf mit Quellenverweisen, in der Regel 5 Werktage.</p>
+          <a href="#ki-pruefvorbereitung" data-tier-cta="stufe1" class="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-ink hover:text-stamp transition-colors">
+            Fall einreichen
+            <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
+          </a>
+        </div>
+
+        <div class="bg-paper p-7 flex flex-col">
+          <span class="tag tag-file">Stufe 2 · Human-Check</span>
+          <div class="mt-4 font-display text-3xl font-black text-ink">€390</div>
+          <p class="mt-1 text-xs text-ink-faint">5 Fälle · ≈ €78/Fall</p>
+          <p class="mt-4 text-sm text-ink-soft leading-relaxed grow">+ Prüfung durch registrierte Pflegefachkraft — kein unüberwachtes KI-Urteil.</p>
+          <a href="/kontakt?interesse=stufe2" data-tier-cta="stufe2" class="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-file hover:text-file-bright transition-colors">
+            Details & Rechnung
+            <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
+          </a>
+        </div>
+
+        <div class="bg-ink p-7 flex flex-col text-paper">
+          <span class="tag tag-gold">Stufe 3 · Audit</span>
+          <div class="mt-4 font-display text-3xl font-black text-gold-light">€1.900</div>
+          <p class="mt-1 text-xs text-paper/50">Basis für Pilotprojekt €8.000–15.000</p>
+          <p class="mt-4 text-sm text-paper/75 leading-relaxed grow">Vollständiger Workflow-Audit — Posteingang, §203/AVV-Reife, MDR-Einordnung, ROI-Rechnung.</p>
+          <a href="/kontakt?interesse=stufe3" data-tier-cta="stufe3" class="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-gold-light hover:text-paper transition-colors">
+            Audit anfragen
+            <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STUFE 3 — Das große Ticket: Audit & Pilot -->
+  <section id="stufe-3" class="py-24 bg-ink text-paper scroll-mt-20">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-12 gap-12 items-start">
+        <div class="lg:col-span-7">
+          <span class="tag tag-gold">Stufe 3 / 3 · Der vollständige Fall</span>
+          <h2 class="mt-5 font-display text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.05]">Compliance- & Workflow-Check</h2>
+          <p class="mt-5 text-lg text-paper/75 leading-relaxed max-w-xl">
+            Remote- oder Vor-Ort-Audit Ihres kompletten Prüfanfragen-Workflows — Posteingang, Exportwege, §203/AVV-Reife, MDR-Einordnung, ROI-Rechnung. Der Schritt, der zeigt, ob ein Pilotprojekt (€8.000–15.000) für Sie funktioniert.
+          </p>
+
+          <ul class="mt-8 space-y-3">
+            <li class="flex items-start gap-3 text-paper/90">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-gold-light"></span>
+              Audit: Posteingang, Exportwege, §203/AVV-Reife
+            </li>
+            <li class="flex items-start gap-3 text-paper/90">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-gold-light"></span>
+              MDR-Einordnung & ROI-Rechnung
+            </li>
+            <li class="flex items-start gap-3 text-paper/90">
+              <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-gold-light"></span>
+              5 bearbeitete Prüfanfragen inklusive
+            </li>
+          </ul>
+        </div>
+
+        <div class="lg:col-span-5">
+          <div class="border-[1.5px] border-gold-light/40 p-7 sm:p-8">
+            <span class="font-mono text-xs text-paper/50 uppercase tracking-widest">Investition</span>
+            <div class="mt-2 font-display text-5xl font-black text-gold-light">€1.900</div>
+            <p class="mt-2 text-sm text-paper/60">zzgl. USt., Rechnungsstellung</p>
+
+            <a
+              href="/kontakt?interesse=stufe3"
+              data-tier-cta="stufe3"
+              class="mt-7 w-full inline-flex items-center justify-center gap-2 px-6 py-4 text-base font-semibold text-ink bg-gold-light hover:bg-[color-mix(in_srgb,var(--color-gold-light)_88%,white)] transition-colors"
+            >
+              Audit anfragen
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
+            </a>
+            <p class="mt-4 font-mono text-[11px] text-paper/40 text-center">AZ. PN-2026-001 · Stufe 3 von 3</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    (() => {
+      const params = new URLSearchParams(window.location.search);
+      let changed = false;
+
+      if (params.get('starthilfe') === '1') {
+        document.getElementById('starthilfe-download')?.classList.remove('hidden');
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'block_a_submit', { content_category: 'Funnel' });
+          window.gtag('event', 'starthilfe_viewed', { content_category: 'Funnel' });
+        }
+        if (typeof window.fbq === 'function') {
+          window.fbq('track', 'Lead', { content_name: 'Starthilfe' });
+        }
+        params.delete('starthilfe');
+        changed = true;
+      }
+
+      if (params.get('fall_eingereicht') === '1') {
+        document.getElementById('fall-eingereicht')?.classList.remove('hidden');
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'fall_eingereicht', { content_category: 'Funnel' });
+        }
+        if (typeof window.fbq === 'function') {
+          window.fbq('track', 'Lead', { content_name: 'Fall einreichen' });
+        }
+        params.delete('fall_eingereicht');
+        changed = true;
+      }
+
+      if (changed) {
+        const qs = params.toString();
+        const newUrl = window.location.pathname + (qs ? '?' + qs : '') + window.location.hash;
+        window.history.replaceState({}, '', newUrl);
+      }
+
+      document.querySelectorAll('[data-tier-cta]').forEach((el) => {
+        el.addEventListener('click', () => {
+          const tier = el.getAttribute('data-tier-cta');
+          if (typeof window.gtag === 'function') {
+            window.gtag('event', `${tier}_cta_click`, { content_category: 'Funnel' });
+          }
+        });
+      });
+    })();
+  </script>
+</Site>

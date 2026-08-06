@@ -1,0 +1,68 @@
+---
+const formspreeId = import.meta.env.PUBLIC_FORMSPREE_FALL_ID || 'REPLACE_WITH_FORMSPREE_ID';
+const landingPage = Astro.url.pathname;
+---
+<form
+  action={`https://formspree.io/f/${formspreeId}`}
+  method="POST"
+  enctype="multipart/form-data"
+  class="bg-paper border-[1.5px] border-ink/80 p-6 sm:p-8 space-y-5"
+>
+  <input type="hidden" name="form" value="fall_einreichen" />
+  <input type="hidden" name="landing_page" value={landingPage} />
+  <input type="hidden" name="_next" value={`${landingPage}?fall_eingereicht=1#ki-pruefvorbereitung`} />
+  <input type="text" name="_gotcha" style="display:none" />
+
+  <div>
+    <label for="fall_kennung" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">Interne Fall-Kennung (optional)</label>
+    <input
+      id="fall_kennung" name="fall_kennung" type="text"
+      class="w-full border-[1.5px] border-line bg-paper px-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-ink"
+      placeholder="z.B. PG-001, §275-042"
+    />
+    <p class="mt-1 font-mono text-xs text-ink-faint">Nicht der echte Patientenname — nur für Ihre interne Referenzierung.</p>
+  </div>
+
+  <div>
+    <label for="art_der_pruefung" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">Art der Prüfanfrage</label>
+    <select id="art_der_pruefung" name="art_der_pruefung" required
+      class="w-full border-[1.5px] border-line bg-paper px-4 py-3 text-base text-ink focus:outline-none focus:border-ink">
+      <option value="">Bitte wählen…</option>
+      <option value="pflegegrad_pruefung">Pflegegrad-Prüfung</option>
+      <option value="sgb5_abrechnungspruefung">§275 SGB V Abrechnungsprüfung</option>
+      <option value="stellungnahme_mit_frist">Stellungnahme mit Frist</option>
+      <option value="sonstige">Sonstige</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="dokumente" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">Geschwärzte Dokumente hochladen</label>
+    <input
+      id="dokumente" name="dokumente" type="file" required multiple accept=".pdf,.jpg,.jpeg,.png"
+      class="w-full border-[1.5px] border-line bg-paper px-4 py-3 text-base text-ink focus:outline-none focus:border-ink file:mr-3 file:py-1 file:px-3 file:bg-ink file:text-paper file:font-mono file:text-xs file:font-bold file:border-0"
+    />
+    <p class="mt-1 font-mono text-xs text-ink-faint">PDF, JPG, PNG. Max. 5 Dateien. Bitte alle personenbezogenen Daten schwärzen.</p>
+  </div>
+
+  <div class="flex items-start gap-3">
+    <input
+      id="anonymity_check" name="anonymity_confirmed" type="checkbox" required
+      class="mt-1 h-5 w-5 border-[1.5px] border-line bg-paper cursor-pointer focus:outline-none focus:border-ink"
+    />
+    <label for="anonymity_check" class="text-sm text-ink-soft leading-relaxed cursor-pointer">
+      Ich bestätige, dass alle hochgeladenen Dokumente vollständig anonymisiert/pseudonymisiert sind und keine direkten Patientenidentifikatoren (Namen, Geburtsdatum, Adresse, Versichertennummer) enthalten.
+    </label>
+  </div>
+
+  <button
+    type="submit"
+    class="w-full inline-flex items-center justify-center gap-2 px-6 py-4 text-base font-semibold text-paper bg-stamp hover:bg-[color-mix(in_srgb,var(--color-stamp)_88%,black)] shadow-[4px_4px_0_0_var(--color-ink)] hover:shadow-[2px_2px_0_0_var(--color-ink)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+  >
+    Fall einreichen
+    <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
+  </button>
+
+  <p class="font-mono text-xs text-ink-faint text-center">
+    Die Antwort erhalten Sie in der Regel innerhalb von <strong>5 Werktagen</strong> per E-Mail. Mit dem Absenden stimmen Sie unserer <a href="/datenschutz" class="underline hover:text-ink">Datenschutzerklärung</a> zu.
+  </p>
+</form>

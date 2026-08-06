@@ -1,0 +1,165 @@
+---
+import Site from '../layouts/Site.astro';
+
+const formspreeId = import.meta.env.PUBLIC_FORMSPREE_KONTAKT_ID || 'REPLACE_WITH_FORMSPREE_ID';
+const landingPage = Astro.url.pathname;
+
+const title = 'Kontakt | pflegenachweis.de';
+const description = 'Kontaktieren Sie pflegenachweis.de für Stufe 2, Stufe 3 oder ein Pilotprojekt.';
+---
+<Site title={title} description={description}>
+  <section class="bg-paper-deep border-b-[1.5px] border-line">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 text-center">
+      <span class="tag tag-az">Kontakt</span>
+      <h1 class="mt-5 font-display text-4xl sm:text-5xl font-black tracking-tight text-ink leading-tight">Lassen Sie uns reden.</h1>
+      <p id="pre-header" class="mt-4 text-lg text-ink-soft max-w-2xl mx-auto">Fragen zu Stufe 2, Stufe 3 oder einem Pilotprojekt? Schreiben Sie uns — wir antworten in der Regel innerhalb eines Werktages.</p>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div id="sent-banner" class="hidden mb-6 p-4 border-[1.5px] border-file bg-paper text-ink text-sm">
+        <span class="tag tag-file mb-2">Angekommen</span>
+        <p class="mt-2">Danke! Ihre Nachricht ist angekommen — wir melden uns in Kürze.</p>
+      </div>
+
+      <form
+        id="kontakt-form"
+        action={`https://formspree.io/f/${formspreeId}`}
+        method="POST"
+        class="bg-paper border-[1.5px] border-ink/80 p-6 sm:p-8 space-y-5"
+      >
+        <input type="hidden" name="form" value="kontakt" />
+        <input type="hidden" id="interesse-field" name="interesse" value="allgemein" />
+        <input type="hidden" name="landing_page" value={landingPage} />
+        <input type="hidden" id="next-field" name="_next" value={`${landingPage}?sent=1`} />
+        <input type="text" name="_gotcha" style="display:none" />
+
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="name" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">Name</label>
+            <input
+              id="name" name="name" type="text" required autocomplete="name"
+              class="w-full border-[1.5px] border-line bg-paper px-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-ink"
+              placeholder="Ihr Name"
+            />
+          </div>
+          <div>
+            <label for="firma" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">Firma</label>
+            <input
+              id="firma" name="firma" type="text" required autocomplete="organization"
+              class="w-full border-[1.5px] border-line bg-paper px-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-ink"
+              placeholder="Ihr Pflegedienst / MVZ / Praxis"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label for="email" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">E-Mail</label>
+          <input
+            id="email" name="email" type="email" required autocomplete="email"
+            class="w-full border-[1.5px] border-line bg-paper px-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-ink"
+            placeholder="sie@firma.de"
+          />
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="hrb" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">
+              HRB-Nummer <span class="normal-case font-sans text-ink-faint/80">(für die Rechnungsstellung)</span>
+            </label>
+            <input
+              id="hrb" name="hrb_nummer" type="text"
+              class="w-full border-[1.5px] border-line bg-paper px-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-ink"
+              placeholder="HRB …"
+            />
+          </div>
+          <div>
+            <label for="geschaeftsfuehrung" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">
+              Geschäftsführung <span class="normal-case font-sans text-ink-faint/80">(optional)</span>
+            </label>
+            <input
+              id="geschaeftsfuehrung" name="geschaeftsfuehrung" type="text"
+              class="w-full border-[1.5px] border-line bg-paper px-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-ink"
+              placeholder="Name der Geschäftsführung"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label for="phone" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">
+            Telefon <span class="normal-case font-sans text-ink-faint/80">(optional)</span>
+          </label>
+          <input
+            id="phone" name="phone" type="tel" autocomplete="tel"
+            class="w-full border-[1.5px] border-line bg-paper px-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-ink"
+            placeholder="+49 …"
+          />
+        </div>
+
+        <div>
+          <label for="message" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">Nachricht</label>
+          <textarea
+            id="message" name="message" required rows="6"
+            class="w-full border-[1.5px] border-line bg-paper px-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-ink"
+            placeholder="Worum geht es?"
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full inline-flex items-center justify-center gap-2 px-6 py-4 text-base font-semibold text-paper bg-stamp hover:bg-[color-mix(in_srgb,var(--color-stamp)_88%,black)] shadow-[4px_4px_0_0_var(--color-ink)] hover:shadow-[2px_2px_0_0_var(--color-ink)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+        >
+          Nachricht senden
+          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
+        </button>
+
+        <p class="font-mono text-xs text-ink-faint text-center">
+          Mit dem Absenden stimmen Sie unserer <a href="/datenschutz" class="underline hover:text-ink">Datenschutzerklärung</a> zu.
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <script is:inline>
+    (() => {
+      const params = new URLSearchParams(window.location.search);
+      const interesse = params.get('interesse');
+
+      const copy = {
+        stufe2: 'Sie interessieren sich für die Prüfanfragen-Analyse (€390) — senden Sie uns kurz Ihre Kontaktdaten, wir schicken Ihnen die Rechnung und die Details zum Ablauf.',
+        stufe3: 'Sie interessieren sich für den Compliance- & Workflow-Check (€1.900) — senden Sie uns kurz Ihre Kontaktdaten, wir vereinbaren einen Termin.',
+      };
+
+      if (interesse && copy[interesse]) {
+        const preHeader = document.getElementById('pre-header');
+        if (preHeader) preHeader.textContent = copy[interesse];
+        const interesseField = document.getElementById('interesse-field');
+        if (interesseField) interesseField.value = interesse;
+        const nextField = document.getElementById('next-field');
+        if (nextField) nextField.value = nextField.value + `&interesse=${interesse}`;
+      }
+
+      if (params.get('sent') === '1') {
+        document.getElementById('sent-banner')?.classList.remove('hidden');
+        document.getElementById('kontakt-form')?.classList.add('hidden');
+        if (typeof window.fbq === 'function') {
+          window.fbq('track', 'Lead', {
+            content_name: 'Contact Form Submission',
+            content_category: 'Contact'
+          });
+        }
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'generate_lead', {
+            form_name: 'kontakt',
+            content_category: 'Contact'
+          });
+        }
+        params.delete('sent');
+        const qs = params.toString();
+        const newUrl = window.location.pathname + (qs ? '?' + qs : '') + window.location.hash;
+        window.history.replaceState({}, '', newUrl);
+      }
+    })();
+  </script>
+</Site>

@@ -1,0 +1,30 @@
+{
+  "name": "pflegenachweis-de",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "pflegenachweis.de: KI-gestützte, §203-konforme Unterstützung bei Pflegegrad-Prüfungen, §275 SGB V Abrechnungsprüfungen und Prüfanfragen für Pflegedienste, MVZ und Arztpraxen.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JustinGuese/website-ai-router-de.git"
+  },
+  "homepage": "https://pflegenachweis.de/",
+  "bugs": {
+    "url": "https://github.com/JustinGuese/website-ai-router-de/issues"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/sitemap": "^3.7.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.1.6",
+    "sharp": "^0.35.3",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3"
+  }
+}

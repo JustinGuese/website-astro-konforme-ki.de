@@ -1,0 +1,60 @@
+---
+---
+<div id="cookie-banner" class="fixed bottom-0 left-0 right-0 bg-paper border-t-[1.5px] border-ink/80 p-6 shadow-2xl transform translate-y-full transition-transform duration-500 z-[100] hidden">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="text-sm text-ink-soft leading-relaxed max-w-3xl">
+            Wir verwenden Cookies, um Ihre Erfahrung zu verbessern und unseren Datenverkehr zu analysieren. Durch Klicken auf "Akzeptieren" stimmen Sie unserer Verwendung von Cookies zu.
+            <a href="/datenschutz" class="text-stamp font-semibold hover:underline underline-offset-4">Datenschutzerklärung</a>.
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto shrink-0">
+            <button id="decline-cookies" class="flex-1 sm:flex-none whitespace-nowrap inline-flex items-center justify-center px-6 py-2.5 border-[1.5px] border-ink/80 text-sm font-bold text-ink bg-paper hover:bg-paper-deep transition-all cursor-pointer">
+                Alle ablehnen
+            </button>
+            <button id="accept-cookies" class="flex-1 sm:flex-none whitespace-nowrap inline-flex items-center justify-center px-6 py-2.5 border-[1.5px] border-transparent text-sm font-bold text-paper bg-stamp hover:bg-[color-mix(in_srgb,var(--color-stamp)_88%,black)] transition-all cursor-pointer">
+                Alle akzeptieren
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function initCookieBanner() {
+        const banner = document.getElementById('cookie-banner');
+        const acceptBtn = document.getElementById('accept-cookies');
+        const declineBtn = document.getElementById('decline-cookies');
+
+        if (!banner || !acceptBtn || !declineBtn) return;
+
+        const consent = localStorage.getItem('cookie-consent');
+        if (consent === null) {
+            banner.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    banner.classList.remove('translate-y-full');
+                }, 10);
+            });
+        }
+
+        const closeBanner = () => {
+            banner.classList.add('translate-y-full');
+            setTimeout(() => {
+                banner.classList.add('hidden');
+            }, 500);
+        };
+
+        acceptBtn.addEventListener('click', () => {
+            localStorage.setItem('cookie-consent', 'true');
+            window.dispatchEvent(new CustomEvent('cookie-consent-updated', { detail: { accepted: true } }));
+            closeBanner();
+        });
+
+        declineBtn.addEventListener('click', () => {
+            localStorage.setItem('cookie-consent', 'false');
+            window.dispatchEvent(new CustomEvent('cookie-consent-updated', { detail: { accepted: false } }));
+            closeBanner();
+        });
+    }
+
+    initCookieBanner();
+    document.addEventListener('astro:after-swap', initCookieBanner);
+</script>

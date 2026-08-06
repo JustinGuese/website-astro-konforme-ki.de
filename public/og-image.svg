@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f4f2ea"/>
+  <rect x="0" y="0" width="1200" height="630" fill="none" stroke="#15181b" stroke-width="3"/>
+  <rect x="80" y="72" width="60" height="60" fill="#15181b"/>
+  <text x="110" y="112" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="800" fill="#f4f2ea" text-anchor="middle">PN</text>
+  <text x="156" y="112" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="800" fill="#15181b">pflegenachweis<tspan fill="#9a2c1c">.de</tspan></text>
+
+  <text x="80" y="260" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="900" fill="#15181b">Prüfanfrage mit Frist</text>
+  <text x="80" y="330" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="900" fill="#15181b">auf dem Tisch?</text>
+
+  <g transform="translate(870,230) rotate(-8)">
+    <rect x="-70" y="-28" width="140" height="56" fill="none" stroke="#9a2c1c" stroke-width="3"/>
+    <text x="0" y="9" font-family="'Courier New', monospace" font-size="24" font-weight="700" fill="#9a2c1c" text-anchor="middle" letter-spacing="2">FRIST</text>
+  </g>
+
+  <text x="80" y="400" font-family="'Courier New', monospace" font-size="22" fill="#4b5259">§203-konform · AVV inklusive · MDR-Abgrenzung</text>
+
+  <rect x="80" y="470" width="380" height="64" fill="#9a2c1c"/>
+  <text x="270" y="510" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" fill="#f4f2ea" text-anchor="middle">Kostenloses Compliance-Paket</text>
+
+  <text x="80" y="580" font-family="'Courier New', monospace" font-size="18" fill="#7c828a">AZ. PN-2026-001 · pflegenachweis.de</text>
+</svg>
