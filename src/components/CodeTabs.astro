@@ -1,0 +1,59 @@
+---
+interface Tab {
+  label: string;
+  code: string;
+}
+
+interface Props {
+  tabs: Tab[];
+}
+
+const { tabs } = Astro.props;
+const groupId = `code-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div class="border border-linie-dark bg-blau-tief" data-code-tabs={groupId}>
+  <div class="flex border-b border-linie-dark">
+    {tabs.map((tab, i) => (
+      <button
+        type="button"
+        data-code-tab={i}
+        class:list={[
+          'px-4 py-2.5 text-xs font-mono uppercase tracking-wider transition-colors border-r border-linie-dark last:border-r-0',
+          i === 0 ? 'text-siegel-hell bg-blau' : 'text-blau-faint hover:text-bogen',
+        ]}
+      >
+        {tab.label}
+      </button>
+    ))}
+  </div>
+  {tabs.map((tab, i) => (
+    <pre
+      data-code-panel={i}
+      class:list={['px-5 py-4 text-sm font-mono text-[#dbe2ef] overflow-x-auto leading-relaxed', i !== 0 && 'hidden']}
+    ><code>{tab.code}</code></pre>
+  ))}
+</div>
+
+<script>
+  function initCodeTabs() {
+    document.querySelectorAll<HTMLElement>('[data-code-tabs]').forEach((group) => {
+      if (group.dataset.init) return;
+      group.dataset.init = 'true';
+      const buttons = group.querySelectorAll<HTMLButtonElement>('[data-code-tab]');
+      const panels = group.querySelectorAll<HTMLElement>('[data-code-panel]');
+      buttons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const idx = btn.dataset.codeTab;
+          buttons.forEach((b) => b.classList.remove('text-siegel-hell', 'bg-blau'));
+          buttons.forEach((b) => b.classList.add('text-blau-faint'));
+          btn.classList.add('text-siegel-hell', 'bg-blau');
+          btn.classList.remove('text-blau-faint');
+          panels.forEach((p) => p.classList.toggle('hidden', p.dataset.codePanel !== idx));
+        });
+      });
+    });
+  }
+  initCodeTabs();
+  document.addEventListener('astro:after-swap', initCodeTabs);
+</script>

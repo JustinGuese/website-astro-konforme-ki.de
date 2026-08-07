@@ -1,198 +1,599 @@
 @import "tailwindcss";
 
-@theme {
-  --font-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+/* ============================================================================
+   Nachweis — Design-System „Königsblau Ledger"
 
-  --color-paper: #f4f2ea;
-  --color-paper-deep: #eae5d6;
-  --color-ink: #15181b;
-  --color-ink-soft: #4b5259;
-  --color-ink-faint: #7c828a;
-  --color-stamp: #9a2c1c;
-  --color-stamp-bright: #c23b27;
-  --color-file: #2f4a38;
-  --color-file-bright: #3f6650;
+   Konzept: Deutsche Berufsdokumente werden in blauschwarzer Tinte gezeichnet,
+   ein Notarregister ist gebunden, fortlaufend und manipulationssicher. Das
+   Produkt ist ein append-only, hash-verkettetes Protokoll. Also ist die Seite
+   ein Register: kühles Bogenweiß, Königsblau, ein Grünspan-Siegelton, der
+   ausschließlich Freigabe und Handlung markiert — und ein Rot, das
+   ausschließlich „fail closed" bedeutet und niemals dekoriert.
+   ========================================================================= */
+
+@theme {
+  --font-display: "Martian Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Grund — kühl, blaustichig, bewusst kein Creme */
+  --color-bogen: #f1f3f7;
+  --color-bogen-rein: #ffffff;
+  --color-bogen-tief: #e4e8f0;
+
+  /* Königsblau — Tinte, dunkle Flächen */
+  --color-blau: #17243f;
+  --color-blau-tief: #0d1526;
+  --color-blau-soft: #46536e;
+  --color-blau-faint: #6b778f;
+
+  /* Siegel — Grünspan. Die einzige Handlungsfarbe. */
+  --color-siegel: #1e6b58;
+  --color-siegel-hell: #37a98c;
+  --color-siegel-blass: #dcece6;
+
+  /* Sperr — ausschließlich „fail closed" / blockiert. Nie Dekoration. */
+  --color-sperr: #b4341f;
+  --color-sperr-hell: #e4735e;
+  --color-sperr-blass: #f7e4e0;
+
+  --color-linie: #cbd2e0;
+  --color-linie-dark: #26334f;
+
+  /* Gold — ausschließlich Säule 3 (dediziert, in Ihrem Rechenzentrum). Keine
+     weitere Verwendung, sonst verliert es seine Bedeutung als "höchste Stufe". */
   --color-gold: #8a6a28;
-  --color-gold-light: #e8c468;
-  --color-line: #d9d4c6;
+  --color-gold-hell: #c9a04e;
+  --color-gold-blass: #f2ead2;
+
+  --shadow-karte: 0 1px 2px rgb(23 36 63 / 0.06), 0 8px 24px rgb(23 36 63 / 0.06);
+  --shadow-karte-hoch: 0 2px 4px rgb(23 36 63 / 0.08), 0 16px 40px rgb(23 36 63 / 0.10);
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
   ::selection {
-    background: var(--color-stamp);
-    color: var(--color-paper);
+    background: var(--color-siegel);
+    color: #fff;
   }
 
   :focus-visible {
-    outline: 2.5px solid var(--color-stamp);
+    outline: 2.5px solid var(--color-siegel);
     outline-offset: 2px;
+  }
+
+  body {
+    text-rendering: optimizeLegibility;
+    /* Lange Tokens ("DataFortress.cloud", URLs) dürfen die Seite nicht
+       horizontal aufschieben. Bricht nur, was sonst überliefe. */
+    overflow-wrap: break-word;
+  }
+
+  /* Deutsche Komposita in der breiten Display-Schrift sind regelmäßig länger
+     als ein 320px-Viewport. `lang="de"` am <html> sorgt für korrekte
+     Trennstellen. Gilt für Überschriften und alles in der Display-Schrift —
+     die .display-Klasse setzt dieselben Eigenschaften separat, weil sie auch
+     auf Nicht-Überschriften (Kennzahlen) verwendet wird. */
+  h1, h2, h3, h4,
+  .font-display {
+    hyphens: auto;
+    overflow-wrap: break-word;
   }
 }
 
-/* ---------- Stamped-label system ---------- */
-/* One device, four ink colors: the recurring "official mark" motif used for
-   Aktenzeichen references, urgency, negation, and progress throughout the page. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
-.tag {
+/* ---------------------------------------------------------------------------
+   Display-Typografie
+   Martian Mono ist von Haus aus breit. Auf Überschriftengrößen schmaler
+   stellen und negativ spationieren, sonst bricht die Zeile auf 390px.
+   ------------------------------------------------------------------------ */
+
+.display {
+  font-family: var(--font-display);
+  font-variation-settings: "wdth" 87.5;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  text-wrap: balance;
+  /* Deutsche Komposita ("Datenschutzbeauftragter", "Berufsgeheimnisträger")
+     sind in der breiten Martian Mono länger als ein 320px-Viewport. Ohne
+     Trennung schieben sie die ganze Seite horizontal auf. `lang="de"` steht
+     am <html>, also trennt der Browser korrekt nach deutschen Regeln. */
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+
+.display-xl { font-size: clamp(1.75rem, 5.2vw, 3.25rem); }
+.display-l  { font-size: clamp(1.5rem, 3.6vw, 2.25rem); }
+.display-m  { font-size: clamp(1.15rem, 2.2vw, 1.5rem); font-variation-settings: "wdth" 92; }
+.display-s  {
+  font-size: 0.72rem;
+  font-variation-settings: "wdth" 100;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+/* Eyebrow / Marginalie — Aktenzeichen-artige Auszeichnung über Abschnitten */
+.marginalie {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-blau-faint);
+}
+
+/* ---------------------------------------------------------------------------
+   Die Kette — Signaturelement.
+   Eine Schiene am linken Rand: jede Sektion ist ein Glied mit echtem,
+   zur Bauzeit berechnetem Hash. Unterhalb von lg fällt sie auf einen
+   Fortschrittsstrich am oberen Rand zusammen.
+   ------------------------------------------------------------------------ */
+
+.kette {
+  /* Linke Position bezieht sich auf den breitesten Sektionscontainer
+     (max-w-7xl = 80rem) plus dessen Innenabstand — nicht auf eine
+     angenommene Gesamtbreite. Erst ab 1680px ist der Abstand zwischen
+     Schiene und Textspalte sicher frei; darunter bleibt sie ausgeblendet
+     (siehe .kette-strich als Ersatz). */
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: calc((100vw - 80rem) / 2 - 14rem);
+  width: 12rem;
+  z-index: 30;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  pointer-events: none;
+}
+
+@media (min-width: 1760px) {
+  .kette { display: flex; }
+}
+
+.kette-glied {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.3rem 0;
+  pointer-events: auto;
+  text-decoration: none;
+  opacity: 0.42;
+  transition: opacity 0.25s ease;
+}
+
+.kette-glied:hover { opacity: 0.85; }
+
+.kette-glied[data-aktiv="true"] { opacity: 1; }
+
+/* Verbindungslinie zwischen den Gliedern */
+.kette-glied::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 50%;
+  width: 1px;
+  height: calc(100% + 0.6rem);
+  background: var(--color-linie);
+}
+
+.kette-glied:last-child::before { display: none; }
+
+.kette-punkt {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: 7px;
+  height: 7px;
+  background: var(--color-bogen);
+  border: 1.5px solid var(--color-linie);
+  border-radius: 50%;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.kette-glied[data-aktiv="true"] .kette-punkt {
+  background: var(--color-siegel);
+  border-color: var(--color-siegel);
+}
+
+.kette-text {
+  min-width: 0;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  line-height: 1.35;
+  color: var(--color-blau-faint);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.kette-glied[data-aktiv="true"] .kette-text { color: var(--color-blau-soft); }
+
+.kette-hash {
+  display: block;
+  font-size: 0.54rem;
+  color: var(--color-linie);
+}
+
+.kette-glied[data-aktiv="true"] .kette-hash { color: var(--color-blau-faint); }
+
+/* Mobiler Ersatz: Fortschrittsstrich */
+.kette-strich {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--color-siegel);
+  z-index: 60;
+  transition: width 0.12s linear;
+}
+
+@media (min-width: 1760px) {
+  .kette-strich { display: none; }
+}
+
+/* ---------------------------------------------------------------------------
+   Der Rekord — die Nachweiszeile. Das eigentliche Produkt.
+   ------------------------------------------------------------------------ */
+
+.rekord {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  background: var(--color-blau-tief);
+  color: #dbe2ef;
+  border: 1px solid var(--color-linie-dark);
+}
+
+.rekord-kopf {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--color-linie-dark);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-blau-faint);
+}
+
+.rekord-zeile {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  gap: 0.5rem 1rem;
+  padding: 0.34rem 1rem;
+  align-items: baseline;
+}
+
+.rekord-zeile + .rekord-zeile { border-top: 1px solid rgb(38 51 79 / 0.5); }
+
+.rekord-schluessel {
+  color: var(--color-blau-faint);
+  font-size: 0.72rem;
+}
+
+.rekord-wert {
+  color: #e8edf6;
+  overflow-wrap: anywhere;
+}
+
+.rekord-wert-gut { color: var(--color-siegel-hell); }
+.rekord-wert-sperr { color: var(--color-sperr-hell); }
+
+.rekord-fuss {
+  padding: 0.7rem 1rem;
+  border-top: 1px solid var(--color-linie-dark);
+  background: rgb(23 36 63 / 0.5);
+  font-size: 0.68rem;
+  color: var(--color-blau-faint);
+}
+
+@media (max-width: 480px) {
+  .rekord { font-size: 0.72rem; }
+  .rekord-zeile { grid-template-columns: 1fr; gap: 0.1rem; padding: 0.4rem 0.75rem; }
+  .rekord-kopf, .rekord-fuss { padding: 0.6rem 0.75rem; }
+}
+
+/* ---------------------------------------------------------------------------
+   Marken — knappe Statusauszeichnungen
+   ------------------------------------------------------------------------ */
+
+.marke {
   display: inline-flex;
   align-items: center;
   gap: 0.4em;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 0.3em 0.65em;
-  border: 1.5px solid currentColor;
-  line-height: 1.4;
+  padding: 0.22em 0.55em;
+  border: 1px solid currentColor;
+  line-height: 1.5;
   white-space: nowrap;
 }
 
-.tag-az {
-  color: var(--color-ink-soft);
-  border-color: var(--color-line);
-  background: color-mix(in srgb, var(--color-paper-deep) 60%, transparent);
+.marke-siegel { color: var(--color-siegel); background: var(--color-siegel-blass); }
+.marke-sperr { color: var(--color-sperr); background: var(--color-sperr-blass); }
+.marke-neutral { color: var(--color-blau-faint); border-color: var(--color-linie); }
+.marke-dunkel { color: var(--color-siegel-hell); border-color: currentColor; background: transparent; }
+.marke-gold { color: var(--color-gold); background: var(--color-gold-blass); }
+
+/* ---------------------------------------------------------------------------
+   Aufklappmenü in der Kopfzeile — <details>-basiert, also ohne JS bedienbar
+   und per Tastatur erreichbar. Das Schließen bei Klick nach außen übernimmt
+   ein kleines Skript in Site.astro.
+   ------------------------------------------------------------------------ */
+
+.menue > summary::-webkit-details-marker { display: none; }
+.menue[open] > summary { color: var(--color-blau); }
+.menue[open] > summary svg { transform: rotate(180deg); }
+
+.menue-tafel { z-index: 60; }
+
+/* Sanftes Auffalten; bei reduzierter Bewegung greift der globale Override. */
+@keyframes menue-auf {
+  from { opacity: 0; transform: translate(-50%, -0.4rem); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+.menue[open] > .menue-tafel { animation: menue-auf 0.16s ease-out; }
+
+/* ---------------------------------------------------------------------------
+   Knöpfe
+   ------------------------------------------------------------------------ */
+
+.knopf {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.4rem;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-.tag-stamp {
-  color: var(--color-stamp);
-  transform: rotate(-2deg);
+.knopf-siegel {
+  background: var(--color-siegel);
+  color: #fff;
 }
+.knopf-siegel:hover { background: #185745; }
 
-.tag-file {
-  color: var(--color-file);
+.knopf-linie {
+  background: transparent;
+  color: var(--color-blau);
+  border-color: var(--color-linie);
 }
+.knopf-linie:hover { border-color: var(--color-blau); background: var(--color-bogen-rein); }
 
-.tag-gold {
-  color: var(--color-gold-light);
-  border-color: var(--color-gold-light);
+.knopf-dunkel {
+  background: transparent;
+  color: #e8edf6;
+  border-color: var(--color-linie-dark);
 }
+.knopf-dunkel:hover { border-color: var(--color-siegel-hell); color: var(--color-siegel-hell); }
 
-.mark-redact {
-  display: inline-block;
-  background: var(--color-ink);
-  color: var(--color-paper);
-  font-weight: 700;
-  padding: 0.02em 0.42em;
-  transform: rotate(-1.2deg);
-  box-shadow: 0.12em 0.12em 0 color-mix(in srgb, var(--color-ink) 25%, transparent);
-}
+/* ---------------------------------------------------------------------------
+   Langtext (Impressum / Datenschutz / AGB / Unterlagen)
+   ------------------------------------------------------------------------ */
 
-@media (prefers-reduced-motion: no-preference) {
-  .stamp-in {
-    animation: stamp-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  }
-  @keyframes stamp-in {
-    0% {
-      opacity: 0;
-      transform: scale(1.6) rotate(-14deg);
-    }
-    60% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1) rotate(-8deg);
-    }
-  }
-}
-
-/* ---------- Long-form legal content (Impressum/Datenschutz/AGB/RDG) ---------- */
 .article-body {
-  color: var(--color-ink-soft);
+  color: var(--color-blau-soft);
   font-size: 1.0625rem;
   line-height: 1.75;
 }
 .article-body > * + * { margin-top: 1.1em; }
 
+.article-body h1 {
+  font-family: var(--font-display);
+  font-variation-settings: "wdth" 87.5;
+  font-size: clamp(1.5rem, 3.6vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--color-blau);
+  margin-bottom: 2rem;
+}
+
 .article-body h2 {
   font-family: var(--font-display);
-  font-size: 1.75rem;
-  line-height: 1.2;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  color: var(--color-ink);
-  margin-top: 3.5rem;
+  font-variation-settings: "wdth" 92;
+  font-size: 1.3rem;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--color-blau);
+  margin-top: 3rem;
   margin-bottom: 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1.5px solid var(--color-line);
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--color-linie);
 }
 .article-body > h2:first-child { margin-top: 0; }
 
 .article-body h3 {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
   line-height: 1.4;
   font-weight: 700;
-  color: var(--color-stamp);
-  margin-top: 2.25rem;
-  margin-bottom: 0.5rem;
+  color: var(--color-siegel);
+  margin-top: 2rem;
+  margin-bottom: 0.4rem;
 }
 
 .article-body h4 {
   font-size: 1.0625rem;
   font-weight: 700;
-  color: var(--color-ink);
-  margin-top: 1.75rem;
-  margin-bottom: 0.25rem;
+  color: var(--color-blau);
+  margin-top: 1.6rem;
+  margin-bottom: 0.2rem;
 }
 
 .article-body p { margin: 0; }
-
-.article-body strong { color: var(--color-ink); font-weight: 600; }
+.article-body strong { color: var(--color-blau); font-weight: 600; }
 
 .article-body a {
-  color: var(--color-stamp);
+  color: var(--color-siegel);
   text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--color-stamp) 35%, transparent);
-  transition: border-color .15s;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-siegel) 35%, transparent);
+  transition: border-color 0.15s;
 }
-.article-body a:hover { border-bottom-color: var(--color-stamp); }
+.article-body a:hover { border-bottom-color: var(--color-siegel); }
 
-.article-body ul,
-.article-body ol {
-  padding-left: 1.5rem;
-  margin: 1.1em 0;
-}
+.article-body ul, .article-body ol { padding-left: 1.5rem; margin: 1.1em 0; }
 .article-body ul { list-style: none; padding-left: 0; }
 .article-body ul > li {
   position: relative;
-  padding-left: 1.5rem;
-  margin-top: 0.5rem;
+  padding-left: 1.4rem;
+  margin-top: 0.45rem;
 }
 .article-body ul > li::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 0.7em;
-  width: 0.4rem;
-  height: 0.4rem;
-  background-color: var(--color-stamp);
+  top: 0.72em;
+  width: 0.35rem;
+  height: 0.35rem;
+  background-color: var(--color-siegel);
 }
 .article-body ol { list-style: decimal; }
-.article-body ol > li { margin-top: 0.5rem; padding-left: 0.25rem; }
-.article-body ol > li::marker { color: var(--color-stamp); font-weight: 600; }
+.article-body ol > li { margin-top: 0.45rem; padding-left: 0.25rem; }
+.article-body ol > li::marker { color: var(--color-siegel); font-weight: 600; }
 
 .article-body blockquote {
-  border-left: 3px solid var(--color-ink);
-  background: var(--color-paper-deep);
+  border-left: 3px solid var(--color-siegel);
+  background: var(--color-bogen-tief);
   padding: 1rem 1.25rem;
-  font-style: italic;
-  color: var(--color-ink);
+  color: var(--color-blau);
 }
+.article-body blockquote > * + * { margin-top: 0.6em; }
 
 .article-body code {
   font-family: var(--font-mono);
-  background: var(--color-paper-deep);
-  padding: 0.15rem 0.4rem;
-  font-size: 0.9em;
-  color: var(--color-stamp);
+  background: var(--color-bogen-tief);
+  padding: 0.12rem 0.38rem;
+  font-size: 0.88em;
+  color: var(--color-blau);
 }
 
-.article-body hr {
-  border: 0;
-  border-top: 1.5px solid var(--color-line);
-  margin: 2.5rem 0;
+.article-body pre {
+  font-family: var(--font-mono);
+  background: var(--color-blau-tief);
+  color: #dbe2ef;
+  padding: 1rem 1.15rem;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  overflow-x: auto;
 }
+.article-body pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+
+/* Markdown-Tabellen kommen ohne Wrapper aus dem Renderer. `display: block`
+   macht die Tabelle selbst zum Scroll-Container — sonst schiebt eine
+   vierspaltige Tabelle die ganze Seite horizontal auf. Die Zellen bleiben
+   dank anonymer Tabellenbox korrekt ausgerichtet; ein Rahmen geht nicht
+   verloren, weil die Rahmen ohnehin auf th/td liegen. */
+.article-body table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+.article-body th, .article-body td {
+  border: 1px solid var(--color-linie);
+  padding: 0.5rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+.article-body th {
+  background: var(--color-bogen-tief);
+  color: var(--color-blau);
+  font-weight: 600;
+}
+
+.article-body hr { border: 0; border-top: 1px solid var(--color-linie); margin: 2.5rem 0; }
+
+/* Tabellen dürfen die Seite nie horizontal schieben. Markdown-Tabellen werden
+   dazu beim Build automatisch hierin gehüllt (siehe astro.config.mjs). */
+.tabelle-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
+/* Auf schmalen Viewports mehr Text pro Zeile. Kein `min-width` — das würde
+   `max-width: 100%` überstimmen und die Seite doch wieder aufschieben. */
+@media (max-width: 640px) {
+  .article-body table { font-size: 0.82rem; }
+  .article-body th,
+  .article-body td { padding: 0.4rem 0.5rem; }
+}
+
+/* ---------------------------------------------------------------------------
+   Druck — „Drucken → Als PDF speichern" muss ein sauberes Dokument ergeben.
+   ------------------------------------------------------------------------ */
+
+@media print {
+  .kein-druck,
+  header,
+  footer,
+  .kette,
+  .kette-strich,
+  #cookie-banner,
+  #sticky-cta { display: none !important; }
+
+  html, body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+  }
+
+  main { padding: 0 !important; }
+
+  .article-body {
+    color: #000;
+    font-size: 11pt;
+    line-height: 1.5;
+    max-width: none;
+  }
+  .article-body h1, .article-body h2, .article-body h3, .article-body h4 { color: #000; }
+  .article-body h2 { border-bottom-color: #000; page-break-after: avoid; }
+  .article-body h3, .article-body h4 { page-break-after: avoid; }
+  .article-body a { color: #000; border-bottom: none; }
+  .article-body a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; }
+  .article-body blockquote { border-left-color: #000; background: none; }
+  .article-body ul > li::before { background: #000; }
+  .article-body pre { background: none; color: #000; border: 1px solid #000; }
+
+  .druck-kopf { display: block !important; }
+
+  @page {
+    margin: 20mm 18mm;
+  }
+}
+
+.druck-kopf { display: none; }

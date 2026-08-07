@@ -1,0 +1,154 @@
+---
+import Site from '../layouts/Site.astro';
+import Zeitstrahl from '../components/Zeitstrahl.astro';
+import InfografikForm from '../components/InfografikForm.astro';
+
+const title = 'Was gilt beim KI-Einsatz? EU-KI-Recht im Überblick | Nachweis';
+const description = 'AI Act, DSGVO und § 203 StGB im Überblick — was jedes Unternehmen beim Einsatz von KI beachten muss, mit zusätzlicher Tiefe für Kanzleien, Steuerberater und Praxen. Stand: 6. August 2026.';
+
+const zeitstrahl = [
+  { datum: '2. August 2024', titel: 'AI Act tritt in Kraft', beschreibung: 'Die Verordnung (EU) 2024/1689 tritt in Kraft. Zu diesem Zeitpunkt gelten noch keine inhaltlichen Pflichten.' },
+  { datum: '2. Februar 2025', titel: 'Verbote & KI-Kompetenz', beschreibung: 'Verbotene KI-Praktiken (Art. 5) und die Pflicht zur KI-Kompetenz (Art. 4) gelten ab diesem Datum.' },
+  { datum: '2. August 2025', titel: 'Pflichten für KI-Modelle mit allgemeinem Verwendungszweck', beschreibung: 'GPAI-Pflichten, Governance-Kapitel (VII) und Bußgeldrahmen treten in Kraft.' },
+  { datum: '2. August 2026', titel: 'Transparenzpflichten (Art. 50)', beschreibung: 'Kennzeichnungspflichten für KI-Interaktionen, Deepfakes und synthetische Inhalte gelten ab diesem Datum — unverändert durch das Digital Omnibus.', aktiv: true },
+  { datum: '2. Dezember 2027', titel: 'Hochrisiko-Pflichten, eigenständige Systeme (Anhang III)', beschreibung: 'Durch die Verordnung (EU) 2026/1744 („Digital Omnibus on AI", ABl. vom 24.7.2026) vom ursprünglichen Termin 2. August 2026 verschoben.' },
+  { datum: '2. August 2028', titel: 'Hochrisiko-Pflichten, eingebettete Systeme (Anhang I)', beschreibung: 'Für KI, die in bereits regulierte Produkte eingebettet ist — ebenfalls durch das Digital Omnibus verschoben.' },
+];
+---
+
+<Site title={title} description={description}>
+  <section class="py-14 sm:py-20 border-b border-linie">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="marginalie mb-3">EU-KI-Recht</p>
+      <h1 class="display display-l text-blau">Was beim KI-Einsatz wirklich gilt.</h1>
+      <p class="mt-4 text-blau-soft leading-relaxed">
+        Ein Überblick über AI Act, DSGVO und § 203 StGB — für jedes Unternehmen, das KI einsetzt, mit zusätzlicher Tiefe für Berufsgeheimnisträger. Diese Seite ist Informationsangebot, keine Rechtsberatung; für Ihren Einzelfall wenden Sie sich an Ihre eigene Rechtsberatung.
+      </p>
+      <p class="mt-3 font-mono text-xs text-blau-faint">Stand: 6. August 2026</p>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="marginalie mb-3">Zeitstrahl</p>
+      <h2 class="display display-m text-blau mb-10">Der AI Act, Termin für Termin.</h2>
+      <Zeitstrahl eintraege={zeitstrahl} />
+      <div class="mt-8 border border-linie bg-bogen-rein p-5">
+        <p class="text-sm font-semibold text-blau">Was das für Ihre Kanzlei / Praxis bedeutet</p>
+        <ul class="mt-2 space-y-1.5 text-sm text-blau-soft">
+          <li>· Die Verschiebung der Hochrisiko-Pflichten entlastet die meisten Berufsgeheimnisträger — Ihr Nutzungsfall ist in aller Regel kein Hochrisiko-System nach Anhang III.</li>
+          <li>· Die Transparenzpflichten (Art. 50) gelten unverändert ab 2. August 2026 — kennzeichnen Sie KI-generierte Inhalte, wo vorgeschrieben.</li>
+          <li>· Der eigentliche Blocker bleibt unverändert: § 203 StGB und Art. 28 DSGVO, nicht der AI Act.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-linie">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
+      <h2>Pflichten für jedes Unternehmen</h2>
+      <p>Der AI Act gilt nicht nur für Berufsgeheimnisträger — er gilt für jedes Unternehmen, das KI-Systeme einsetzt oder bereitstellt. Die folgenden Pflichten treffen Sie unabhängig von Ihrer Branche.</p>
+
+      <h3>Risikoklassen — wo Ihr Einsatz vermutlich steht</h3>
+      <p>Der AI Act sortiert KI-Systeme nach Risiko, nicht nach Branche:</p>
+      <ul>
+        <li><strong>Verbotene Praktiken (Art. 5)</strong> — u. a. Social Scoring, manipulative Systeme, biometrische Echtzeit-Überwachung im öffentlichen Raum. Gilt seit 2. Februar 2025. Betrifft die allermeisten Unternehmenseinsätze nicht.</li>
+        <li><strong>Hochrisiko (Anhang III)</strong> — u. a. Systeme in Personalauswahl, Kreditvergabe, kritischer Infrastruktur. Durch das „Digital Omnibus" (Verordnung (EU) 2026/1744) auf 2. Dezember 2027 verschoben. Ein Chat- oder Zusammenfassungs-Assistent fällt in aller Regel nicht darunter.</li>
+        <li><strong>Transparenzpflichten (Art. 50)</strong> — Kennzeichnung von KI-Interaktionen, Deepfakes und synthetischen Inhalten. Gilt unverändert seit 2. August 2026. Betrifft praktisch jedes Unternehmen mit einem Chatbot oder KI-generierten Inhalten.</li>
+        <li><strong>GPAI-Anbieterpflichten (Art. 53 ff.)</strong> — nur relevant, wenn Sie selbst ein KI-Modell mit allgemeinem Verwendungszweck bereitstellen, nicht wenn Sie eines nutzen.</li>
+      </ul>
+
+      <h3>Art. 4 — KI-Kompetenz</h3>
+      <p>Seit 2. Februar 2025 gilt: Anbieter und Betreiber von KI-Systemen müssen sicherstellen, dass ihr Personal über ausreichende KI-Kompetenz verfügt — angemessen für den jeweiligen Einsatzkontext. Das ist keine Empfehlung, sondern eine geltende Pflicht, unabhängig von Branche oder Unternehmensgröße, und einer der wenigen Punkte, die sich konkret prüfen und dokumentieren lassen.</p>
+
+      <div class="mt-6 border border-linie bg-bogen-tief p-5">
+        <p class="text-sm font-semibold text-blau">Betrifft mich das?</p>
+        <ul class="mt-2 space-y-1.5 text-sm text-blau-soft">
+          <li>· Setzen Mitarbeitende KI-Tools ein (auch nur ChatGPT im Alltag)? Dann greift mindestens Art. 4.</li>
+          <li>· Ist ein Chatbot oder KI-generierter Inhalt für Kunden sichtbar? Dann prüfen Sie Art. 50.</li>
+          <li>· Sind Sie zusätzlich Berufsgeheimnisträger (Kanzlei, Praxis, Notariat)? Dann gilt zusätzlich alles Folgende.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
+      <h2>DSGVO</h2>
+      <h3>Art. 28 DSGVO — Auftragsverarbeitung</h3>
+      <p>Setzen Sie einen externen KI-Anbieter ein, benötigen Sie einen Auftragsverarbeitungsvertrag (AVV). Dieser muss die Verarbeitung konkret, auditierbar und mit benannten Subprozessoren beschreiben — eine pauschale AGB-Klausel reicht nicht.</p>
+
+      <h3>Art. 30 DSGVO — Verarbeitungsverzeichnis</h3>
+      <p>Sie müssen jede Verarbeitung personenbezogener Daten dokumentieren können, einschließlich des Einsatzes von KI-Diensten. Ein Prüfer akzeptiert keine mündliche Zusicherung.</p>
+
+      <h3>Art. 32 DSGVO — Technische und organisatorische Maßnahmen</h3>
+      <p>Ergänzend zum AVV müssen Sie die getroffenen Sicherheitsmaßnahmen des Auftragsverarbeiters kennen und bewerten können.</p>
+
+      <h3>Kapitel V DSGVO — Drittlandtransfer</h3>
+      <p>Die Angemessenheitsentscheidung zum EU-US Data Privacy Framework ist derzeit gültiges Recht; sie wurde vom Gericht der Europäischen Union im September 2025 bestätigt, gegen dieses Urteil ist jedoch ein Rechtsmittel beim EuGH anhängig (Rechtssache C-703/25 P). Nach zwei vorangegangenen Aufhebungen von Transatlantik-Rahmen (Safe Harbor, Privacy Shield) ist diese Unsicherheit ein eigenständiger Grund, sich nicht auf US-Verarbeitung zu verlassen, wenn eine EU-Alternative besteht.</p>
+
+      <div class="mt-6 border border-linie bg-bogen-rein p-5">
+        <p class="text-sm font-semibold text-blau">Was das für Ihre Kanzlei / Praxis bedeutet</p>
+        <ul class="mt-2 space-y-1.5 text-sm text-blau-soft">
+          <li>· Verlangen Sie von jedem KI-Anbieter einen konkreten, benannten AVV — kein Sammel-Dokument.</li>
+          <li>· Führen Sie den KI-Einsatz als eigenen Eintrag in Ihrem Verarbeitungsverzeichnis.</li>
+          <li>· Bevorzugen Sie EU-Verarbeitung, wo verfügbar — unabhängig vom aktuellen Stand des Drittlandtransfers.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-linie">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
+      <h2>§ 203 StGB — Verletzung von Privatgeheimnissen</h2>
+      <h3>Abs. 1 — wer betroffen ist</h3>
+      <p>§ 203 Abs. 1 StGB nennt ausdrücklich Ärzte, Angehörige anderer Heilberufe, Rechtsanwälte, Steuerberater, Notare und weitere Berufsgeheimnisträger. Wer als solcher ein fremdes Geheimnis unbefugt offenbart, macht sich strafbar.</p>
+
+      <h3>Abs. 3 — mitwirkende Personen</h3>
+      <p>Seit der Reform 2017 gilt: Die Weitergabe an „mitwirkende Personen" — Dienstleister, die im Rahmen der Berufsausübung tätig werden, etwa IT- oder Cloud-Anbieter — ist kein Offenbaren im Sinne des § 203 StGB, wenn diese Personen sorgfältig ausgewählt und wirksam zur Verschwiegenheit verpflichtet wurden. Das ist die rechtliche Grundlage, auf der ein externer KI-Gateway für Berufsgeheimnisträger überhaupt zulässig sein kann.</p>
+
+      <div class="mt-6 border border-linie bg-bogen-tief p-5">
+        <p class="text-sm font-semibold text-blau">Was das für Ihre Kanzlei / Praxis bedeutet</p>
+        <ul class="mt-2 space-y-1.5 text-sm text-blau-soft">
+          <li>· Ohne wirksame Verschwiegenheitsverpflichtung des Anbieters bleibt jede Weitergabe strafbar — das ist der Kern des Risikos.</li>
+          <li>· Eine reine AGB-Zustimmung eines US-Chatbot-Anbieters erfüllt diese Anforderung in aller Regel nicht.</li>
+          <li>· Eine dedizierte §203-Zusatzvereinbarung ist der Unterschied zwischen zulässiger Auslagerung und Straftat.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
+      <h2>Angrenzende Regelwerke</h2>
+      <h3>NIS2</h3>
+      <p>Die NIS2-Richtlinie betrifft primär Betreiber kritischer und wichtiger Einrichtungen; die meisten Einzelkanzleien und -praxen fallen nicht direkt darunter, sollten aber die Cybersicherheitserwartungen ihrer größeren Mandanten kennen.</p>
+
+      <h3>DORA</h3>
+      <p>Die Verordnung über digitale operationale Resilienz betrifft Finanzunternehmen und deren IKT-Dienstleister — für die in dieser Übersicht adressierten Berufsgruppen in aller Regel nicht einschlägig, außer im Mandat für Finanzunternehmen.</p>
+
+      <h3>MDR-Abgrenzung</h3>
+      <p>Ein KI-Gateway, das Text zusammenfasst oder strukturiert, ist kein Medizinprodukt im Sinne der Medical Device Regulation, solange es keine medizinische Zweckbestimmung im Sinne einer Diagnose- oder Therapieentscheidung hat. Die Abgrenzung ist im Einzelfall zu prüfen.</p>
+    </div>
+  </section>
+
+  <section id="infografik" class="py-16 sm:py-20 border-b border-linie">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="marginalie mb-3">PDF-Checkliste</p>
+      <h2 class="display display-m text-blau">Alles oben, auf einer Seite.</h2>
+      <p class="mt-4 text-blau-soft leading-relaxed">
+        Risikoklassen, Art. 4 & Art. 50, AVV/VVT/TOM, § 203 StGB — als Ein-Seiten-Checkliste zum Ausdrucken oder Aufhängen. Der Download-Button erscheint direkt nach dem Absenden.
+      </p>
+      <div class="mt-7 max-w-md mx-auto text-left">
+        <InfografikForm />
+      </div>
+    </div>
+  </section>
+
+  <section class="py-14 border-t border-linie bg-bogen-tief text-center">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-blau-soft">Die passenden Dokumente dazu — AVV, TOM, §203-Zusatzvereinbarung — finden Sie ungefiltert zum Download.</p>
+      <a href="/unterlagen" class="knopf knopf-siegel mt-5">Unterlagen ansehen</a>
+    </div>
+  </section>
+</Site>

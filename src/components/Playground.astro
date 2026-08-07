@@ -1,0 +1,214 @@
+---
+import { PLAYGROUND_SCRIPT } from '../lib/playground/script';
+import { SAEULEN, STANDARD_SAEULE } from '../lib/saeulen';
+
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<div class="border border-linie bg-bogen-rein shadow-[var(--shadow-karte)]">
+  <!-- Säulen-Auswahl -->
+  <div class="flex flex-wrap items-stretch gap-px bg-linie border-b border-linie">
+    {SAEULEN.map((saeule) => (
+      <button
+        type="button"
+        data-saeule-btn={saeule.id}
+        data-akzent={saeule.akzent}
+        class="saeule-knopf flex-1 min-w-[9rem] text-left px-4 py-3 bg-bogen-rein hover:bg-bogen-tief transition-colors"
+        aria-pressed={saeule.id === STANDARD_SAEULE ? 'true' : 'false'}
+      >
+        <span class="flex items-center justify-between gap-2">
+          <span class="font-display font-bold text-sm text-blau" style="font-variation-settings: 'wdth' 90;">{saeule.kurzname}</span>
+          <span class="font-mono text-xs text-blau-faint">{saeule.kosten}</span>
+        </span>
+        <span class="mt-0.5 block text-xs text-blau-soft leading-snug">{saeule.name}</span>
+      </button>
+    ))}
+  </div>
+
+  <div class="grid lg:grid-cols-2 gap-0">
+    <!-- Chat -->
+    <!-- min-w-0: Grid-Kinder haben min-width:auto und würden sonst von der
+         nicht umbrechenden Demo-Marke über die Viewport-Breite gedrückt. -->
+    <div class="flex flex-col min-w-0 border-b lg:border-b-0 lg:border-r border-linie">
+      <div class="flex items-center justify-between gap-3 px-5 py-3.5 border-b border-linie bg-bogen-tief">
+        <span class="marginalie">Chat</span>
+        <span class="marke marke-neutral !whitespace-normal text-right">Demo · aufgezeichnete Antworten, keine Live-Inferenz</span>
+      </div>
+
+      <div class="flex flex-wrap gap-2 px-5 py-4 border-b border-linie">
+        {PLAYGROUND_SCRIPT.map((turn) => (
+          <button
+            type="button"
+            data-playground-chip={turn.id}
+            class="text-left text-sm px-3 py-2 border border-linie bg-bogen hover:border-siegel hover:text-siegel transition-colors"
+          >
+            {turn.prompt}
+          </button>
+        ))}
+      </div>
+
+      <div class={`flex-1 px-5 py-5 space-y-4 overflow-y-auto ${compact ? 'min-h-[14rem] max-h-[20rem]' : 'min-h-[22rem] max-h-[32rem]'}`} data-playground-verlauf>
+        <p class="text-sm text-blau-faint">Wählen Sie oben eine Säule und eine Anfrage, um zu sehen, wie sich die Prüfspur je nach Infrastruktur unterscheidet.</p>
+      </div>
+    </div>
+
+    <!-- Nachweis-Panel -->
+    <div class="flex flex-col min-w-0 bg-blau-tief">
+      <div class="flex items-center justify-between gap-3 px-5 py-3.5 border-b border-linie-dark">
+        <span class="marginalie text-blau-faint">Nachweis-Panel</span>
+        <button type="button" data-playground-export class="text-xs font-mono text-siegel-hell hover:underline" disabled>
+          Nachweis exportieren
+        </button>
+      </div>
+      <div class="flex-1 px-5 py-5" data-playground-panel>
+        <p class="font-mono text-sm text-blau-faint">Noch keine Anfrage gesendet.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Export-Modal -->
+<div data-playground-modal class="hidden fixed inset-0 z-[200] items-center justify-center bg-blau/60 backdrop-blur-sm p-4">
+  <div class="bg-bogen-rein max-w-lg w-full border border-linie shadow-[var(--shadow-karte-hoch)]">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-linie">
+      <span class="marginalie">Art. 30 VVT-Eintrag (Vorschau)</span>
+      <button type="button" data-playground-modal-schliessen class="text-blau-faint hover:text-blau" aria-label="Schließen">✕</button>
+    </div>
+    <div class="px-5 py-5 space-y-4 text-sm">
+      <p class="text-blau-soft">Signierter PDF-Export ist Bestandteil des <a href="/preise" class="text-siegel hover:underline">Compliance-Tarifs</a>. Unten: CSV-Vorschau derselben Zeile.</p>
+      <pre class="bg-bogen-tief border border-linie p-3 text-xs font-mono overflow-x-auto" data-playground-csv>anfrage_id,modell,subprozessor,rechenzentrum,tokens_in,tokens_out,zeitstempel,hash</pre>
+    </div>
+  </div>
+</div>
+
+<style>
+  .saeule-knopf[data-akzent="blau"][aria-pressed="true"] { box-shadow: inset 0 -3px 0 var(--color-blau); background: var(--color-bogen-tief); }
+  .saeule-knopf[data-akzent="siegel"][aria-pressed="true"] { box-shadow: inset 0 -3px 0 var(--color-siegel); background: var(--color-siegel-blass); }
+  .saeule-knopf[data-akzent="gold"][aria-pressed="true"] { box-shadow: inset 0 -3px 0 var(--color-gold); background: var(--color-gold-blass); }
+</style>
+
+<script>
+  import { getTransport } from '../lib/playground/transport';
+  import type { NachweisRecord } from '../lib/playground/types';
+  import type { SaeuleId } from '../lib/saeulen';
+  import { findSaeule, STANDARD_SAEULE } from '../lib/saeulen';
+
+  function initPlayground(root: ParentNode) {
+    const saeuleBtns = root.querySelectorAll<HTMLButtonElement>('[data-saeule-btn]');
+    const chips = root.querySelectorAll<HTMLButtonElement>('[data-playground-chip]');
+    const verlauf = root.querySelector<HTMLElement>('[data-playground-verlauf]');
+    const panel = root.querySelector<HTMLElement>('[data-playground-panel]');
+    const exportBtn = root.querySelector<HTMLButtonElement>('[data-playground-export]');
+    const modal = document.querySelector<HTMLElement>('[data-playground-modal]');
+    const modalSchliessen = document.querySelector<HTMLElement>('[data-playground-modal-schliessen]');
+    const csvPre = document.querySelector<HTMLElement>('[data-playground-csv]');
+
+    if (!chips.length || !verlauf || !panel) return;
+
+    const transport = getTransport();
+    let letzterRecord: NachweisRecord | null = null;
+    let aktiverTurnId: string | null = null;
+    let aktiveSaeule: SaeuleId = STANDARD_SAEULE;
+
+    const saeuleBadgeKlasse = (id: SaeuleId) =>
+      id === 1 ? 'marke-neutral' : id === 2 ? 'marke-siegel' : 'marke-gold';
+
+    const feldZeile = (schluessel: string, wert: string | number, ton?: 'gut' | 'sperr') => `
+      <div class="rekord-zeile">
+        <span class="rekord-schluessel">${schluessel}</span>
+        <span class="rekord-wert ${ton === 'gut' ? 'rekord-wert-gut' : ''} ${ton === 'sperr' ? 'rekord-wert-sperr' : ''}">${wert}</span>
+      </div>`;
+
+    const renderRecord = (r: NachweisRecord, saeule: SaeuleId) => {
+      const gesperrt = r.status === 'gesperrt';
+      const s = findSaeule(saeule);
+      panel!.innerHTML = `
+        <div class="marke ${saeuleBadgeKlasse(saeule)} mb-3">${s.kurzname.toUpperCase()} · ${s.name}</div>
+        <div class="rekord">
+          <div class="rekord-kopf">
+            <span>${r.anfrage_id}</span>
+            <span class="marke ${gesperrt ? 'marke-sperr' : 'marke-siegel'}">${gesperrt ? 'GESPERRT · fail closed' : 'Freigegeben'}</span>
+          </div>
+          ${feldZeile('modell', r.modell)}
+          ${feldZeile('subprozessor', r.subprozessor, gesperrt ? 'sperr' : 'gut')}
+          ${feldZeile('rechenzentrum', r.rechenzentrum)}
+          ${feldZeile('retention', r.retention)}
+          ${feldZeile('tokens_in / out', `${r.tokens_in} / ${r.tokens_out}`)}
+          ${feldZeile('zeitstempel', r.zeitstempel)}
+          ${feldZeile('hash', r.hash.slice(0, 16) + '…')}
+          ${feldZeile('vorgänger_hash', r.vorgaenger_hash.slice(0, 16) + '…')}
+          ${r.hinweis ? `<div class="rekord-fuss">${r.hinweis}</div>` : ''}
+        </div>`;
+    };
+
+    const sendeAnfrage = (turnId: string) => {
+      aktiverTurnId = turnId;
+      panel!.innerHTML = '<p class="font-mono text-sm text-blau-faint">Anfrage wird verarbeitet…</p>';
+
+      transport.sendPrompt(turnId, aktiveSaeule, {
+        onToken: (partial) => {
+          const antwortEl = verlauf!.querySelector('[data-antwort]');
+          if (antwortEl) antwortEl.textContent = partial;
+        },
+        onRecord: (record) => {
+          letzterRecord = record;
+          renderRecord(record, aktiveSaeule);
+          if (exportBtn) exportBtn.disabled = false;
+        },
+        onDone: () => {},
+      });
+    };
+
+    saeuleBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = Number(btn.dataset.saeuleBtn) as SaeuleId;
+        aktiveSaeule = id;
+        saeuleBtns.forEach((b) => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+
+        // Bereits aktive Anfrage sofort mit der neuen Säule neu darstellen —
+        // kein erneutes Senden nötig, der Vergleich soll sich live anfühlen.
+        if (aktiverTurnId) sendeAnfrage(aktiverTurnId);
+      });
+    });
+
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const id = chip.dataset.playgroundChip!;
+        chips.forEach((c) => c.classList.remove('border-siegel', 'text-siegel'));
+        chip.classList.add('border-siegel', 'text-siegel');
+
+        const eintrag = document.createElement('div');
+        eintrag.className = 'space-y-2';
+        eintrag.innerHTML = `
+          <p class="text-sm font-semibold text-blau">${chip.textContent}</p>
+          <p class="text-sm text-blau-soft leading-relaxed whitespace-pre-line" data-antwort></p>`;
+        verlauf!.innerHTML = '';
+        verlauf!.appendChild(eintrag);
+
+        sendeAnfrage(id);
+      });
+    });
+
+    exportBtn?.addEventListener('click', () => {
+      if (!letzterRecord || !modal) return;
+      if (csvPre) {
+        csvPre.textContent =
+          'anfrage_id,modell,subprozessor,rechenzentrum,tokens_in,tokens_out,zeitstempel,hash\n' +
+          `${letzterRecord.anfrage_id},${letzterRecord.modell},${letzterRecord.subprozessor},${letzterRecord.rechenzentrum},${letzterRecord.tokens_in},${letzterRecord.tokens_out},${letzterRecord.zeitstempel},${letzterRecord.hash}`;
+      }
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    });
+
+    modalSchliessen?.addEventListener('click', () => {
+      modal?.classList.add('hidden');
+      modal?.classList.remove('flex');
+    });
+  }
+
+  initPlayground(document);
+</script>

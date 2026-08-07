@@ -1,445 +1,572 @@
 ---
 import Site from '../layouts/Site.astro';
+import Kette from '../components/Kette.astro';
 import Hero from '../components/Hero.astro';
-import ComparisonTable from '../components/ComparisonTable.astro';
-import BlockAForm from '../components/BlockAForm.astro';
-import BlockBForm from '../components/BlockBForm.astro';
-import FallEinreichenForm from '../components/FallEinreichenForm.astro';
+import RekordKarte from '../components/RekordKarte.astro';
+import Playground from '../components/Playground.astro';
+import LeiterTabelle from '../components/LeiterTabelle.astro';
+import Belege from '../components/Belege.astro';
+import Kontingent from '../components/Kontingent.astro';
+import InfografikForm from '../components/InfografikForm.astro';
+import ZugangForm from '../components/ZugangForm.astro';
+import { buildChain } from '../lib/kette';
+import { SAEULEN } from '../lib/saeulen';
+import { frei } from '../lib/kontingent';
+
+/**
+ * Reihenfolge folgt der Trichterlogik, nicht der Produktlogik:
+ * Schmerz (problem) → kostenloser Einstieg (checkliste) → Lösung
+ * (nachweis/playground/saeulen) → Beleg (belege) → Angebot (angebote) →
+ * Handlung (zugang). Vertrauens- und Einschränkungsabschnitte
+ * (unterlagen, eu-ki-recht, nicht, faq) stehen bewusst NACH dem Formular:
+ * vor dem Formular kosten sie Momentum, danach räumen sie Restzweifel ab.
+ */
+const abschnitte = [
+  { id: 'hero', label: 'Einstieg' },
+  { id: 'problem', label: 'Das Problem' },
+  { id: 'checkliste', label: 'Checkliste' },
+  { id: 'nachweis', label: 'Der Nachweis' },
+  { id: 'playground', label: 'Playground' },
+  { id: 'saeulen', label: 'Die drei Säulen' },
+  { id: 'belege', label: 'Stimmen' },
+  { id: 'fuer-wen', label: 'Für wen' },
+  { id: 'integrationen', label: 'Integrationen' },
+  { id: 'angebote', label: 'Angebote' },
+  { id: 'zugang', label: 'Zugang' },
+  { id: 'unterlagen', label: 'Unterlagen' },
+  { id: 'eu-ki-recht', label: 'EU-KI-Recht' },
+  { id: 'nicht', label: 'Was es nicht ist' },
+  { id: 'faq', label: 'FAQ' },
+  { id: 'abschluss', label: 'Abschluss' },
+];
+const gliedes = buildChain('index', abschnitte);
 
 const szenarien = [
   {
-    az: 'AZ. PG-01',
-    title: 'Pflegegrad-Prüfung mit kurzer Frist',
-    body: 'Der MD fordert eine Stellungnahme innerhalb weniger Tage. Verstreicht die Frist, gilt oft die Einstufung der Kasse — eine Herabstufung mit direkten Einbußen bei der Vergütung.',
+    beruf: 'Steuerberatung',
+    problem: '§ 203 Abs. 1 Nr. 3 StGB — Mandantenunterlagen dürfen keinem US-Prozessor ohne belastbaren AVV anvertraut werden.',
   },
   {
-    az: 'AZ. §275-02',
-    title: '§275 SGB V Abrechnungsprüfung',
-    body: 'Die Kasse zweifelt abgerechnete Leistungen an. Ohne belegte Antwort drohen Rückforderungen bereits ausgezahlter Vergütung — rückwirkend, oft über mehrere Monate.',
+    beruf: 'Rechtsanwaltschaft',
+    problem: 'Schriftsätze und Mandantenkorrespondenz enthalten Berufsgeheimnisse — ChatGPT ist ohne Zusatzvereinbarung ausgeschlossen.',
   },
   {
-    az: 'AZ. FR-03',
-    title: 'Stellungnahmen mit Frist',
-    body: 'Formlose Anfragen, MDK-Gutachten, Widersprüche — wer die Frist verstreichen lässt, verliert meist das Widerspruchsrecht. Die Entscheidung der Kasse steht dann endgültig fest.',
+    beruf: 'Arzt- / Zahnarztpraxis',
+    problem: 'Anamnesen und Befunde sind besondere Kategorien personenbezogener Daten nach Art. 9 DSGVO, zusätzlich zu § 203.',
   },
 ];
 
-const wasEsNichtIst = [
+const exporte = [
+  { titel: 'Art. 30 VVT-Eintrag', beschreibung: 'Automatisch generierter Eintrag in Ihr Verarbeitungsverzeichnis, pro Anfrage aktualisiert.' },
+  { titel: 'AI-Act Art. 12 Logging', beschreibung: 'Protokollierungsformat, vorbereitet auf die Nachweispflichten des AI Act.' },
+  { titel: 'Subprozessorenliste', beschreibung: 'Mit Änderungshistorie — jede Änderung eines Subprozessors wird dokumentiert und gemeldet.' },
+  { titel: 'Signierter Export', beschreibung: 'Ein Klick: CSV und PDF, kryptografisch signiert, bereit für Ihren Prüfer.' },
+];
+
+const nicht = [
+  { titel: 'Keine Rechtsberatung', beschreibung: 'Nachweis ersetzt nicht die Prüfung durch Ihre eigene Rechtsberatung im Einzelfall.' },
+  { titel: 'Kein Medizinprodukt', beschreibung: 'Der Gateway ist kein Medizinprodukt im Sinne der MDR — er verarbeitet, aber bewertet nicht.' },
+  { titel: 'Keine Haftungsübernahme', beschreibung: 'Ihre Berufspflichten bleiben bei Ihnen. Wir liefern die Infrastruktur und den Nachweis dazu.' },
+  { titel: 'Kein Vertragsersatz', beschreibung: 'Unser AVV ergänzt, ersetzt aber nicht Ihre eigene Mandantenvereinbarung zur KI-Nutzung.' },
+];
+
+const faq = [
   {
-    mark: 'KEIN',
-    rest: 'automatisierter Verwaltungsakt',
-    body: 'Jede Antwort geht erst nach Ihrer Freigabe raus — nie automatisiert an Kasse oder MD.',
+    frage: 'Ist Nachweis selbst ein Berufsgeheimnisträger-konformer Subprozessor?',
+    antwort: 'Wir sind Ihr Auftragsverarbeiter nach Art. 28 DSGVO und werden im Rahmen der Zusatzvereinbarung nach § 203 Abs. 3 StGB als mitwirkende Person eingebunden — vorausgesetzt, Sie schließen die entsprechende Vereinbarung mit uns ab. Ein Muster liegt unter „Unterlagen".',
   },
   {
-    mark: 'KEIN',
-    rest: '§203-Bruch',
-    body: 'Unterlagen werden nur im Rahmen einer unterschriebenen AVV verarbeitet — niemals in ein offenes KI-Tool kopiert.',
+    frage: 'Was genau ist im §203-Freigabedossier für €39 enthalten?',
+    antwort: 'AVV-Vorlage nach Art. 28 DSGVO, die §203-Zusatzvereinbarung, ein vorausgefüllter Art. 30 VVT-Eintrag, eine DSB-Freigabevorlage mit vorformuliertem Begründungstext sowie TOM-Beschreibung und Subprozessorenliste. Alle Dokumente sind ausfüllbar, nicht nur zum Lesen. Der Betrag wird vollständig verrechnet, wenn Sie später ein Compliance-Abo abschließen.',
   },
   {
-    mark: 'KEINE',
-    rest: 'Rechtsberatung',
-    body: 'Wir unterstützen bei der organisatorischen Aufbereitung. Die rechtliche Bewertung bleibt bei Ihnen oder Ihrer Rechtsberatung.',
+    frage: 'Warum ist die Checkliste kostenlos, das Dossier aber nicht?',
+    antwort: 'Die Checkliste sagt Ihnen, was zu prüfen ist — das sollte niemandem etwas kosten. Das Dossier ist die Arbeit danach: fertige, unterschriftsreife Dokumente, mit denen Sie die Freigabe intern tatsächlich durchbekommen.',
+  },
+  {
+    frage: 'Welche Modelle stehen zur Verfügung?',
+    antwort: 'Im Standardfall laufen Ihre Anfragen auf eigener Infrastruktur der DataFortress.cloud GmbH in Frankfurt — ohne externen Subprozessor. Wer stattdessen das günstigere EU-Anbieter-Autorouting wählt (Säule 1), erhält ausschließlich Modelle, die über Scaleway, IONOS AI Model Hub, Mistral AI oder OVHcloud AI Endpoints in der EU gehostet werden. Die genaue Modellliste ist Teil Ihres Onboardings.',
+  },
+  {
+    frage: 'Was passiert, wenn kein EU-Modell verfügbar ist?',
+    antwort: 'Die Anfrage schlägt fehl — sie wird nicht außerhalb der EU-Routingliste umgeleitet. Sehen Sie sich das im Playground am Beispiel „Was passiert, wenn ich ein US-Modell anfordere?" an.',
+  },
+  {
+    frage: 'Trainieren Sie auf unseren Daten?',
+    antwort: 'Nein. Alle EU-Subprozessoren in unserer Routingliste sind vertraglich zu Zero-Retention bzw. Nicht-Training verpflichtet; das ist Teil unserer Auswahlkriterien.',
+  },
+  {
+    frage: 'Warum sind die Zugangsschlüssel begrenzt?',
+    antwort: 'Weil wir jeden Start persönlich begleiten und die §203-Zusatzvereinbarung individuell gegenzeichnen. Das skaliert nicht beliebig, deshalb vergeben wir pro Monat ein festes Kontingent. Ist es ausgeschöpft, rücken Sie auf den Folgemonat.',
+  },
+  {
+    frage: 'Ist der Token-Einstieg wirklich kostenlos?',
+    antwort: 'Ja, bis 5 Mio. Token ohne Zahlungsmittel. Danach informieren wir Sie, bevor Kosten entstehen.',
+  },
+  {
+    frage: 'Kann ich Nachweis neben meiner bestehenden KI-Lösung nutzen?',
+    antwort: 'Ja — sehen Sie sich den Sidecar-Ansatz unter „Integrationen" an. Sie erhalten die Prüfspur, ohne Ihre bestehende Inferenz zu ersetzen.',
+  },
+  {
+    frage: 'Was kostet ein Machbarkeits-Check?',
+    antwort: 'Zwischen €1.900 und €9.000 einmalig, abhängig von Umfang und Anzahl der zu integrierenden Kanäle. Details unter „Angebote".',
   },
 ];
 ---
+
 <Site>
-  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "pflegenachweis.de",
-    "url": "https://pflegenachweis.de",
-    "parentOrganization": {
-      "@type": "Organization",
-      "name": "DataFortress.cloud GmbH"
+  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify([
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      '@id': 'https://konforme-ki.de/#organisation',
+      name: 'Nachweis',
+      legalName: 'DataFortress.cloud GmbH',
+      url: 'https://konforme-ki.de',
+      logo: 'https://konforme-ki.de/og-image.svg',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Gewerbestraße 13',
+        postalCode: '82064',
+        addressLocality: 'Straßlach-Dingharting',
+        addressCountry: 'DE',
+      },
+      areaServed: 'DE',
     },
-    "description": "KI-gestützte, §203-konforme Unterstützung bei Pflegegrad-Prüfungen, §275 SGB V Abrechnungsprüfungen und Prüfanfragen für Pflegedienste, MVZ und Arztpraxen."
-  })} />
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      '@id': 'https://konforme-ki.de/#website',
+      url: 'https://konforme-ki.de',
+      name: 'Nachweis',
+      inLanguage: 'de-DE',
+      publisher: { '@id': 'https://konforme-ki.de/#organisation' },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faq.map((f) => ({
+        '@type': 'Question',
+        name: f.frage,
+        acceptedAnswer: { '@type': 'Answer', text: f.antwort },
+      })),
+    },
+  ])} />
 
-  <Hero
-    title="Prüfanfrage mit Frist auf dem Tisch?"
-    subtitle="Verpasste Fristen bedeuten Rückforderungen oder Herabstufungen — nicht nur verlorene Zeit. Mit unserer KI-Prüfvorbereitung: 30–45 Minuten bis zum fertigen Entwurf — quellenbelegbar, ohne §203-Risiko. Die ersten 3 Fälle sind kostenlos."
-    ctaText="Erste 3 Fälle kostenlos ausprobieren"
-    ctaHref="#ki-pruefvorbereitung"
-    stats={[
-      { value: '3', label: 'Fälle kostenlos' },
-      { value: '€49', label: 'danach pro Fall' },
-      { value: '5 Tage', label: 'Bearbeitung' }
-    ]}
-  />
+  <Kette gliedes={gliedes} slot="kette" />
 
-  <!-- KOSTENLOSE STARTHILFE — für die, die noch nicht bereit sind, echte Daten hochzuladen -->
-  <section id="starthilfe" class="py-12 bg-paper-deep border-y-[1.5px] border-line scroll-mt-20">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mb-8">
-        <span class="tag tag-az">Kostenlos starten — keine Dateneingabe nötig</span>
-        <h2 class="mt-3 font-display text-2xl sm:text-3xl font-black tracking-tight text-ink">Kostenlose Starthilfe</h2>
-        <p class="mt-2 text-lg text-ink-soft">Noch nicht bereit für den Live-Fall? Holen Sie sich die bewährten Muster für §203-Vereinbarung und Auftragsverarbeitung. Sofort einsatzbereit, juristisch geprüft.</p>
+  <!-- 1. Hero — der Einstieg ist das Angebot, nicht die Produkttour. -->
+  <section id="hero" class="py-14 sm:py-20 border-b border-linie">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Hero
+        marginalie="Für Berufsgeheimnisträger nach § 203 StGB"
+        primaryCta={{ label: 'Zugang anfragen', href: '/?tarif=compliance#zugang' }}
+        secondaryCta={{ label: 'Playground öffnen', href: '/playground' }}
+      >
+        <Fragment slot="titel">§ 203 StGB verbietet Ihnen ChatGPT. <span class="text-siegel">Nicht die KI.</span></Fragment>
+        <Fragment slot="subtitel">
+          EU-Inferenz mit lückenloser, exportierbarer Prüfspur — der Nachweis, den Ihr Datenschutzbeauftragter verlangt, bevor er KI in Ihrer Kanzlei oder Praxis freigibt.
+        </Fragment>
+
+        <Kontingent slot="hinweis" variante="zeile" />
+
+        <div slot="bullets">
+          <span class="marke marke-neutral">Kein US-Fallback</span>
+          <span class="marke marke-neutral">Kein Training auf Ihren Daten</span>
+          <span class="marke marke-neutral">AVV inklusive</span>
+        </div>
+
+        <RekordKarte
+          kopf="req_8f2a1c93"
+          felder={[
+            { schluessel: 'modell', wert: 'nachweis-llm-70b' },
+            { schluessel: 'subprozessor', wert: 'Keiner — DataFortress.cloud GmbH', ton: 'gut' },
+            { schluessel: 'rechenzentrum', wert: 'Frankfurt, DE · eigenes RZ' },
+            { schluessel: 'retention', wert: 'kein Training · 0 Tage' },
+            { schluessel: 'tokens_in / out', wert: '412 / 96' },
+            { schluessel: 'hash', wert: '7be1c4a9f3d820e6…' },
+          ]}
+          fuss="Jede Anfrage hinterlässt eine Prüfspur — nicht nur Ihre Rechnung."
+        />
+      </Hero>
+    </div>
+  </section>
+
+  <!-- 2. Problem -->
+  <section id="problem" class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="marginalie mb-3">Das Problem</p>
+      <h2 class="display display-l text-blau max-w-3xl">Drei Gründe, warum „einfach ChatGPT nehmen" für Sie keine Option ist.</h2>
+      <div class="mt-10 grid md:grid-cols-3 gap-px bg-linie border border-linie">
+        <div class="bg-bogen-rein p-6">
+          <p class="font-mono text-xs text-sperr font-semibold">§ 203 Abs. 3 StGB</p>
+          <p class="mt-2 font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">Mitwirkende Personen</p>
+          <p class="mt-2 text-sm text-blau-soft leading-relaxed">Ein externer KI-Anbieter darf nur unter engen Voraussetzungen Zugang zu Berufsgeheimnissen erhalten — ohne belastbare Vereinbarung machen Sie sich strafbar.</p>
+        </div>
+        <div class="bg-bogen-rein p-6">
+          <p class="font-mono text-xs text-sperr font-semibold">Art. 28 DSGVO</p>
+          <p class="mt-2 font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">Kein unterschreibbarer AVV</p>
+          <p class="mt-2 text-sm text-blau-soft leading-relaxed">Mit einem US-Anbieter, dessen Verarbeitung Sie nicht auditierbar nachweisen können, lässt sich kein belastbarer Auftragsverarbeitungsvertrag schließen.</p>
+        </div>
+        <div class="bg-bogen-rein p-6">
+          <p class="font-mono text-xs text-sperr font-semibold">Art. 30 DSGVO</p>
+          <p class="mt-2 font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">Dokumentationspflicht</p>
+          <p class="mt-2 text-sm text-blau-soft leading-relaxed">Sie müssen jede Verarbeitung in Ihr Verarbeitungsverzeichnis eintragen können — ein „wir nutzen halt KI" reicht bei einer Prüfung nicht.</p>
+        </div>
       </div>
+    </div>
+  </section>
 
-      <div class="max-w-xl">
-        <BlockAForm />
-      </div>
-
-      <div id="starthilfe-download" class="hidden mt-8 max-w-2xl">
-        <div class="bg-paper border-[1.5px] border-file p-6 sm:p-8">
-          <span class="tag tag-file">Akte freigegeben</span>
-          <h3 class="mt-3 font-display text-xl font-bold text-ink">Ihre Starthilfe-Akte ist bereit.</h3>
-          <p class="mt-1 text-sm text-ink-soft">Entwürfe zur Prüfung durch Ihre Geschäftsführung / Datenschutzbeauftragte — siehe Hinweis in jedem Dokument.</p>
-          <ul class="mt-5 space-y-3">
-            <li>
-              <a href="/downloads/203-mustervereinbarung.md" download class="flex items-center gap-3 text-ink font-semibold hover:text-stamp">
-                <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/></svg>
-                §203-Mustervereinbarung herunterladen
-              </a>
-            </li>
-            <li>
-              <a href="/downloads/muster-avv.md" download class="flex items-center gap-3 text-ink font-semibold hover:text-stamp">
-                <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/></svg>
-                Muster-AVV (Art. 28 DSGVO) herunterladen
-              </a>
-            </li>
-            <li>
-              <a href="/downloads/mdr-abgrenzungsnotiz.md" download class="flex items-center gap-3 text-ink font-semibold hover:text-stamp">
-                <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/></svg>
-                MDR-Abgrenzungsnotiz herunterladen
-              </a>
-            </li>
+  <!--
+    3. Checkliste — die kostenlose Stufe der Angebotsleiter, bewusst direkt
+    hinter dem Schmerz und lange vor der Preistabelle. Einziges Feld: E-Mail.
+  -->
+  <section id="checkliste" class="py-16 sm:py-20 border-b border-linie">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-16 items-center">
+        <div>
+          <div class="flex items-center gap-3 flex-wrap">
+            <p class="marginalie">Stufe 01 · kostenlos</p>
+            <span class="marke marke-siegel">PDF, eine Seite</span>
+          </div>
+          <h2 class="mt-3 display display-l text-blau">Bevor Sie irgendetwas kaufen: <span class="text-siegel">prüfen Sie, ob es bei Ihnen überhaupt zulässig ist.</span></h2>
+          <p class="mt-5 text-blau-soft leading-relaxed max-w-lg">
+            Die 12 Punkte, die Ihr Datenschutzbeauftragter durchgeht, bevor er KI freigibt — AI Act, DSGVO und § 203 StGB auf einer Seite, in der Reihenfolge, in der sie tatsächlich anfallen. Zum Weiterleiten gedacht.
+          </p>
+          <ul class="mt-6 space-y-2.5">
+            {['Keine Registrierung, nur E-Mail', 'Direkt an Ihren DSB weiterleitbar', 'Gilt auch, wenn Sie sich gegen uns entscheiden'].map((punkt) => (
+              <li class="flex items-start gap-2.5 text-sm text-blau-soft">
+                <span class="mt-1.5 h-1.5 w-1.5 shrink-0 bg-siegel"></span>
+                {punkt}
+              </li>
+            ))}
           </ul>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- STUFE 1 — KI-PRÜFVORBEREITUNG, die Kernleistung -->
-  <section id="ki-pruefvorbereitung" class="py-16 sm:py-20 bg-paper scroll-mt-20">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mb-12">
-        <span class="tag tag-az">Stufe 1 / 3 · Die Kernleistung</span>
-        <h2 class="mt-4 font-display text-3xl sm:text-4xl font-black tracking-tight text-ink">KI-Prüfvorbereitung</h2>
-        <p class="mt-3 text-lg text-ink-soft">Laden Sie einen anonymisierten Fall hoch — wir bereiten die Antwort vor. Quellenbelegbar, gesetzeskonform, in Ihrer Verantwortung.</p>
-      </div>
-
-      <div class="grid lg:grid-cols-2 gap-8 mb-12">
         <div>
-          <h3 class="font-display text-lg font-bold text-ink mb-4">So funktioniert es</h3>
-          <ol class="space-y-4 text-ink-soft">
-            <li class="flex gap-3">
-              <span class="font-mono font-bold text-stamp shrink-0">01</span>
-              <span>Sie laden eine geschwärzte Prüfanfrage und relevante Dokumentation hoch.</span>
-            </li>
-            <li class="flex gap-3">
-              <span class="font-mono font-bold text-stamp shrink-0">02</span>
-              <span>Unsere KI erstellt einen Antwortentwurf mit Quellenverweisen aus Ihren Unterlagen.</span>
-            </li>
-            <li class="flex gap-3">
-              <span class="font-mono font-bold text-stamp shrink-0">03</span>
-              <span>Sie prüfen, ergänzen ggf. und versenden — Sie bleiben der Absender.</span>
-            </li>
-          </ol>
-
-          <div class="mt-8 p-4 bg-paper-deep border-l-4 border-stamp">
-            <p class="text-sm text-ink-soft"><strong class="text-ink">Preise:</strong></p>
-            <ul class="mt-2 space-y-1 text-sm text-ink-soft">
-              <li><strong class="text-ink">Erste 3 Fälle:</strong> kostenlos</li>
-              <li><strong class="text-ink">Danach:</strong> €49 zzgl. USt pro Fall</li>
-              <li><strong class="text-ink">Lieferung:</strong> in der Regel 5 Werktage</li>
-            </ul>
-          </div>
+          <InfografikForm
+            id="checkliste"
+            quelle="startseite"
+            next="/?infografik_gesendet=1#checkliste"
+          />
         </div>
-
-        <div class="bg-paper-deep border-[1.5px] border-ink/80 p-6 sm:p-8">
-          <span class="font-mono text-xs uppercase tracking-widest text-ink-faint">Beispiel — Ablauf</span>
-          <div class="mt-4 space-y-3 text-sm">
-            <div class="flex items-center gap-2">
-              <span class="h-2 w-2 bg-stamp"></span>
-              <span class="text-ink">Pflegegrad-Prüfung, MD-Schreiben + Akte</span>
-            </div>
-            <div class="flex items-center gap-2 text-ink-faint">
-              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-4.5-9a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm9 0a1.5 1.5 0 110 3 1.5 1.5 0 010-3z"/></svg>
-              <span>KI-Entwurf mit Quellenangaben</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="h-2 w-2 bg-stamp"></span>
-              <span class="text-ink">Ihre Prüfung + Versand an MD</span>
-            </div>
-          </div>
-          <p class="mt-6 font-mono text-[11px] text-ink-faint">AZ. PN-2026-001 · Stufe 1 von 3</p>
-        </div>
-      </div>
-
-      <!-- Das eigentliche Fall-Upload-Formular -->
-      <div class="max-w-2xl">
-        <h3 class="font-display text-xl font-bold text-ink mb-4">Laden Sie einen Fall hoch</h3>
-        <FallEinreichenForm />
-      </div>
-
-      <div id="fall-eingereicht" class="hidden mt-8 bg-file text-paper p-6 sm:p-8 text-center border-[1.5px] border-file scroll-mt-20">
-        <h3 class="font-display text-xl font-bold">Fall eingereicht.</h3>
-        <p class="mt-2">Wir bereiten den Antwortentwurf vor und senden ihn Ihnen in der Regel innerhalb von <strong>5 Werktagen</strong> per E-Mail zu.</p>
-        <p class="mt-3 text-sm text-paper/75">Falls Sie Fragen haben, erreichen Sie uns jederzeit über <a href="/kontakt" class="underline font-semibold">Kontakt</a>.</p>
       </div>
     </div>
   </section>
 
-  <!-- Warum die KI hilft: Szenarien + Vergleich + Prozess -->
-  <section class="py-20 bg-paper-deep border-y-[1.5px] border-line">
+  <!-- 4. Der Nachweis — die größte Fläche der Seite, inkl. Exportformate. -->
+  <section id="nachweis" class="py-16 sm:py-24 border-b border-linie bg-bogen-tief">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mb-14">
-        <h2 class="font-display text-3xl sm:text-4xl font-black tracking-tight text-ink">Drei Situationen, die jede Woche passieren</h2>
-        <p class="mt-3 text-lg text-ink-soft">Nicht nur Zeit steht auf dem Spiel. Jede verpasste Frist hat eine finanzielle Konsequenz.</p>
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <p class="marginalie mb-3">Der Nachweis</p>
+          <h2 class="display display-l text-blau">Nicht die Tokens sind das Produkt. <span class="text-siegel">Diese Zeile ist es.</span></h2>
+          <p class="mt-5 text-blau-soft leading-relaxed max-w-lg">
+            Jede EU-Inferenzplattform verkauft Ihnen Tokens und einen PDF-AVV. Keine gibt Ihrem Datenschutzbeauftragten oder Prüfer eine per Anfrage exportierbare Beweiskette. Das ist der Unterschied zwischen „wir sind konform" und „hier ist der Beweis".
+          </p>
+          <dl class="mt-8 space-y-4 text-sm">
+            <div class="flex gap-3">
+              <dt class="font-mono text-blau-faint w-32 shrink-0">modell</dt>
+              <dd class="text-blau-soft">welches Modell tatsächlich geantwortet hat</dd>
+            </div>
+            <div class="flex gap-3">
+              <dt class="font-mono text-blau-faint w-32 shrink-0">subprozessor</dt>
+              <dd class="text-blau-soft">wer die Anfrage verarbeitet hat, namentlich</dd>
+            </div>
+            <div class="flex gap-3">
+              <dt class="font-mono text-blau-faint w-32 shrink-0">hash</dt>
+              <dd class="text-blau-soft">verkettet mit der vorherigen Anfrage, manipulationssicher</dd>
+            </div>
+          </dl>
+        </div>
+        <RekordKarte
+          kopf="req_5d94e120 · vollständig"
+          felder={[
+            { schluessel: 'anfrage_id', wert: 'req_5d94e120' },
+            { schluessel: 'modell', wert: 'nachweis-llm-70b' },
+            { schluessel: 'subprozessor', wert: 'Keiner — DataFortress.cloud GmbH', ton: 'gut' },
+            { schluessel: 'rechenzentrum', wert: 'Frankfurt, DE · eigenes RZ' },
+            { schluessel: 'retention', wert: 'kein Training · 0 Tage' },
+            { schluessel: 'tokens_in / out', wert: '890 / 143' },
+            { schluessel: 'hash', wert: 'c91a3e6f204b8d71…' },
+            { schluessel: 'vorgänger_hash', wert: '7be1c4a9f3d820e6…' },
+          ]}
+          fuss="Exportierbar als Art. 30 VVT-Eintrag, signiertes PDF oder CSV."
+        />
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-line border-[1.5px] border-line">
-        {szenarien.map(s => (
-          <div class="bg-paper p-7">
-            <span class="font-mono text-xs text-stamp font-semibold tracking-wider">{s.az}</span>
-            <h3 class="mt-3 font-display text-lg font-bold text-ink leading-snug">{s.title}</h3>
-            <p class="mt-2.5 text-sm text-ink-soft leading-relaxed">{s.body}</p>
+
+      <p class="mt-16 marginalie mb-3">Was Sie damit exportieren</p>
+      <h3 class="display display-m text-blau max-w-2xl">Vier Dokumente, die Sie mit einem Klick bekommen.</h3>
+      <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-linie border border-linie">
+        {exporte.map((e) => (
+          <div class="bg-bogen-rein p-6">
+            <p class="font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">{e.titel}</p>
+            <p class="mt-2 text-sm text-blau-soft leading-relaxed">{e.beschreibung}</p>
           </div>
         ))}
       </div>
-    </div>
-  </section>
 
-  <section class="py-20 bg-paper">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mb-12">
-        <h2 class="font-display text-3xl sm:text-4xl font-black tracking-tight text-ink">Manuell. Rohes ChatGPT. Oder richtig.</h2>
+      <!-- Handlungspfad mitten im langen Erklärteil, nicht erst nach dem Scrollen. -->
+      <div class="mt-10 flex flex-wrap items-center gap-4">
+        <a href="/?tarif=compliance#zugang" class="knopf knopf-siegel" data-tarif-cta="nachweis-inline">Zugang anfragen</a>
+        <Kontingent variante="zeile" />
       </div>
-      <ComparisonTable />
     </div>
   </section>
 
-  <section class="py-20 bg-paper-deep border-y-[1.5px] border-line">
+  <!-- 5. Playground -->
+  <section id="playground" class="py-16 sm:py-20 border-b border-linie">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mb-14">
-        <h2 class="font-display text-3xl sm:text-4xl font-black tracking-tight text-ink">So funktioniert es — von Eingang zu Absender</h2>
+      <div class="flex items-end justify-between gap-4 flex-wrap mb-8">
+        <div>
+          <p class="marginalie mb-3">Playground</p>
+          <h2 class="display display-l text-blau">Probieren Sie den Ernstfall aus.</h2>
+        </div>
+        <a href="/playground" class="text-sm font-semibold text-siegel hover:underline">Playground in voller Größe →</a>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-14">
-        <div>
-          <span class="font-mono text-3xl font-bold text-stamp">01</span>
-          <h3 class="mt-3 font-display text-lg font-bold text-ink">Fall hochladen</h3>
-          <p class="mt-2 text-ink-soft leading-relaxed">Sie senden die geschwärzte Prüfanfrage über unser sicheres Formular.</p>
-        </div>
-        <div>
-          <span class="font-mono text-3xl font-bold text-stamp">02</span>
-          <h3 class="mt-3 font-display text-lg font-bold text-ink">KI-gestützter Entwurf</h3>
-          <p class="mt-2 text-ink-soft leading-relaxed">Wir erstellen einen Antwortentwurf mit Quellenverweisen aus Ihrer Pflegedokumentation.</p>
-        </div>
-        <div>
-          <span class="font-mono text-3xl font-bold text-stamp">03</span>
-          <h3 class="mt-3 font-display text-lg font-bold text-ink">Prüfung & Versand</h3>
-          <p class="mt-2 text-ink-soft leading-relaxed">Sie prüfen, ergänzen und versenden — Sie bleiben der Absender. Optional: buchen Sie Human-Check für extra Sicherheit.</p>
-        </div>
-      </div>
+      <Playground compact />
+    </div>
+  </section>
 
-      <div class="max-w-3xl border-[1.5px] border-ink/80 bg-paper p-6 sm:p-8 flex gap-4">
-        <svg class="h-6 w-6 text-stamp shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-        <p class="text-sm text-ink-soft leading-relaxed">
-          <strong class="text-ink">Art. 26 AI Act & §630a BGB:</strong> Der Entwurf ist Organisationshilfe, keine automatisierte Entscheidung. Die Dokumentationspflicht nach §630a BGB und die Transparenzpflichten nach Art. 26 AI Act bleiben bei Ihnen — wir unterstützen, wir entscheiden nicht.
+  <!-- 6. Die drei Säulen -->
+  <section id="saeulen" class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="marginalie mb-3">Die drei Säulen</p>
+      <h2 class="display display-l text-blau max-w-2xl">Nicht nur, welcher EU-Anbieter — sondern ob es überhaupt einen gibt.</h2>
+      <p class="mt-4 text-blau-soft max-w-2xl leading-relaxed">
+        Säule 2 und 3 lösen die Subprozessor-Frage nicht durch eine bessere Wahl, sondern indem es keinen externen Subprozessor mehr gibt.
+      </p>
+      <div class="mt-10 grid md:grid-cols-3 gap-px bg-linie border border-linie">
+        {SAEULEN.map((s) => (
+          <div
+            class:list={[
+              'bg-bogen-rein p-6 flex flex-col',
+              s.akzent === 'gold' && 'border-t-[3px] border-gold',
+            ]}
+          >
+            <span class={`marke ${s.akzent === 'blau' ? 'marke-neutral' : s.akzent === 'siegel' ? 'marke-siegel' : 'marke-gold'} w-fit`}>
+              {s.kurzname} · {s.kosten}
+            </span>
+            <p class="mt-3 font-display font-bold text-blau leading-snug" style="font-variation-settings: 'wdth' 90;">{s.name}</p>
+            <p class="mt-2 text-sm text-blau-soft leading-relaxed flex-1">{s.beschreibung}</p>
+            <p class="mt-4 text-xs text-blau-faint leading-relaxed">{s.eignung}</p>
+            <div class="mt-4 pt-4 border-t border-linie space-y-1 font-mono text-xs text-blau-faint">
+              <p>Subprozessor: {s.subprozessor}</p>
+              <p>Rechenzentrum: {s.rechenzentrum}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div class="mt-8 border border-sperr bg-sperr-blass px-6 py-5 max-w-3xl">
+        <p class="marke marke-sperr mb-3">Fail closed</p>
+        <p class="text-sm text-blau leading-relaxed">
+          Für Säule 1 gilt: kein Fallback außerhalb der EU-Routingliste. Ist kein EU-Modell verfügbar, schlägt die Anfrage fehl — sie wird nicht umgeleitet. Für Säule 2/3 stellt sich die Frage erst gar nicht — sehen Sie sich das im <a href="/playground" class="underline hover:no-underline">Playground</a> an.
         </p>
       </div>
     </div>
   </section>
 
-  <section class="py-20 bg-paper">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mb-14">
-        <h2 class="font-display text-3xl sm:text-4xl font-black tracking-tight text-ink">Was es NICHT ist</h2>
+  <!-- 7. Belege — sozialer Nachweis zwischen Lösung und Angebot. -->
+  <section id="belege" class="py-16 sm:py-20 border-b border-linie">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="marginalie mb-3">Stimmen</p>
+      <h2 class="display display-l text-blau max-w-2xl">Wie andere die Freigabe bekommen haben.</h2>
+      <div class="mt-10">
+        <Belege />
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-10">
-        {wasEsNichtIst.map(item => (
-          <div>
-            <h3 class="font-display text-lg font-bold text-ink leading-snug">
-              <span class="mark-redact">{item.mark}</span> {item.rest}
-            </h3>
-            <p class="mt-2 text-sm text-ink-soft leading-relaxed">{item.body}</p>
-          </div>
-        ))}
-      </div>
-      <p class="mt-10 font-mono text-xs text-ink-faint">
-        Details siehe <a href="/rdg-hinweis" class="text-stamp font-semibold hover:underline">RDG-Hinweis</a>.
-      </p>
     </div>
   </section>
 
-  <!-- STUFE 2 — Human-Check Paket als kleine, günstige Upgrade-Option -->
-  <section class="py-14 bg-paper-deep border-y-[1.5px] border-line">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="border-[1.5px] border-file bg-paper flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-8 p-6 sm:p-8">
-        <div class="flex-1">
-          <span class="tag tag-file">Stufe 2 / 3 · €390</span>
-          <h3 class="mt-3 font-display text-2xl font-bold text-ink">Human-Check-Paket</h3>
-          <p class="mt-2 text-ink-soft leading-relaxed"><strong>5 Fälle</strong> mit Prüfung durch eine registrierte Pflegefachkraft — ≈ €78 pro Fall.</p>
-          <p class="mt-3 text-sm text-ink"><strong>Kein unüberwachtes KI-Urteil:</strong> Der KI-Entwurf wird von einem Pflegefachkraft-Auge geprüft. Sie entscheiden nicht allein.</p>
+  <!-- 8. Für wen -->
+  <section id="fuer-wen" class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="marginalie mb-3">Für wen</p>
+      <h2 class="display display-l text-blau max-w-2xl">§ 203 Abs. 1 StGB nennt Sie namentlich.</h2>
+      <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-linie border border-linie">
+        {['Steuerberater · Wirtschaftsprüfer', 'Rechtsanwälte · Notare', 'Ärzte · Zahnärzte', 'Psychotherapeuten', 'Ambulante Pflegedienste', 'Sonstige Berufsgeheimnisträger'].map((b) => (
+          <div class="bg-bogen-rein p-6 text-sm font-semibold text-blau">{b}</div>
+        ))}
+      </div>
+      <div class="mt-10 grid md:grid-cols-3 gap-6">
+        {szenarien.map((s) => (
+          <div class="border-l-2 border-siegel pl-4">
+            <p class="font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">{s.beruf}</p>
+            <p class="mt-1.5 text-sm text-blau-soft leading-relaxed">{s.problem}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Integrationen — inkl. Sidecar, damit vor dem Angebot ein Abschnitt weniger steht. -->
+  <section id="integrationen" class="py-16 sm:py-20 border-b border-linie">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-end justify-between gap-4 flex-wrap">
+        <div>
+          <p class="marginalie mb-3">Integrationen</p>
+          <h2 class="display display-l text-blau max-w-xl">Da, wo Sie ohnehin schon arbeiten.</h2>
         </div>
-        <a
-          href="/kontakt?interesse=stufe2"
-          data-tier-cta="stufe2"
-          class="shrink-0 inline-flex items-center justify-center gap-2 px-6 py-3.5 text-base font-semibold text-paper bg-file hover:bg-file-bright transition-colors whitespace-nowrap"
-        >
-          Details & Rechnung
+        <a href="/integrationen" class="text-sm font-semibold text-siegel hover:underline">Alle Kanäle ansehen →</a>
+      </div>
+      <div class="mt-8 flex flex-wrap gap-3">
+        {['Microsoft Teams', 'Slack', 'WhatsApp Business', 'E-Mail', 'Webhook / REST', 'OpenAI-kompatibles SDK'].map((k) => (
+          <span class="marke marke-neutral !text-sm !py-1.5 !px-3">{k}</span>
+        ))}
+      </div>
+
+      <div class="mt-10 border border-linie bg-bogen-rein p-8 sm:p-10 grid lg:grid-cols-[1.2fr_1fr] gap-8 items-center">
+        <div>
+          <p class="marginalie mb-3">Für Vorsichtige</p>
+          <h3 class="display display-m text-blau">Sie nutzen bereits Azure OpenAI? Nehmen Sie nur die Prüfspur.</h3>
+          <p class="mt-4 text-sm text-blau-soft leading-relaxed max-w-lg">
+            Sie müssen Ihre bestehende KI-Lösung nicht ersetzen, um zu starten. Nachweis kann als Sidecar neben Ihrer aktuellen Inferenz laufen und ausschließlich die Protokollierung übernehmen — derselbe Nutzen, ohne Umstellungsrisiko.
+          </p>
+        </div>
+        <a href="/kontakt?interesse=sidecar" class="knopf knopf-linie w-full sm:w-fit sm:ml-auto" data-tarif-cta="sidecar">Sidecar anfragen</a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    10. Angebote — die Leiter. Ersetzt die frühere Token-Preistabelle an
+    dieser Stelle: hier fällt die Kaufentscheidung, Abrechnungsdetails
+    stehen auf /preise.
+  -->
+  <section id="angebote" class="py-16 sm:py-24 border-b border-linie bg-bogen-tief">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="marginalie mb-3">Angebote</p>
+      <h2 class="display display-l text-blau max-w-2xl">Drei Stufen — Sie steigen ein, wo Sie gerade stehen.</h2>
+      <p class="mt-4 text-blau-soft max-w-2xl leading-relaxed">
+        Sie müssen nicht mit einem Vertrag anfangen. Fangen Sie mit der Checkliste an, kaufen Sie das Dossier, wenn Sie Papier brauchen — und buchen Sie die laufende Prüfspur erst, wenn KI bei Ihnen tatsächlich produktiv ist.
+      </p>
+
+      <div class="mt-10">
+        <LeiterTabelle />
+      </div>
+
+      <div class="mt-8 flex flex-wrap items-center justify-between gap-4 border border-linie bg-bogen-rein px-6 py-4">
+        <p class="text-sm text-blau-soft">
+          Tokens werden separat abgerechnet — Pay-per-Token ab €3,50/Mio. oder als Abo mit inkludiertem Kontingent.
+        </p>
+        <a href="/preise" class="text-sm font-semibold text-siegel hover:underline whitespace-nowrap">Alle Abrechnungsmodelle →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. Zugang — direkt hinter dem Angebot, ohne Zwischenabschnitte. -->
+  <section id="zugang" class="py-16 sm:py-20 border-b border-linie">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="marginalie mb-3 text-center">Zugang</p>
+      <h2 class="display display-l text-blau text-center">Zugang anfragen.</h2>
+      <p class="mt-4 text-blau-soft text-center leading-relaxed">Keine Kreditkarte, kein Verkaufsgespräch. Wir vergeben Zugangsschlüssel aktuell manuell.</p>
+      <Kontingent class="mt-8" />
+      <div class="mt-4">
+        <ZugangForm />
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. Unterlagen -->
+  <section id="unterlagen" class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="marginalie mb-3">Unterlagen</p>
+      <h2 class="display display-l text-blau max-w-2xl mx-auto">Laden Sie herunter, was Ihr Datenschutzbeauftragter braucht — ohne sich anzumelden.</h2>
+      <p class="mt-4 text-blau-soft max-w-xl mx-auto leading-relaxed">
+        AVV, TOM, Subprozessorenliste, §203-Zusatzvereinbarung und ein VVT-Muster. Kein Formular, keine E-Mail-Pflicht.
+      </p>
+      <a href="/unterlagen" class="knopf knopf-linie mt-7">Unterlagen ansehen</a>
+    </div>
+  </section>
+
+  <!-- 13. EU-KI-Recht & Ratgeber — die beiden Wissensflächen, gemeinsam,
+       damit die Startseite nicht noch einen Abschnitt mehr bekommt. -->
+  <section id="eu-ki-recht" class="py-16 sm:py-20 border-b border-linie">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="marginalie mb-3">Wissen</p>
+      <h2 class="display display-l text-blau max-w-2xl">Was beim KI-Einsatz wirklich gilt.</h2>
+      <div class="mt-10 grid md:grid-cols-2 gap-px bg-linie border border-linie">
+        <div class="bg-bogen-rein p-7 flex flex-col">
+          <p class="font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">EU-KI-Recht im Überblick</p>
+          <p class="mt-2.5 text-sm text-blau-soft leading-relaxed flex-1">
+            AI Act, DSGVO und § 203 StGB verständlich erklärt — für jedes Unternehmen, mit zusätzlicher Tiefe für Berufsgeheimnisträger. Inklusive Fristen-Zeitstrahl.
+          </p>
+          <a href="/eu-ki-recht" class="knopf knopf-linie mt-6 w-full sm:w-fit">EU-KI-Recht ansehen</a>
+        </div>
+        <div class="bg-bogen-rein p-7 flex flex-col">
+          <p class="font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">Ratgeber nach Berufsgruppe</p>
+          <p class="mt-2.5 text-sm text-blau-soft leading-relaxed">
+            Konkrete Leitfäden zu den Fragen, die uns am häufigsten gestellt werden:
+          </p>
+          <ul class="mt-4 space-y-2 flex-1">
+            {[
+              { href: '/ratgeber/chatgpt-kanzlei-datenschutz', label: 'ChatGPT in der Kanzlei — was § 203 StGB verbietet' },
+              { href: '/ratgeber/chatgpt-steuerberater', label: 'ChatGPT für Steuerberater — Mandantendaten' },
+              { href: '/ratgeber/ki-arztpraxis-datenschutz', label: 'KI in der Arztpraxis — Patientendaten' },
+              { href: '/ratgeber/avv-ki-anbieter', label: 'AVV mit KI-Anbietern nach Art. 28 DSGVO' },
+            ].map((a) => (
+              <li class="flex items-start gap-2.5 text-sm">
+                <span class="mt-1.5 h-1.5 w-1.5 shrink-0 bg-siegel"></span>
+                <a href={a.href} class="text-blau-soft hover:text-siegel transition-colors">{a.label}</a>
+              </li>
+            ))}
+          </ul>
+          <a href="/ratgeber" class="knopf knopf-linie mt-6 w-full sm:w-fit">Alle Ratgeber ansehen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. Was es nicht ist — Einschränkungen bewusst nach dem Formular. -->
+  <section id="nicht" class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="marginalie mb-3">Zur Klarheit</p>
+      <h2 class="display display-l text-blau max-w-2xl">Was Nachweis nicht ist.</h2>
+      <div class="mt-10 grid sm:grid-cols-2 gap-px bg-linie border border-linie">
+        {nicht.map((n) => (
+          <div class="bg-bogen-rein p-6">
+            <p class="font-display font-bold text-sperr" style="font-variation-settings: 'wdth' 90;">{n.titel}</p>
+            <p class="mt-2 text-sm text-blau-soft leading-relaxed">{n.beschreibung}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 15. FAQ -->
+  <section id="faq" class="py-16 sm:py-20 border-b border-linie">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="marginalie mb-3">FAQ</p>
+      <h2 class="display display-l text-blau mb-10">Häufige Fragen.</h2>
+      <div class="divide-y divide-linie border-t border-b border-linie">
+        {faq.map((f) => (
+          <details class="group py-5">
+            <summary class="flex items-center justify-between gap-4 cursor-pointer list-none font-semibold text-blau">
+              {f.frage}
+              <span class="shrink-0 text-blau-faint transition-transform group-open:rotate-45 text-xl leading-none">+</span>
+            </summary>
+            <p class="mt-3 text-sm text-blau-soft leading-relaxed">{f.antwort}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 16. Abschluss — die Seite endet auf einer Handlung, nicht auf einer Frage. -->
+  <section id="abschluss" class="py-20 sm:py-24 bg-blau-tief text-bogen">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="marke marke-dunkel">Noch {frei} Plätze diesen Monat</span>
+      <h2 class="mt-5 display display-l text-bogen">Ihr Datenschutzbeauftragter wartet auf einen Beleg. Holen Sie ihn sich.</h2>
+      <p class="mt-5 text-bogen/70 leading-relaxed max-w-xl mx-auto">
+        Fangen Sie kostenlos mit der Checkliste an oder fragen Sie direkt einen Zugangsschlüssel an — beides ohne Zahlungsmittel und ohne Verkaufsgespräch.
+      </p>
+      <div class="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a href="/?tarif=compliance#zugang" class="knopf knopf-siegel w-full sm:w-auto" data-tarif-cta="abschluss">
+          Zugang anfragen
           <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
+        </a>
+        <a href="#checkliste" class="knopf knopf-dunkel w-full sm:w-auto" data-tarif-cta="abschluss-checkliste">
+          Erst die Checkliste
         </a>
       </div>
     </div>
   </section>
-
-  <section class="py-16 bg-paper border-y-[1.5px] border-line">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <p class="font-display text-2xl sm:text-3xl font-bold text-ink leading-snug">
-        „Die Software macht die Arbeit schnell.<br class="hidden sm:block" /> Der Vertrag macht sie erlaubt."
-      </p>
-    </div>
-  </section>
-
-  <!-- PREISÜBERSICHT — der ganze Weg auf einen Blick, vor dem großen Ticket -->
-  <section class="py-20 bg-paper-deep border-b-[1.5px] border-line">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-2xl mb-14">
-        <h2 class="font-display text-3xl sm:text-4xl font-black tracking-tight text-ink">Der ganze Weg auf einen Blick</h2>
-        <p class="mt-3 text-lg text-ink-soft">Vier Stufen, jede für sich buchbar — vom kostenlosen Download bis zum vollständigen Audit.</p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-line border-[1.5px] border-line">
-        <div class="bg-paper p-7 flex flex-col">
-          <span class="tag tag-az">Starthilfe</span>
-          <div class="mt-4 font-display text-3xl font-black text-ink">€0</div>
-          <p class="mt-1 text-xs text-ink-faint">keine Dateneingabe nötig</p>
-          <p class="mt-4 text-sm text-ink-soft leading-relaxed grow">§203-Mustervereinbarung, Muster-AVV, MDR-Abgrenzungsnotiz — sofort als Download.</p>
-          <a href="#starthilfe" data-tier-cta="starthilfe" class="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-ink hover:text-stamp transition-colors">
-            Vorlagen holen
-            <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
-          </a>
-        </div>
-
-        <div class="bg-paper p-7 flex flex-col">
-          <span class="tag tag-az">Stufe 1 · Kernleistung</span>
-          <div class="mt-4 font-display text-3xl font-black text-ink">€49<span class="text-base font-semibold text-ink-faint">/Fall</span></div>
-          <p class="mt-1 text-xs text-ink-faint">erste 3 Fälle kostenlos</p>
-          <p class="mt-4 text-sm text-ink-soft leading-relaxed grow">KI-Entwurf mit Quellenverweisen, in der Regel 5 Werktage.</p>
-          <a href="#ki-pruefvorbereitung" data-tier-cta="stufe1" class="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-ink hover:text-stamp transition-colors">
-            Fall einreichen
-            <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
-          </a>
-        </div>
-
-        <div class="bg-paper p-7 flex flex-col">
-          <span class="tag tag-file">Stufe 2 · Human-Check</span>
-          <div class="mt-4 font-display text-3xl font-black text-ink">€390</div>
-          <p class="mt-1 text-xs text-ink-faint">5 Fälle · ≈ €78/Fall</p>
-          <p class="mt-4 text-sm text-ink-soft leading-relaxed grow">+ Prüfung durch registrierte Pflegefachkraft — kein unüberwachtes KI-Urteil.</p>
-          <a href="/kontakt?interesse=stufe2" data-tier-cta="stufe2" class="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-file hover:text-file-bright transition-colors">
-            Details & Rechnung
-            <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
-          </a>
-        </div>
-
-        <div class="bg-ink p-7 flex flex-col text-paper">
-          <span class="tag tag-gold">Stufe 3 · Audit</span>
-          <div class="mt-4 font-display text-3xl font-black text-gold-light">€1.900</div>
-          <p class="mt-1 text-xs text-paper/50">Basis für Pilotprojekt €8.000–15.000</p>
-          <p class="mt-4 text-sm text-paper/75 leading-relaxed grow">Vollständiger Workflow-Audit — Posteingang, §203/AVV-Reife, MDR-Einordnung, ROI-Rechnung.</p>
-          <a href="/kontakt?interesse=stufe3" data-tier-cta="stufe3" class="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-gold-light hover:text-paper transition-colors">
-            Audit anfragen
-            <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- STUFE 3 — Das große Ticket: Audit & Pilot -->
-  <section id="stufe-3" class="py-24 bg-ink text-paper scroll-mt-20">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid lg:grid-cols-12 gap-12 items-start">
-        <div class="lg:col-span-7">
-          <span class="tag tag-gold">Stufe 3 / 3 · Der vollständige Fall</span>
-          <h2 class="mt-5 font-display text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.05]">Compliance- & Workflow-Check</h2>
-          <p class="mt-5 text-lg text-paper/75 leading-relaxed max-w-xl">
-            Remote- oder Vor-Ort-Audit Ihres kompletten Prüfanfragen-Workflows — Posteingang, Exportwege, §203/AVV-Reife, MDR-Einordnung, ROI-Rechnung. Der Schritt, der zeigt, ob ein Pilotprojekt (€8.000–15.000) für Sie funktioniert.
-          </p>
-
-          <ul class="mt-8 space-y-3">
-            <li class="flex items-start gap-3 text-paper/90">
-              <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-gold-light"></span>
-              Audit: Posteingang, Exportwege, §203/AVV-Reife
-            </li>
-            <li class="flex items-start gap-3 text-paper/90">
-              <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-gold-light"></span>
-              MDR-Einordnung & ROI-Rechnung
-            </li>
-            <li class="flex items-start gap-3 text-paper/90">
-              <span class="mt-2 h-1.5 w-1.5 shrink-0 bg-gold-light"></span>
-              5 bearbeitete Prüfanfragen inklusive
-            </li>
-          </ul>
-        </div>
-
-        <div class="lg:col-span-5">
-          <div class="border-[1.5px] border-gold-light/40 p-7 sm:p-8">
-            <span class="font-mono text-xs text-paper/50 uppercase tracking-widest">Investition</span>
-            <div class="mt-2 font-display text-5xl font-black text-gold-light">€1.900</div>
-            <p class="mt-2 text-sm text-paper/60">zzgl. USt., Rechnungsstellung</p>
-
-            <a
-              href="/kontakt?interesse=stufe3"
-              data-tier-cta="stufe3"
-              class="mt-7 w-full inline-flex items-center justify-center gap-2 px-6 py-4 text-base font-semibold text-ink bg-gold-light hover:bg-[color-mix(in_srgb,var(--color-gold-light)_88%,white)] transition-colors"
-            >
-              Audit anfragen
-              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
-            </a>
-            <p class="mt-4 font-mono text-[11px] text-paper/40 text-center">AZ. PN-2026-001 · Stufe 3 von 3</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <script is:inline>
-    (() => {
-      const params = new URLSearchParams(window.location.search);
-      let changed = false;
-
-      if (params.get('starthilfe') === '1') {
-        document.getElementById('starthilfe-download')?.classList.remove('hidden');
-        if (typeof window.gtag === 'function') {
-          window.gtag('event', 'block_a_submit', { content_category: 'Funnel' });
-          window.gtag('event', 'starthilfe_viewed', { content_category: 'Funnel' });
-        }
-        if (typeof window.fbq === 'function') {
-          window.fbq('track', 'Lead', { content_name: 'Starthilfe' });
-        }
-        params.delete('starthilfe');
-        changed = true;
-      }
-
-      if (params.get('fall_eingereicht') === '1') {
-        document.getElementById('fall-eingereicht')?.classList.remove('hidden');
-        if (typeof window.gtag === 'function') {
-          window.gtag('event', 'fall_eingereicht', { content_category: 'Funnel' });
-        }
-        if (typeof window.fbq === 'function') {
-          window.fbq('track', 'Lead', { content_name: 'Fall einreichen' });
-        }
-        params.delete('fall_eingereicht');
-        changed = true;
-      }
-
-      if (changed) {
-        const qs = params.toString();
-        const newUrl = window.location.pathname + (qs ? '?' + qs : '') + window.location.hash;
-        window.history.replaceState({}, '', newUrl);
-      }
-
-      document.querySelectorAll('[data-tier-cta]').forEach((el) => {
-        el.addEventListener('click', () => {
-          const tier = el.getAttribute('data-tier-cta');
-          if (typeof window.gtag === 'function') {
-            window.gtag('event', `${tier}_cta_click`, { content_category: 'Funnel' });
-          }
-        });
-      });
-    })();
-  </script>
 </Site>

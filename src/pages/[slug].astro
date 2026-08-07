@@ -1,0 +1,22 @@
+---
+import { getCollection, render } from 'astro:content';
+import Site from '../layouts/Site.astro';
+
+export async function getStaticPaths() {
+  const seiten = await getCollection('legal');
+  return seiten.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Site title={`${entry.data.title} | Nachweis`}>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 article-body">
+    <h1>{entry.data.title}</h1>
+    <Content />
+  </div>
+</Site>

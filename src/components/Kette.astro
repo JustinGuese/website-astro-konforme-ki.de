@@ -1,0 +1,57 @@
+---
+import type { Glied } from '../lib/kette';
+import { gliedNummer, kurzHash } from '../lib/kette';
+
+interface Props {
+  gliedes: Glied[];
+}
+
+const { gliedes } = Astro.props;
+---
+
+<nav class="kette" aria-label="Seitenverlauf">
+  {gliedes.map((glied) => (
+    <a href={`#${glied.id}`} class="kette-glied" data-kette-glied={glied.id}>
+      <span class="kette-punkt" aria-hidden="true"></span>
+      <span class="kette-text">
+        {glied.label}
+        <span class="kette-hash">{gliedNummer(glied.nummer)} · {kurzHash(glied.hash)}</span>
+      </span>
+    </a>
+  ))}
+</nav>
+
+<script>
+  function initKette() {
+    const glieder = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-kette-glied]'));
+    if (!glieder.length) return;
+
+    const abschnitte = glieder
+      .map((g) => document.getElementById(g.dataset.ketteGlied!))
+      .filter((el): el is HTMLElement => !!el);
+
+    if (!('IntersectionObserver' in window) || !abschnitte.length) return;
+
+    const setzeAktiv = (id: string) => {
+      glieder.forEach((g) => {
+        g.dataset.aktiv = g.dataset.ketteGlied === id ? 'true' : 'false';
+      });
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const sichtbar = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (sichtbar.length) setzeAktiv(sichtbar[0].target.id);
+      },
+      { rootMargin: '-15% 0px -70% 0px', threshold: 0 },
+    );
+
+    abschnitte.forEach((el) => io.observe(el));
+    setzeAktiv(abschnitte[0].id);
+  }
+
+  initKette();
+  document.addEventListener('astro:after-swap', initKette);
+</script>

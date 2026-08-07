@@ -12,10 +12,11 @@ Deutschland
 
 ### Kontakt
 
-E-Mail: info@pflegenachweis.de
+E-Mail: info@konforme-ki.de
 Kontaktformular: [/kontakt](/kontakt)
 
 <!-- TODO vor Live-Schaltung final bestätigen: Vertretungsberechtigter -->
+
 Vertreten durch: Justin Guese
 
 Registergericht: Amtsgericht München

@@ -1,0 +1,45 @@
+---
+import Site from '../layouts/Site.astro';
+import Playground from '../components/Playground.astro';
+
+const title = 'Playground | Nachweis';
+const description = 'Testen Sie den Nachweis-Gateway anhand aufgezeichneter Beispielanfragen — und sehen Sie, wie die Prüfspur neben jeder Antwort entsteht.';
+---
+
+<Site title={title} description={description}>
+  <section class="py-14 sm:py-20 border-b border-linie">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="marginalie mb-3">Playground</p>
+      <h1 class="display display-l text-blau max-w-2xl">Sehen Sie zu, wie die Prüfspur entsteht.</h1>
+      <p class="mt-4 text-blau-soft max-w-2xl leading-relaxed">
+        Vier aufgezeichnete Beispielanfragen, darunter der Ernstfall: eine Anfrage an ein US-Modell, die
+        <strong class="font-semibold text-blau">fehlschlägt statt umgeleitet zu werden</strong>. Vorausgewählt ist
+        Säule 2 — Ihre Anfrage läuft auf eigener Infrastruktur der DataFortress.cloud GmbH, ganz ohne externen
+        Subprozessor. Schalten Sie oben um, um den Unterschied im Rekord zu sehen. Ohne Anmeldung, ohne Live-Inferenz.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-12 sm:py-16">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Playground />
+
+      <div class="mt-10 grid sm:grid-cols-3 gap-6 text-sm">
+        <div>
+          <p class="font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">Warum keine Live-Inferenz?</p>
+          <p class="mt-1.5 text-blau-soft leading-relaxed">Diese Seite ist statisch gehostet und ruft keinen Gateway auf. Sobald unser Zugang live ist, erhalten Sie Ihren eigenen API-Schlüssel für echte Anfragen.</p>
+        </div>
+        <div>
+          <p class="font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">Wollen Sie echten Zugang?</p>
+          <p class="mt-1.5 text-blau-soft leading-relaxed">Zugangsschlüssel werden aktuell manuell vergeben.</p>
+          <a href="/#zugang" class="mt-1.5 inline-block text-siegel font-semibold hover:underline">Zugang anfragen →</a>
+        </div>
+        <div>
+          <p class="font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">Wie wird integriert?</p>
+          <p class="mt-1.5 text-blau-soft leading-relaxed">Als OpenAI-kompatibler Endpunkt — ein Wechsel der <code class="font-mono text-xs bg-bogen-tief px-1.5 py-0.5">base_url</code>.</p>
+          <a href="/integrationen" class="mt-1.5 inline-block text-siegel font-semibold hover:underline">Integrationen ansehen →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Site>

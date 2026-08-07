@@ -1,13 +1,13 @@
 {
-  "name": "pflegenachweis-de",
+  "name": "ki-nachweis-de",
   "type": "module",
   "version": "0.0.1",
-  "description": "pflegenachweis.de: KI-gestützte, §203-konforme Unterstützung bei Pflegegrad-Prüfungen, §275 SGB V Abrechnungsprüfungen und Prüfanfragen für Pflegedienste, MVZ und Arztpraxen.",
+  "description": "konforme-ki.de (Nachweis): EU-Inferenz-Gateway mit exportierbarer, hash-verketteter Prüfspur für Berufsgeheimnisträger nach § 203 StGB.",
   "repository": {
     "type": "git",
     "url": "https://github.com/JustinGuese/website-ai-router-de.git"
   },
-  "homepage": "https://pflegenachweis.de/",
+  "homepage": "https://konforme-ki.de/",
   "bugs": {
     "url": "https://github.com/JustinGuese/website-ai-router-de/issues"
   },

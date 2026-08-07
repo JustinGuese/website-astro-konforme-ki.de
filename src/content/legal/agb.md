@@ -1,16 +1,16 @@
 ---
 title: Allgemeine Geschäftsbedingungen
-updated: '30. Juli 2026'
+updated: '6. August 2026'
 ---
 
 Allgemeine Geschäftsbedingungen von
-**pflegenachweis.de** (DataFortress.cloud GmbH)
+**Nachweis** (konforme-ki.de, betrieben von DataFortress.cloud GmbH)
 
 Diese Bedingungen regeln
 
-*   die Nutzung dieser Anwendung und der damit verbundenen Dienste,
-*   die Erbringung der unter "Die drei Stufen" beschriebenen Leistungen und
-*   jede andere damit zusammenhängende Vereinbarung oder Rechtsbeziehung mit dem Eigentümer
+- die Nutzung dieser Anwendung und des Nachweis-Gateways,
+- die Erbringung der unter "Leistungsbeschreibung" beschriebenen Tarife und
+- jede andere damit zusammenhängende Vereinbarung oder Rechtsbeziehung mit dem Eigentümer
 
 in rechtlich bindender Weise. Großgeschriebene Wörter sind im entsprechenden Abschnitt dieses Dokuments definiert.
 
@@ -23,15 +23,15 @@ Gewerbestraße 13
 82064 Straßlach-Dingharting
 Deutschland
 
-Kontakt-E-Mail des Eigentümers: info@pflegenachweis.de
+Kontakt-E-Mail des Eigentümers: info@konforme-ki.de
 
 ---
 
 ## Auf einen Blick
 
-*   **Nur B2B:** Der Dienst richtet sich ausschließlich an Geschäftskunden (Business User) — ambulante Pflegedienste, stationäre Pflege, MVZ und Arztpraxen.
-*   **Keine Rechtsberatung:** Die erbrachten Leistungen sind organisatorische Unterstützung, keine Rechtsberatung im Sinne des RDG. Siehe [RDG-Hinweis](/rdg-hinweis).
-*   **Kostenlos starten:** Erste 3 Fälle in Stufe 1 sind kostenlos; danach €49/Fall.
+- **Nur B2B:** Der Dienst richtet sich ausschließlich an Geschäftskunden (Business User) — Berufsgeheimnisträger im Sinne des § 203 StGB, u. a. Steuerberatung, Rechtsanwaltschaft, Arzt- und Zahnarztpraxen, Notariate, Psychotherapie und Pflegedienste.
+- **Keine Rechtsberatung:** Die erbrachten Leistungen sind Infrastruktur- und Compliance-Unterstützung, keine Rechtsberatung im Sinne des RDG. Siehe [RDG-Hinweis](/rdg-hinweis).
+- **Kostenlos starten:** Der Frei-Tarif ist ohne Zahlungsmittel nutzbar.
 
 ---
 
@@ -41,42 +41,37 @@ Sofern nicht anders angegeben, gelten die in diesem Abschnitt aufgeführten Nutz
 
 Durch die Nutzung dieser Anwendung bestätigen die Nutzer, dass sie die folgenden Anforderungen erfüllen:
 
-*   Nutzer dürfen keine Verbraucher sein;
-*   Nutzer dürfen sich nicht in einem Land befinden, das einem Embargo der US-Regierung unterliegt oder von der US-Regierung als "terrorunterstützendes" Land eingestuft wurde;
-*   Nutzer dürfen nicht auf einer Liste der US-Regierung über verbotene oder eingeschränkte Parteien stehen;
+- Nutzer dürfen keine Verbraucher sein;
+- Nutzer dürfen sich nicht in einem Land befinden, das einem Embargo der US-Regierung unterliegt oder von der US-Regierung als "terrorunterstützendes" Land eingestuft wurde;
+- Nutzer dürfen nicht auf einer Liste der US-Regierung über verbotene oder eingeschränkte Parteien stehen.
 
 ### KONTOSPERRUNG
 
-Der Eigentümer behält sich das Recht vor, die Erbringung von Leistungen jederzeit und nach eigenem Ermessen ohne Vorankündigung einzustellen, wenn Nutzer gegen diese Bedingungen verstoßen haben.
+Der Eigentümer behält sich das Recht vor, die Erbringung von Leistungen jederzeit und nach eigenem Ermessen ohne Vorankündigung einzustellen, wenn Nutzer gegen diese Bedingungen verstoßen haben — insbesondere bei Versuchen, die EU-Routingliste zu umgehen oder den Dienst missbräuchlich zu nutzen.
 
 ---
 
 ## LEISTUNGSBESCHREIBUNG UND ABWICKLUNG
 
-### KOSTENLOSE STARTHILFE
+### TARIF FREI
 
-Kostenlose Bereitstellung von Mustervorlagen (§203-Mustervereinbarung, Muster-AVV, MDR-Abgrenzungsnotiz). Diese Vorlagen sind Entwürfe zur eigenen Prüfung und Anpassung durch den Nutzer bzw. dessen Rechtsberatung — siehe Hinweis in jedem Dokument. Es entsteht kein Vertragsverhältnis über die Bereitstellung hinaus.
+Kostenlose Nutzung des Gateways bis zu 5 Mio. Token, ohne Angabe eines Zahlungsmittels. Enthält EU-Routing, Log-Ansicht im Browser, Zugriff auf den Playground sowie den Download der Muster-Unterlagen. Es entsteht kein Vertragsverhältnis über die reine Nutzung hinaus, bis die Freigrenze überschritten wird.
 
-### STUFE 1 — KI-PRÜFVORBEREITUNG
+### TARIF COMPLIANCE
 
-Der Eigentümer stellt eine KI-gestützte Vorbereitung von Antwortentwürfen für Prüfanfragen bereit:
+Gegen eine monatliche Vergütung von 290 € (zzgl. USt.), im Voraus abgerechnet, monatlich kündbar, bietet der Eigentümer zusätzlich zum Tarif Frei: signierte Audit-Exporte (PDF und CSV), automatisch generierte Art. 30 VVT-Einträge, Benachrichtigung bei Änderungen der Subprozessorenliste, einen gegengezeichneten Auftragsverarbeitungsvertrag sowie eine individuelle §203-Zusatzvereinbarung.
 
-- **Erste 3 Fälle pro Kunde:** kostenlos. Der Nutzer lädt eine geschwärzte Prüfanfrage und zugehörige Unterlagen hoch; der Eigentümer liefert innerhalb von in der Regel 5 Werktagen einen Antwortentwurf mit Quellenverweisen.
-- **Danach:** 49 € (zzgl. USt.) pro Fall, Rechnung nach Lieferung, zahlbar innerhalb von 14 Tagen.
+### TARIF ONBOARDING
 
-Der gelieferte Entwurf ist eine Organisationshilfe und ersetzt keine rechtliche Prüfung; die Freigabe, Ergänzung und der Versand an Dritte (z. B. Kostenträger) obliegen ausschließlich dem Nutzer.
+Gegen eine einmalige Vergütung von 1.900 € bis 9.000 € (zzgl. USt., abhängig vom vereinbarten Umfang, Rechnungsstellung nach Auftragserteilung) führt der Eigentümer einen §203-/DSGVO-Machbarkeits-Check sowie die technische Integration in den vom Nutzer gewählten primären Kanal durch. Der genaue Preis wird vor Beauftragung schriftlich bestätigt.
 
-### STUFE 2 — HUMAN-CHECK-PAKET
+### TOKEN-PREISE
 
-Gegen eine Vergütung von 390 € (zzgl. USt., Vorkasse) bietet der Eigentümer ein Paket zur Qualitätsprüfung bestehend aus bis zu 5 Fällen mit Review durch eine registrierte Pflegefachkraft. Jeder Fall wird nach Eingang bearbeitet; die Paketmittel sind 6 Monate ab Zahlungseingang gültig und verfallen danach ungenutzt.
-
-### STUFE 3 — COMPLIANCE- & WORKFLOW-CHECK
-
-Gegen eine Vergütung von 1.900 € (zzgl. USt., Rechnungsstellung) führt der Eigentümer ein Remote- oder Vor-Ort-Audit des Prüfanfragen-Workflows des Nutzers durch, einschließlich der Bearbeitung von bis zu 5 Prüfanfragen im Rahmen dieser Stufe.
+Über den Frei-Tarif hinausgehende Token werden zum jeweiligen Einkaufspreis des eingesetzten Subprozessors zzgl. 15 % weiterberechnet. Der Nutzer wird vor Überschreiten der Freigrenze informiert; eine automatische Abbuchung ohne vorherige Information erfolgt nicht.
 
 ### PREISE UND ZAHLUNG
 
-Die Nutzer werden vor Beauftragung über alle Gebühren, Steuern und Kosten informiert. Preise verstehen sich zzgl. der geltenden gesetzlichen Umsatzsteuer, sofern nicht anders angegeben. Stufe 1 (ab Fall 4) und Stufe 2 sind per Rechnung zu zahlen; Stufe 3 wird per Rechnung gestellt.
+Die Nutzer werden vor Beauftragung über alle Gebühren, Steuern und Kosten informiert. Preise verstehen sich zzgl. der geltenden gesetzlichen Umsatzsteuer, sofern nicht anders angegeben.
 
 ---
 
@@ -92,7 +87,7 @@ Der Eigentümer hält und behält sich alle geistigen Eigentumsrechte für diese
 
 ## ZULÄSSIGE NUTZUNG
 
-Diese Anwendung und der Dienst dürfen nur im Rahmen dessen genutzt werden, wofür sie bereitgestellt werden, gemäß diesen Bedingungen und geltendem Recht. Die Nutzer sind allein dafür verantwortlich, sicherzustellen, dass ihre Nutzung nicht gegen geltende Gesetze, Vorschriften oder Rechte Dritter verstößt — insbesondere gegen berufsrechtliche Schweigepflichten (§ 203 StGB).
+Diese Anwendung und der Dienst dürfen nur im Rahmen dessen genutzt werden, wofür sie bereitgestellt werden, gemäß diesen Bedingungen und geltendem Recht. Die Nutzer sind allein dafür verantwortlich, sicherzustellen, dass ihre Nutzung nicht gegen geltende Gesetze, Vorschriften oder Rechte Dritter verstößt — insbesondere gegen berufsrechtliche Schweigepflichten (§ 203 StGB). Der Eigentümer stellt hierfür die [§203-Zusatzvereinbarung](/unterlagen/203-zusatzvereinbarung) als Grundlage bereit; deren Abschluss liegt in der Verantwortung des Nutzers.
 
 ---
 
@@ -125,22 +120,29 @@ Diese Bedingungen unterliegen deutschem Recht, ohne Berücksichtigung von Kollis
 ## DEFINITIONEN UND RECHTLICHE HINWEISE
 
 ### ANWENDUNG
+
 Das Eigentum, das die Bereitstellung des Dienstes ermöglicht.
 
 ### VEREINBARUNG
+
 Jede rechtsverbindliche oder vertragliche Beziehung zwischen dem Eigentümer und dem Nutzer, die durch diese Bedingungen geregelt wird.
 
 ### GESCHÄFTSKUNDE (BUSINESS USER)
+
 Jeder Nutzer, der nicht als Verbraucher gilt.
 
 ### EIGENTÜMER (ODER WIR)
+
 DataFortress.cloud GmbH.
 
 ### DIENST
+
 Der von dieser Anwendung angebotene Dienst, wie in diesen Bedingungen und in dieser Anwendung beschrieben.
 
 ### BEDINGUNGEN
+
 Alle Bestimmungen, die für die Nutzung dieser Anwendung und/oder des Dienstes gelten, wie in diesem Dokument beschrieben.
 
 ### NUTZER (ODER SIE)
+
 Bezeichnet jede natürliche oder juristische Person, die diese Anwendung nutzt.

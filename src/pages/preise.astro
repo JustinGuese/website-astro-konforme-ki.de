@@ -1,0 +1,64 @@
+---
+import Site from '../layouts/Site.astro';
+import PreisTabelle from '../components/PreisTabelle.astro';
+import { NUTZUNGSMODELLE, SERVICE_TARIFE } from '../lib/preise';
+
+const title = 'Preise | Nachweis';
+const description = 'Pay-per-Token ab €3,50/Mio., Abo ab €29/Monat, plus Compliance-Erweiterung (€290/Monat) und Onboarding (€1.900–9.000).';
+---
+
+<Site title={title} description={description}>
+  <section class="py-14 sm:py-20 border-b border-linie">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="marginalie mb-3">Preise</p>
+      <h1 class="display display-l text-blau">Token-basiert oder im Abo — Sie wählen.</h1>
+      <p class="mt-4 text-blau-soft leading-relaxed">
+        Der Aufschlag auf den reinen Token-Preis finanziert die Prüfspur, die Exporte und die Vereinbarungen darüber — nicht nur die Inferenz. Beide Nutzungsmodelle unten gelten für Säule 1 (EU-Anbieter-Autorouting); für Säule 2 oder 3 siehe die Hinweise weiter unten.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="marginalie mb-3">Wie Sie zahlen</p>
+      <h2 class="display display-m text-blau mb-8">Nutzungsmodell.</h2>
+      <PreisTabelle tarife={NUTZUNGSMODELLE} />
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-linie">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="marginalie mb-3">Was Sie zusätzlich bekommen</p>
+      <h2 class="display display-m text-blau mb-8">Compliance-Erweiterung.</h2>
+      <PreisTabelle tarife={SERVICE_TARIFE} />
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
+      <h2>Häufige Fragen zu den Preisen</h2>
+
+      <h3>Was passiert, wenn ich die 5 Mio. Freitoken aufbrauche?</h3>
+      <p>Wir informieren Sie, bevor Kosten entstehen. Es gibt keine automatische Abbuchung ohne Ihre Bestätigung.</p>
+
+      <h3>Wie wirkt sich die gewählte Säule auf den Preis aus?</h3>
+      <p>Säule 1 (EU-Anbieter-Autorouting) ist im Pay-per-Token- und Abo-Preis oben enthalten. Säule 2 (DataFortress.cloud GmbH, geteilte Server) ist ein Aufpreis auf Anfrage. Säule 3 (dediziert, in Ihrem Rechenzentrum) ist immer Teil eines Onboarding-Gesprächs — die Hardware und ihr Standort sind zu individuell für einen festen Listenpreis.</p>
+
+      <h3>Ist der Compliance-Tarif monatlich kündbar?</h3>
+      <p>Ja. Details regelt unsere <a href="/agb">AGB</a>.</p>
+
+      <h3>Warum ist das Onboarding eine Preisspanne?</h3>
+      <p>Der Aufwand hängt davon ab, wie viele Kanäle Sie integrieren möchten, ob Säule 3 gewünscht ist und wie Ihre bestehende Systemlandschaft aussieht. Nach einem kurzen Erstgespräch nennen wir Ihnen einen Festpreis.</p>
+
+      <h3>Kann ich als Sidecar starten, ohne meine bestehende KI-Lösung zu ersetzen?</h3>
+      <p>Ja — sehen Sie sich den Sidecar-Ansatz auf der <a href="/">Startseite</a> an.</p>
+    </div>
+  </section>
+
+  <section class="py-14 border-t border-linie bg-bogen-tief text-center">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-blau-soft">Unsicher, welches Modell passt? Ein kurzes Gespräch klärt das schneller als jede Seite.</p>
+      <a href="/kontakt" class="knopf knopf-siegel mt-5">Kontakt aufnehmen</a>
+    </div>
+  </section>
+</Site>

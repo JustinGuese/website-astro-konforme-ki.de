@@ -1,34 +1,38 @@
 ---
 title: RDG-Hinweis
-updated: '30. Juli 2026'
+updated: '6. August 2026'
 ---
 
 <!-- Erstentwurf — vor Veröffentlichung/realem Ad-Spend juristisch prüfen lassen (Rechtsdienstleistungsgesetz). -->
 
-Dieser Hinweis erläutert, was die Leistungen von pflegenachweis.de (DataFortress.cloud GmbH) sind — und was sie ausdrücklich **nicht** sind.
+Dieser Hinweis erläutert, was die Leistungen von Nachweis (konforme-ki.de, DataFortress.cloud GmbH) sind — und was sie ausdrücklich **nicht** sind.
 
 ## Keine Rechtsberatung
 
-Die von uns erbrachten Leistungen (Compliance-Paket, Prüfanfragen-Analyse, Compliance- & Workflow-Check) sind **organisatorische und redaktionelle Unterstützung**, keine Rechtsdienstleistung im Sinne des Rechtsdienstleistungsgesetzes (RDG). Wir prüfen keine Sach- oder Rechtslage im Einzelfall und erteilen keine Rechtsauskunft. Für eine rechtliche Bewertung Ihres Einzelfalls wenden Sie sich an eine zugelassene Rechtsanwältin oder einen zugelassenen Rechtsanwalt.
+Die von uns erbrachten Leistungen (KI-Gateway, Nachweis-Protokollierung, §203-/DSGVO-Machbarkeits-Check) sind **technische Infrastruktur und organisatorische Unterstützung**, keine Rechtsdienstleistung im Sinne des Rechtsdienstleistungsgesetzes (RDG). Wir prüfen keine Sach- oder Rechtslage im Einzelfall und erteilen keine Rechtsauskunft. Für eine rechtliche Bewertung Ihres Einzelfalls — insbesondere zur Zulässigkeit der KI-Nutzung nach § 203 StGB in Ihrer konkreten Konstellation — wenden Sie sich an eine zugelassene Rechtsanwältin oder einen zugelassenen Rechtsanwalt.
 
-## Alle Entwürfe erfordern menschliche Prüfung
+## Der Machbarkeits-Check ist keine Rechtsprüfung
 
-Jeder von uns erstellte Antwortentwurf auf eine Prüfanfrage ist ein **Entwurf**. Er muss vor Versand durch qualifiziertes Personal des Auftraggebers (Geschäftsführung, Pflegedienstleitung, Qualitätsmanagement) oder dessen Rechtsberatung geprüft, ergänzt und freigegeben werden. Wir empfehlen ausdrücklich, keinen Entwurf ungeprüft zu versenden.
+Der kostenpflichtige §203-/DSGVO-Machbarkeits-Check (Tarif Onboarding) bewertet die technische und organisatorische Machbarkeit einer Integration. Er ersetzt keine anwaltliche Prüfung der rechtlichen Zulässigkeit in Ihrem konkreten Fall. Wir empfehlen ausdrücklich, vor Produktivsetzung die eigene Rechtsberatung einzubeziehen.
+
+## Alle Antworten des Gateways erfordern menschliche Prüfung
+
+Jede vom Gateway erzeugte Antwort ist ein **Entwurf**. Sie muss vor Verwendung oder Weitergabe durch qualifiziertes Personal des Nutzers geprüft, ergänzt und freigegeben werden. Wir empfehlen ausdrücklich, keine Antwort ungeprüft zu verwenden oder an Dritte weiterzugeben.
 
 ## Kein automatisierter Verwaltungsakt
 
-Unsere Leistungen führen zu keinem automatisierten Bescheid, keiner automatisierten Entscheidung und keinem automatisierten Verwaltungsakt. Jede Kommunikation an Kostenträger, Medizinischen Dienst (MD) oder Behörden erfolgt durch den Auftraggeber selbst — der Auftraggeber bleibt in jedem Fall Absender und für den Versand verantwortlich.
+Unsere Leistungen führen zu keinem automatisierten Bescheid, keiner automatisierten Entscheidung und keinem automatisierten Verwaltungsakt. Jede Kommunikation an Mandanten, Patienten, Behörden oder sonstige Dritte erfolgt durch den Nutzer selbst — der Nutzer bleibt in jedem Fall Absender und für den Versand verantwortlich.
 
 ## Vereinbarkeit mit § 203 StGB
 
-Im Rahmen von Stufe 2 und Stufe 3 verarbeiten wir ggf. Unterlagen, die der Schweigepflicht nach § 203 StGB unterliegen können. Die Verarbeitung erfolgt ausschließlich auf Grundlage eines abgeschlossenen Auftragsverarbeitungsvertrags (AVV) nach Art. 28 DSGVO — ein Muster stellen wir im kostenlosen Compliance-Paket bereit. Ohne unterzeichneten AVV verarbeiten wir keine realen Unterlagen.
+Wir verarbeiten über den Gateway Inhalte, die der Schweigepflicht nach § 203 StGB unterliegen können. Die Verarbeitung erfolgt ausschließlich auf Grundlage eines abgeschlossenen Auftragsverarbeitungsvertrags (AVV) nach Art. 28 DSGVO sowie einer §203-Zusatzvereinbarung — Muster stellen wir unter [/unterlagen](/unterlagen) bereit. Ohne diese Vereinbarungen verarbeiten wir keine realen Berufsgeheimnisse.
 
-## Ihre Verantwortung als Auftraggeber
+## Ihre Verantwortung als Nutzer
 
-Als Auftraggeber bleiben Sie verantwortlich für:
+Als Nutzer bleiben Sie verantwortlich für:
 
-*   die inhaltliche und rechtliche Prüfung jedes Entwurfs vor Versand,
-*   die Einhaltung berufsrechtlicher und datenschutzrechtlicher Pflichten,
-*   die Entscheidung, ob und in welcher Form ein Entwurf verwendet wird.
+- die inhaltliche und rechtliche Prüfung jeder Antwort vor Verwendung,
+- die Einhaltung berufsrechtlicher und datenschutzrechtlicher Pflichten, einschließlich der sorgfältigen Auswahl des Auftragsverarbeiters nach § 203 Abs. 4 StGB,
+- die Entscheidung, ob und in welcher Form eine Antwort verwendet wird.
 
-Bei Fragen zu diesem Hinweis wenden Sie sich an [info@pflegenachweis.de](mailto:info@pflegenachweis.de) oder nutzen Sie unser [Kontaktformular](/kontakt).
+Bei Fragen zu diesem Hinweis wenden Sie sich an [info@konforme-ki.de](mailto:info@konforme-ki.de) oder nutzen Sie unser [Kontaktformular](/kontakt).

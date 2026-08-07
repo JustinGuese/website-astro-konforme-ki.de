@@ -1,0 +1,188 @@
+---
+import { LEITER, ANKER, NUTZUNGSMODELLE } from '../lib/preise';
+
+const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ZUGANG_ID || 'REPLACE_WITH_FORMSPREE_ID';
+
+/**
+ * Klartext-Namen für jede `tarifId`, damit in der Formspree-Einsendung nicht
+ * nur ein Slug landet. Aus den Preisdaten abgeleitet — eine neue Stufe taucht
+ * hier automatisch auf, ohne zweite Liste.
+ */
+const tarifNamen = Object.fromEntries(
+  [...LEITER, ANKER, ...NUTZUNGSMODELLE].map((t) => [t.tarifId, `${t.name} (${t.preis} ${t.einheit})`]),
+);
+---
+
+<div id="zugang-gesendet" class="hidden border border-siegel bg-siegel-blass text-blau p-6 text-sm">
+  <span class="marke marke-siegel mb-3">Angekommen</span>
+  <p class="mt-2">Danke! Ihre Anfrage ist angekommen. Sie erhalten Ihren Zugangsschlüssel per E-Mail, in der Regel werktags binnen 24 Stunden.</p>
+</div>
+
+<form
+  id="zugang-form"
+  action={`https://formspree.io/f/${formspreeId}`}
+  method="POST"
+  class="bg-bogen-rein border border-linie p-6 sm:p-8 space-y-5"
+>
+  <input type="hidden" name="form" value="zugang" />
+  <input type="hidden" name="_next" id="zugang-next" value="/?zugang_gesendet=1#zugang" />
+  <input type="text" name="_gotcha" style="display:none" />
+
+  <!--
+    Tarif-Attribution: wird aus `?tarif=` befüllt (siehe zugangHref() in
+    lib/preise.ts). Ohne diese beiden Felder sind alle CTAs in der
+    Formspree-Inbox ununterscheidbar.
+  -->
+  <input type="hidden" name="tarif" id="zugang-tarif" value="" />
+  <input type="hidden" name="tarif_klartext" id="zugang-tarif-klartext" value="" />
+
+  <div
+    id="zugang-tarif-anzeige"
+    class="hidden items-center justify-between gap-3 flex-wrap border border-siegel bg-siegel-blass px-4 py-3"
+  >
+    <p class="text-sm text-blau">
+      Ihr Interesse: <strong class="font-semibold" id="zugang-tarif-label"></strong>
+    </p>
+    <button type="button" id="zugang-tarif-loeschen" class="font-mono text-xs text-siegel underline hover:no-underline">
+      ändern
+    </button>
+  </div>
+
+  <div class="grid sm:grid-cols-2 gap-5">
+    <div>
+      <label for="zugang-email" class="block font-mono text-xs uppercase tracking-wider text-blau-faint mb-1.5">E-Mail</label>
+      <input
+        id="zugang-email" name="email" type="email" required autocomplete="email"
+        class="w-full border border-linie bg-bogen px-4 py-3 text-base text-blau placeholder-blau-faint focus:outline-none focus:border-siegel"
+        placeholder="sie@kanzlei.de"
+      />
+    </div>
+    <div>
+      <label for="zugang-firma" class="block font-mono text-xs uppercase tracking-wider text-blau-faint mb-1.5">Kanzlei / Praxis</label>
+      <input
+        id="zugang-firma" name="firma" type="text" required autocomplete="organization"
+        class="w-full border border-linie bg-bogen px-4 py-3 text-base text-blau placeholder-blau-faint focus:outline-none focus:border-siegel"
+        placeholder="Name Ihrer Kanzlei / Praxis"
+      />
+    </div>
+  </div>
+
+  <div class="grid sm:grid-cols-2 gap-5">
+    <div>
+      <label for="berufsgruppe" class="block font-mono text-xs uppercase tracking-wider text-blau-faint mb-1.5">Berufsgruppe</label>
+      <select id="berufsgruppe" name="berufsgruppe" required class="w-full border border-linie bg-bogen px-4 py-3 text-base text-blau focus:outline-none focus:border-siegel">
+        <option value="">Bitte wählen</option>
+        <option value="steuerberatung">Steuerberatung</option>
+        <option value="rechtsanwaltschaft">Rechtsanwaltschaft</option>
+        <option value="arztpraxis">Arzt- / Zahnarztpraxis</option>
+        <option value="notariat">Notariat</option>
+        <option value="psychotherapie">Psychotherapie</option>
+        <option value="pflegedienst">Pflegedienst</option>
+        <option value="sonstige">Sonstige Berufsgeheimnisträger</option>
+      </select>
+    </div>
+    <div>
+      <label for="volumen" class="block font-mono text-xs uppercase tracking-wider text-blau-faint mb-1.5">Anfragevolumen / Monat</label>
+      <select id="volumen" name="anfragevolumen" class="w-full border border-linie bg-bogen px-4 py-3 text-base text-blau focus:outline-none focus:border-siegel">
+        <option value="unter-1000">unter 1.000 Anfragen</option>
+        <option value="1000-10000">1.000–10.000 Anfragen</option>
+        <option value="ueber-10000">über 10.000 Anfragen</option>
+        <option value="weiss-nicht">weiß ich noch nicht</option>
+      </select>
+    </div>
+  </div>
+
+  <div>
+    <label for="ki-nutzung" class="block font-mono text-xs uppercase tracking-wider text-blau-faint mb-1.5">Bestehende KI-Nutzung</label>
+    <select id="ki-nutzung" name="ki_nutzung" class="w-full border border-linie bg-bogen px-4 py-3 text-base text-blau focus:outline-none focus:border-siegel">
+      <option value="keine">Noch keine</option>
+      <option value="chatgpt-privat">ChatGPT / privat, ungeregelt</option>
+      <option value="azure-openai">Azure OpenAI o. ä. (mit AVV)</option>
+      <option value="anderer-eu-anbieter">Anderer EU-Anbieter</option>
+    </select>
+  </div>
+
+  <button type="submit" class="knopf knopf-siegel w-full !py-4">
+    <span id="zugang-absenden-label">Zugang anfragen</span>
+    <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
+  </button>
+
+  <p class="font-mono text-xs text-blau-faint text-center">
+    Zugangsschlüssel per E-Mail, werktags binnen 24 Stunden. Mit dem Absenden stimmen Sie unserer <a href="/datenschutz" class="underline hover:text-blau">Datenschutzerklärung</a> zu.
+  </p>
+</form>
+
+<script is:inline define:vars={{ tarifNamen }}>
+  (() => {
+    const params = new URLSearchParams(window.location.search);
+
+    // --- Erfolgszustand nach dem Formspree-Redirect -------------------------
+    if (params.get('zugang_gesendet') === '1') {
+      document.getElementById('zugang-gesendet')?.classList.remove('hidden');
+      document.getElementById('zugang-form')?.classList.add('hidden');
+      const tarif = params.get('tarif') || 'unbestimmt';
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'generate_lead', { form_name: 'zugang', item_id: tarif });
+      }
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'Lead', { content_name: 'Zugang Waitlist', content_category: tarif });
+      }
+      params.delete('zugang_gesendet');
+      params.delete('tarif');
+      const qs = params.toString();
+      window.history.replaceState({}, '', window.location.pathname + (qs ? '?' + qs : '') + window.location.hash);
+      return;
+    }
+
+    // --- Tarif-Attribution aus `?tarif=` -----------------------------------
+    const feld = document.getElementById('zugang-tarif');
+    const feldKlartext = document.getElementById('zugang-tarif-klartext');
+    const anzeige = document.getElementById('zugang-tarif-anzeige');
+    const label = document.getElementById('zugang-tarif-label');
+    const next = document.getElementById('zugang-next');
+    const absendenLabel = document.getElementById('zugang-absenden-label');
+    if (!feld) return;
+
+    // Der Knopf muss sagen, was er tut — eine €39-Bestellung ist keine
+    // „Zugangsanfrage". Nur Stufen, die hier abweichen, brauchen einen Eintrag.
+    const absendenTexte = {
+      dossier: 'Dossier kostenpflichtig bestellen',
+      onboarding: 'Machbarkeits-Check anfragen',
+    };
+
+    const setzen = (tarif) => {
+      feld.value = tarif || '';
+      if (feldKlartext) feldKlartext.value = tarif ? (tarifNamen[tarif] || tarif) : '';
+      // Tarif über den Redirect hinweg mitnehmen, damit das Lead-Ereignis
+      // weiß, welches Angebot konvertiert hat.
+      if (next) {
+        next.value = tarif
+          ? `/?zugang_gesendet=1&tarif=${encodeURIComponent(tarif)}#zugang`
+          : '/?zugang_gesendet=1#zugang';
+      }
+      if (absendenLabel) {
+        absendenLabel.textContent = (tarif && absendenTexte[tarif]) || 'Zugang anfragen';
+      }
+      if (anzeige && label) {
+        if (tarif && tarifNamen[tarif]) {
+          label.textContent = tarifNamen[tarif];
+          anzeige.classList.remove('hidden');
+          anzeige.classList.add('flex');
+        } else {
+          anzeige.classList.add('hidden');
+          anzeige.classList.remove('flex');
+        }
+      }
+    };
+
+    setzen(params.get('tarif'));
+
+    document.getElementById('zugang-tarif-loeschen')?.addEventListener('click', () => {
+      setzen(null);
+      const p = new URLSearchParams(window.location.search);
+      p.delete('tarif');
+      const qs = p.toString();
+      window.history.replaceState({}, '', window.location.pathname + (qs ? '?' + qs : '') + window.location.hash);
+    });
+  })();
+</script>

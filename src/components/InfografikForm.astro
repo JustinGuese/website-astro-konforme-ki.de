@@ -1,0 +1,86 @@
+---
+interface Props {
+  /**
+   * Wohin Formspree nach dem Absenden zurückspringt. Muss auf die Seite
+   * zeigen, auf der dieses Formular steht — sonst landet der Nutzer für den
+   * Download woanders.
+   */
+  next?: string;
+  /** Herkunft, damit Einsendungen von Startseite und /eu-ki-recht trennbar sind. */
+  quelle?: string;
+  /** Eigene id, falls das Formular zweimal auf einer Seite steht. */
+  id?: string;
+}
+
+const {
+  next = '/eu-ki-recht?infografik_gesendet=1#infografik',
+  quelle = 'eu-ki-recht',
+  id = 'infografik',
+} = Astro.props;
+
+const formspreeId = import.meta.env.PUBLIC_FORMSPREE_INFOGRAFIK_ID || 'REPLACE_WITH_FORMSPREE_ID';
+---
+
+<div id={`${id}-gesendet`} class="hidden border border-siegel bg-siegel-blass text-blau p-6 text-sm">
+  <span class="marke marke-siegel mb-3">Angekommen</span>
+  <p class="mt-2">Danke! Hier ist Ihre Checkliste als PDF.</p>
+  <a
+    href="/downloads/eu-ki-recht-checkliste.pdf"
+    download
+    class="knopf knopf-siegel mt-4"
+    data-infografik-download
+  >
+    PDF herunterladen
+  </a>
+</div>
+
+<form
+  id={`${id}-form`}
+  action={`https://formspree.io/f/${formspreeId}`}
+  method="POST"
+  class="bg-bogen-rein border border-linie p-6 sm:p-7 flex flex-col sm:flex-row gap-4 items-stretch"
+>
+  <input type="hidden" name="form" value="infografik" />
+  <input type="hidden" name="quelle" value={quelle} />
+  <input type="hidden" name="tarif" value="checkliste" />
+  <input type="hidden" name="_next" value={next} />
+  <input type="text" name="_gotcha" style="display:none" />
+
+  <label for={`${id}-email`} class="sr-only">E-Mail</label>
+  <input
+    id={`${id}-email`} name="email" type="email" required autocomplete="email"
+    class="flex-1 border border-linie bg-bogen px-4 py-3 text-base text-blau placeholder-blau-faint focus:outline-none focus:border-siegel"
+    placeholder="sie@unternehmen.de"
+  />
+  <button type="submit" class="knopf knopf-siegel !py-3 whitespace-nowrap">
+    Checkliste per PDF
+  </button>
+</form>
+<p class="mt-3 font-mono text-xs text-blau-faint">
+  Keine Weiterleitung an Dritte. Mit dem Absenden stimmen Sie unserer <a href="/datenschutz" class="underline hover:text-blau">Datenschutzerklärung</a> zu.
+</p>
+
+<script is:inline define:vars={{ id, quelle }}>
+  (() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('infografik_gesendet') !== '1') return;
+
+    // Beide Instanzen (Startseite + /eu-ki-recht) hören auf denselben
+    // Parameter; nur die auf der aktuellen Seite vorhandene reagiert.
+    const erfolg = document.getElementById(id + '-gesendet');
+    const formular = document.getElementById(id + '-form');
+    if (!erfolg || !formular) return;
+
+    erfolg.classList.remove('hidden');
+    formular.classList.add('hidden');
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'generate_lead', { form_name: 'infografik', item_id: 'checkliste', quelle: quelle });
+    }
+    if (typeof window.fbq === 'function') {
+      window.fbq('track', 'Lead', { content_name: 'EU-KI-Recht Checkliste', content_category: quelle });
+    }
+    params.delete('infografik_gesendet');
+    const qs = params.toString();
+    window.history.replaceState({}, '', window.location.pathname + (qs ? '?' + qs : '') + window.location.hash);
+  })();
+</script>

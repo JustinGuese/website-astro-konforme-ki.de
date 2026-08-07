@@ -1,35 +1,41 @@
 ---
 title: Datenschutzerklärung
-updated: '30. Juli 2026'
+updated: '6. August 2026'
 ---
 
-Wir freuen uns sehr, dass Sie Interesse an unserem Angebot gezeigt haben. Der Datenschutz hat bei der DataFortress.cloud GmbH (Betreiberin von **pflegenachweis.de**) eine besonders hohe Priorität.
+Wir freuen uns sehr, dass Sie Interesse an unserem Angebot gezeigt haben. Der Datenschutz hat bei der DataFortress.cloud GmbH (Betreiberin von **konforme-ki.de** / "Nachweis") eine besonders hohe Priorität.
 
-Die Nutzung unserer Internetseite ist ohne Angabe personenbezogener Daten möglich. Möchten Sie jedoch das Compliance-Paket anfordern, eine Prüfanfragen-Analyse in Auftrag geben oder uns über das Kontaktformular erreichen, ist die Verarbeitung personenbezogener und ggf. besonderer Daten (z. B. Pflegedokumentation) erforderlich.
+Die Nutzung unserer Internetseite ist ohne Angabe personenbezogener Daten möglich. Möchten Sie jedoch Zugang zum Gateway anfragen, den Playground nutzen, ein Onboarding beauftragen oder uns über das Kontaktformular erreichen, ist die Verarbeitung personenbezogener Daten erforderlich.
 
 ---
 
-## Besondere Bestimmungen zur Verarbeitung von Prüfanfragen und Pflegedokumentation
+## Besondere Bestimmungen zur Nutzung des Nachweis-Gateways
 
-Da unser Angebot sich an ambulante Pflegedienste, stationäre Pflege, MVZ und Arztpraxen richtet, verarbeiten wir im Rahmen aller Stufen (kostenloses Compliance-Paket, Stufe 1, Stufe 2 und Stufe 3) potenziell besonders schutzwürdige Unterlagen. Dafür gelten folgende besondere Bestimmungen:
+Unser Angebot richtet sich an Berufsgeheimnisträger im Sinne des § 203 StGB — u. a. Steuerberatung, Rechtsanwaltschaft, Arzt- und Zahnarztpraxen, Notariate, Psychotherapie und ambulante Pflegedienste. Über den Gateway werden dabei potenziell besonders schutzwürdige Inhalte verarbeitet. Dafür gelten folgende besondere Bestimmungen:
 
 ### 1. Rechtsgrundlage und Berufsgeheimnis (§ 203 StGB)
-Von Ihnen übermittelte Prüfanfragen und Auszüge aus der Pflegedokumentation können der Schweigepflicht nach § 203 StGB unterliegen. Wir verarbeiten diese Unterlagen ausschließlich auf Grundlage eines abgeschlossenen Auftragsverarbeitungsvertrags (AVV) nach Art. 28 DSGVO — ein Muster stellen wir Ihnen im kostenlosen Compliance-Paket zur Verfügung.
 
-### 2. Keine Verarbeitung in offenen KI-Tools
-Von Ihnen übermittelte Unterlagen werden nicht in öffentlich zugängliche oder unkontrollierte KI-Dienste eingegeben. Die Verarbeitung erfolgt ausschließlich innerhalb vertraglich abgesicherter Systeme.
+Von Ihnen über den Gateway übermittelte Anfragen und Inhalte können der Schweigepflicht nach § 203 StGB unterliegen. Wir verarbeiten diese ausschließlich auf Grundlage eines abgeschlossenen Auftragsverarbeitungsvertrags (AVV) nach Art. 28 DSGVO sowie einer §203-Zusatzvereinbarung — Muster stellen wir unter [/unterlagen](/unterlagen) bereit.
+
+### 2. Ausschließlich EU-Subprozessoren
+
+Anfragen werden ausschließlich an die in unserer [Subprozessorenliste](/unterlagen/subprozessoren) benannten, EU-jurisdiktionellen Anbieter weitergeleitet. Es findet kein Fallback außerhalb dieser Liste statt.
 
 ### 3. Art der verarbeiteten Daten
-Je nach gebuchter Stufe können folgende Daten verarbeitet werden: Kontaktdaten (Firma, Name, E-Mail, Telefon), geschwärzte Prüfanfragen, Auszüge aus der Pflegedokumentation, Angaben zu internen Abläufen (z. B. genutztes Pflegedoku-System).
+
+Je nach Nutzung können folgende Daten verarbeitet werden: Kontaktdaten (Firma, Name, E-Mail, Telefon), Prompt-Inhalte und Modellantworten, Nachweis-Metadaten (Modell, Subprozessor, Rechenzentrum, Token-Anzahl, Zeitstempel, Hash).
 
 ### 4. Zweck der Verarbeitung
-Ausschließlich zur Erstellung von Antwortentwürfen auf Prüfanfragen, zur Durchführung des Compliance- & Workflow-Checks sowie zur Bearbeitung Ihrer Anfrage.
+
+Ausschließlich zur Bereitstellung des KI-Gateways, zur Erstellung der Nachweis-Protokolle sowie zur Bearbeitung Ihrer Anfrage.
 
 ### 5. Aufbewahrung und Löschung
-Übermittelte Unterlagen werden spätestens **90 Tage nach Abschluss des jeweiligen Auftrags** gelöscht, sofern keine gesetzliche Aufbewahrungspflicht entgegensteht.
+
+Prompt-Inhalte werden standardmäßig **nicht über die Dauer der Verarbeitung hinaus gespeichert** (0 Tage Retention). Nachweis-Metadaten (ohne Inhalt) werden für die Dauer der Vertragsbeziehung sowie darüber hinaus gespeichert, soweit dies für Ihre eigene Nachweisführung nach Art. 30 DSGVO erforderlich ist. Details siehe [TOM](/unterlagen/tom).
 
 ### 6. Keine automatisierte Entscheidungsfindung
-Von uns erstellte Antwortentwürfe sind Organisationshilfe, keine automatisierte Entscheidung im Sinne von Art. 22 DSGVO. Jeder Entwurf erfordert Ihre Prüfung und Freigabe vor Versand.
+
+Vom Gateway erzeugte Antworten sind Organisationshilfe, keine automatisierte Entscheidung im Sinne von Art. 22 DSGVO. Die Verwendung und Freigabe jeder Antwort obliegt Ihnen.
 
 ---
 
@@ -69,8 +75,8 @@ Gewerbestraße 13
 Deutschland
 USt-IdNr. DE345185498
 
-E-Mail: info@pflegenachweis.de
-Website: https://pflegenachweis.de
+E-Mail: info@konforme-ki.de
+Website: https://konforme-ki.de
 
 ---
 
@@ -78,15 +84,15 @@ Website: https://pflegenachweis.de
 
 Unsere Website verwendet Cookies. Cookies sind Textdateien, die über einen Internet-Browser auf einem Computersystem gespeichert werden. Über Cookies können wir unseren Besuchern nutzerfreundlichere Dienste anbieten, die ohne die Cookie-Einstellung nicht möglich wären.
 
-Sie können das Setzen von Cookies jederzeit über die Einstellungen Ihres Browsers verhindern oder bereits gesetzte Cookies löschen. Wird das Setzen von Cookies deaktiviert, sind möglicherweise nicht alle Funktionen unserer Website vollständig nutzbar.
+**Analyse- und Marketing-Cookies werden erst nach Ihrer ausdrücklichen Einwilligung über den Cookie-Banner geladen** (Consent-Mode, technisch als "denied by default" umgesetzt). Sie können das Setzen von Cookies zusätzlich jederzeit über die Einstellungen Ihres Browsers verhindern oder bereits gesetzte Cookies löschen.
 
 ### Google Analytics (Google Ireland Limited, Gordon House, Barrow Street, Dublin, D04 E5W5, Irland)
 
-Wir nutzen Google Analytics (Google tag / gtag.js) zur Analyse der Websitenutzung. Der Dienst sammelt u. a. Daten über besuchte Seiten, Verweildauer und Herkunft der Besucher. Bei jedem Aufruf einer Seite werden Daten über die Google-Analytics-Komponente an Google in den Vereinigten Staaten übermittelt. Sie können der Erfassung durch ein Browser-Add-on (https://tools.google.com/dlpage/gaoptout) widersprechen. Weitere Informationen: https://policies.google.com/privacy.
+Nach Ihrer Einwilligung nutzen wir Google Analytics (Google tag / gtag.js) zur Analyse der Websitenutzung. Der Dienst sammelt u. a. Daten über besuchte Seiten, Verweildauer und Herkunft der Besucher. Sie können der Erfassung durch ein Browser-Add-on (https://tools.google.com/dlpage/gaoptout) widersprechen. Weitere Informationen: https://policies.google.com/privacy.
 
 ### Meta Pixel (Meta Platforms Ireland Limited, 4 Grand Canal Square, Grand Canal Harbour, Dublin 2, Irland)
 
-Wir nutzen das Meta-Pixel (Facebook), um den Erfolg unserer Werbeanzeigen zu messen und Zielgruppen für zukünftige Kampagnen zu bilden. Meta erhält dabei Informationen über Ihren Besuch unserer Website. Weitere Informationen: https://www.facebook.com/privacy/policy/.
+Nach Ihrer Einwilligung nutzen wir das Meta-Pixel (Facebook), um den Erfolg unserer Werbeanzeigen zu messen und Zielgruppen für zukünftige Kampagnen zu bilden. Weitere Informationen: https://www.facebook.com/privacy/policy/.
 
 ---
 
@@ -110,17 +116,17 @@ Wir nutzen das Meta-Pixel (Facebook), um den Erfolg unserer Werbeanzeigen zu mes
 
 **i) Recht auf Widerruf einer datenschutzrechtlichen Einwilligung** — Sie haben das Recht, eine erteilte Einwilligung jederzeit mit Wirkung für die Zukunft zu widerrufen.
 
-Zur Ausübung dieser Rechte wenden Sie sich bitte an: info@pflegenachweis.de.
+Zur Ausübung dieser Rechte wenden Sie sich bitte an: info@konforme-ki.de.
 
 ---
 
 ## Rechtsgrundlage der Verarbeitung
 
-Art. 6 Abs. 1 lit. a DSGVO dient als Rechtsgrundlage für Verarbeitungen, für die wir eine Einwilligung einholen. Ist die Verarbeitung zur Erfüllung eines Vertrags erforderlich (z. B. Bearbeitung Ihrer Prüfanfragen-Analyse), stützt sich die Verarbeitung auf Art. 6 Abs. 1 lit. b DSGVO. Unterliegen wir einer rechtlichen Verpflichtung, erfolgt die Verarbeitung auf Grundlage von Art. 6 Abs. 1 lit. c DSGVO. Im Übrigen können sich Verarbeitungen auf unser berechtigtes Interesse nach Art. 6 Abs. 1 lit. f DSGVO stützen, etwa zur Analyse und Verbesserung unseres Angebots.
+Art. 6 Abs. 1 lit. a DSGVO dient als Rechtsgrundlage für Verarbeitungen, für die wir eine Einwilligung einholen. Ist die Verarbeitung zur Erfüllung eines Vertrags erforderlich (z. B. Bereitstellung des Gateways), stützt sich die Verarbeitung auf Art. 6 Abs. 1 lit. b DSGVO. Unterliegen wir einer rechtlichen Verpflichtung, erfolgt die Verarbeitung auf Grundlage von Art. 6 Abs. 1 lit. c DSGVO. Im Übrigen können sich Verarbeitungen auf unser berechtigtes Interesse nach Art. 6 Abs. 1 lit. f DSGVO stützen, etwa zur Analyse und Verbesserung unseres Angebots.
 
 ## Speicherdauer
 
-Das Kriterium zur Bestimmung der Aufbewahrungsdauer personenbezogener Daten ist die jeweilige gesetzliche Aufbewahrungsfrist. Für im Rahmen von Stufe 2/3 übermittelte Unterlagen gilt die oben genannte 90-Tage-Frist. Nach Fristablauf werden die Daten routinemäßig gelöscht, sofern sie nicht mehr zur Vertragserfüllung erforderlich sind.
+Das Kriterium zur Bestimmung der Aufbewahrungsdauer personenbezogener Daten ist die jeweilige gesetzliche Aufbewahrungsfrist. Prompt-Inhalte unterliegen der in Abschnitt 5 genannten 0-Tage-Retention. Nach Fristablauf werden Daten routinemäßig gelöscht, sofern sie nicht mehr zur Vertragserfüllung erforderlich sind.
 
 ## Automatisierte Entscheidungsfindung
 

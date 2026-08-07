@@ -1,0 +1,38 @@
+---
+import { STIMMEN, SIEGEL, enthaeltPlatzhalter } from '../lib/belege';
+---
+
+{enthaeltPlatzhalter && (
+  <div class="mb-8 border border-sperr bg-sperr-blass px-5 py-4">
+    <span class="marke marke-sperr">Platzhalter</span>
+    <p class="mt-2.5 text-sm text-blau leading-relaxed">
+      Die folgenden Stimmen sind <strong class="font-semibold">Blindtext zur Layoutabnahme</strong> und keine echten
+      Kundenaussagen. Vor dem Livegang in <code class="font-mono text-xs bg-bogen-rein px-1.5 py-0.5">src/lib/belege.ts</code>
+      durch freigegebene Zitate ersetzen oder den Abschnitt entfernen — erfundene Referenzen sind nach § 5 UWG wettbewerbswidrig.
+    </p>
+  </div>
+)}
+
+<div class="grid md:grid-cols-3 gap-px bg-linie border border-linie">
+  {STIMMEN.map((s) => (
+    <figure class="bg-bogen-rein p-6 flex flex-col">
+      <blockquote class="flex-1 text-sm text-blau leading-relaxed">
+        <span class="text-siegel font-display text-lg leading-none">„</span>{s.zitat}<span class="text-siegel font-display text-lg leading-none">"</span>
+      </blockquote>
+      <figcaption class="mt-5 pt-4 border-t border-linie">
+        <p class="font-semibold text-sm text-blau">{s.person}</p>
+        <p class="mt-0.5 font-mono text-xs text-blau-faint">{s.rolle} · {s.ort}</p>
+      </figcaption>
+    </figure>
+  ))}
+</div>
+
+<!-- Nachprüfbare Aussagen — Produkteigenschaften statt erfundener Kundenzahlen. -->
+<dl class="mt-px grid grid-cols-2 lg:grid-cols-4 gap-px bg-linie border border-linie border-t-0">
+  {SIEGEL.map((k) => (
+    <div class="bg-bogen-rein p-5">
+      <dt class="display display-m text-siegel">{k.wert}</dt>
+      <dd class="mt-1.5 text-xs text-blau-soft leading-relaxed">{k.label}</dd>
+    </div>
+  ))}
+</dl>

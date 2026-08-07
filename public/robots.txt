@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+# Zwischenschritt der PDF-Erzeugung, kein Inhalt für den Index.
+Disallow: /eu-ki-recht/pdf-quelle
+
+# Attributions- und Formular-Parameter erzeugen sonst Duplikate der Startseite.
+# Die Seiten tragen zusätzlich ein <link rel="canonical">.
+Disallow: /*?tarif=
+Disallow: /*?zugang_gesendet=
+Disallow: /*?infografik_gesendet=
+Disallow: /*?interesse=
+
+Sitemap: https://konforme-ki.de/sitemap-index.xml

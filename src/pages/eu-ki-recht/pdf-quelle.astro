@@ -1,0 +1,259 @@
+---
+// Nicht verlinkt, nicht in der Sitemap (siehe astro.config.mjs filter) — dient nur als
+// Druckvorlage für die generierte PDF-Checkliste. Bei Inhaltsänderungen neu generieren:
+//   google-chrome --headless --disable-gpu --no-pdf-header-footer \
+//     --print-to-pdf=public/downloads/eu-ki-recht-checkliste.pdf \
+//     http://localhost:4321/eu-ki-recht/pdf-quelle
+// danach `npm run build`, damit die aktualisierte PDF in dist/downloads landet.
+import Site from '../../layouts/Site.astro';
+
+const title = 'EU-KI-Recht — Checkliste';
+const stand = '6. August 2026';
+
+const zeitstrahl = [
+  { datum: '2.8.2024', titel: 'AI Act tritt in Kraft' },
+  { datum: '2.2.2025', titel: 'Verbote & KI-Kompetenz' },
+  { datum: '2.8.2025', titel: 'GPAI-Pflichten' },
+  { datum: '2.8.2026', titel: 'Transparenzpflicht (Art. 50)', aktiv: true },
+  { datum: '2.12.2027', titel: 'Hochrisiko (Anhang III)' },
+  { datum: '2.8.2028', titel: 'Hochrisiko (Anhang I)' },
+];
+
+const risikoklassen = [
+  { name: 'Verboten', frist: 'seit 2.2.2025', ton: 'sperr', text: 'Social Scoring, manipulative Systeme, biometrische Echtzeit-Überwachung. Betrifft die meisten Unternehmen nicht.' },
+  { name: 'Hochrisiko', frist: 'ab 2.12.2027', ton: 'neutral', text: 'Personalauswahl, Kreditvergabe, kritische Infrastruktur (Anhang III). Ein Chat-Assistent fällt i. d. R. nicht darunter.' },
+  { name: 'Transparenzpflicht', frist: 'seit 2.8.2026', ton: 'siegel', text: 'Kennzeichnung von KI-Interaktionen, Deepfakes, synthetischen Inhalten (Art. 50). Betrifft praktisch jedes Unternehmen.' },
+  { name: 'GPAI-Anbieter', frist: 'seit 2.8.2025', ton: 'neutral', text: 'Nur wer selbst ein KI-Modell bereitstellt, nicht wer eines nutzt.' },
+];
+
+const checkliste = [
+  'AVV mit jedem KI-Anbieter abgeschlossen (Art. 28 DSGVO)',
+  'KI-Einsatz im Verarbeitungsverzeichnis dokumentiert (Art. 30 DSGVO)',
+  'TOM des Anbieters geprüft (Art. 32 DSGVO)',
+  'EU-Verarbeitung bevorzugt, wo verfügbar (Kapitel V DSGVO)',
+  'KI-Kompetenz-Schulung für Mitarbeitende sichergestellt (Art. 4 AI Act)',
+  'KI-generierte Inhalte / Chatbots gekennzeichnet (Art. 50 AI Act)',
+  'Berufsgeheimnisträger: §203-Zusatzvereinbarung mit dem Anbieter vorhanden',
+];
+---
+
+<Site title={title} description="Ein-Seiten-Checkliste: AI Act, DSGVO und § 203 StGB für Unternehmen." noindex={true}>
+  <div class="blatt">
+    <div class="kopf">
+      <div>
+        <p class="wortmarke">Nachweis</p>
+        <h1>EU-KI-Recht — Checkliste für Unternehmen</h1>
+      </div>
+      <p class="stand">Stand: {stand}<br />konforme-ki.de</p>
+    </div>
+
+    <section class="block">
+      <h2>Zeitstrahl</h2>
+      <div class="zeitstrahl">
+        {zeitstrahl.map((z) => (
+          <div class:list={['zeitstrahl-punkt', z.aktiv && 'aktiv']}>
+            <p class="zeitstrahl-datum">{z.datum}</p>
+            <p class="zeitstrahl-titel">{z.titel}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>Risikoklassen</h2>
+      <div class="risiko-raster">
+        {risikoklassen.map((r) => (
+          <div class:list={['risiko-karte', `ton-${r.ton}`]}>
+            <p class="risiko-name">{r.name} <span class="risiko-frist">{r.frist}</span></p>
+            <p class="risiko-text">{r.text}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>Checkliste</h2>
+      <ul class="checkliste">
+        {checkliste.map((punkt) => (
+          <li><span class="kasten" aria-hidden="true"></span>{punkt}</li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="block hinweis">
+      <p><strong>Der eigentliche Blocker bleibt § 203 StGB und Art. 28 DSGVO, nicht der AI Act.</strong> Eine reine AGB-Zustimmung eines Anbieters ohne benannten AVV und (bei Berufsgeheimnisträgern) ohne §203-Zusatzvereinbarung reicht nicht.</p>
+    </section>
+
+    <div class="fuss">
+      Diese Checkliste ist ein Informationsangebot, keine Rechtsberatung. Ausführliche Quellen und Einzelheiten: konforme-ki.de/eu-ki-recht
+    </div>
+  </div>
+</Site>
+
+<style>
+  :global(html, body) {
+    background: #fff;
+  }
+  :global(header, footer, .kette, .kette-strich, #cookie-banner, #sticky-cta) {
+    display: none !important;
+  }
+
+  .blatt {
+    box-sizing: border-box;
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 16mm 16mm;
+    font-family: var(--font-mono);
+    color: #16233d;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .kopf {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    border-bottom: 2px solid #16233d;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .wortmarke {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    color: #1c7a5e;
+    margin: 0 0 0.2rem;
+  }
+  .kopf h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.35rem;
+    margin: 0;
+    color: #16233d;
+  }
+  .stand {
+    font-size: 0.68rem;
+    line-height: 1.4;
+    color: #55627e;
+    text-align: right;
+    margin: 0;
+  }
+
+  .block { margin-bottom: 1.4rem; }
+  .block h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #16233d;
+    border-bottom: 1px solid #d7dbe4;
+    padding-bottom: 0.35rem;
+    margin: 0 0 0.75rem;
+  }
+
+  .zeitstrahl {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.5rem;
+    border-top: 2px solid #16233d;
+    padding-top: 0.5rem;
+  }
+  .zeitstrahl-punkt { border-left: 2px solid #d7dbe4; padding-left: 0.4rem; }
+  .zeitstrahl-punkt.aktiv { border-left-color: #1c7a5e; }
+  .zeitstrahl-datum {
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: #1c7a5e;
+    margin: 0 0 0.2rem;
+  }
+  .zeitstrahl-punkt:not(.aktiv) .zeitstrahl-datum { color: #55627e; }
+  .zeitstrahl-titel {
+    font-size: 0.6rem;
+    line-height: 1.35;
+    color: #33405e;
+    margin: 0;
+  }
+
+  .risiko-raster {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+  .risiko-karte {
+    border: 1px solid #d7dbe4;
+    border-left-width: 3px;
+    padding: 0.55rem 0.7rem;
+  }
+  .risiko-karte.ton-sperr { border-left-color: #a3311f; }
+  .risiko-karte.ton-siegel { border-left-color: #1c7a5e; }
+  .risiko-karte.ton-neutral { border-left-color: #9aa3b8; }
+  .risiko-name {
+    font-weight: 700;
+    font-size: 0.74rem;
+    margin: 0 0 0.25rem;
+    color: #16233d;
+  }
+  .risiko-frist {
+    font-weight: 400;
+    font-size: 0.62rem;
+    color: #55627e;
+  }
+  .risiko-text {
+    font-size: 0.66rem;
+    line-height: 1.4;
+    color: #33405e;
+    margin: 0;
+  }
+
+  .checkliste {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    columns: 1;
+  }
+  .checkliste li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    font-size: 0.76rem;
+    line-height: 1.5;
+    padding: 0.3rem 0;
+    border-bottom: 1px dotted #d7dbe4;
+  }
+  .kasten {
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+    width: 0.7rem;
+    height: 0.7rem;
+    border: 1.5px solid #16233d;
+  }
+
+  .hinweis {
+    border: 1px solid #d7dbe4;
+    background: #f4f6fa;
+    padding: 0.85rem 1rem;
+  }
+  .hinweis p {
+    font-size: 0.72rem;
+    line-height: 1.5;
+    color: #16233d;
+    margin: 0;
+  }
+
+  .fuss {
+    font-size: 0.6rem;
+    color: #7d879c;
+    border-top: 1px solid #d7dbe4;
+    padding-top: 0.6rem;
+    margin-top: 1.5rem;
+  }
+
+  @media print {
+    @page { margin: 14mm; size: A4; }
+    .blatt { width: auto; min-height: 0; padding: 0; }
+  }
+</style>

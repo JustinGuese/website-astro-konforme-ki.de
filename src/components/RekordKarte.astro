@@ -1,0 +1,35 @@
+---
+interface Feld {
+  schluessel: string;
+  wert: string;
+  ton?: 'gut' | 'sperr';
+}
+
+interface Props {
+  kopf: string;
+  felder: Feld[];
+  fuss?: string;
+  class?: string;
+}
+
+const { kopf, felder, fuss, class: klasse = '' } = Astro.props;
+---
+
+<div class:list={['rekord', klasse]}>
+  <div class="rekord-kopf">
+    <span>{kopf}</span>
+    <span class="inline-flex items-center gap-1.5">
+      <span class="h-1.5 w-1.5 rounded-full bg-siegel-hell"></span>
+      live
+    </span>
+  </div>
+  {felder.map((feld) => (
+    <div class="rekord-zeile">
+      <span class="rekord-schluessel">{feld.schluessel}</span>
+      <span class:list={['rekord-wert', feld.ton === 'gut' && 'rekord-wert-gut', feld.ton === 'sperr' && 'rekord-wert-sperr']}>
+        {feld.wert}
+      </span>
+    </div>
+  ))}
+  {fuss && <div class="rekord-fuss">{fuss}</div>}
+</div>

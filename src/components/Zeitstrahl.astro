@@ -1,0 +1,34 @@
+---
+interface Eintrag {
+  datum: string;
+  titel: string;
+  beschreibung: string;
+  aktiv?: boolean;
+}
+
+interface Props {
+  eintraege: Eintrag[];
+}
+
+const { eintraege } = Astro.props;
+---
+
+<div class="relative pl-8 sm:pl-10">
+  <div class="absolute left-[5px] sm:left-[7px] top-2 bottom-2 w-px bg-linie" aria-hidden="true"></div>
+  <div class="space-y-8">
+    {eintraege.map((eintrag) => (
+      <div class="relative">
+        <span
+          class:list={[
+            'absolute -left-8 sm:-left-10 top-1.5 h-2.5 w-2.5 rounded-full border-2',
+            eintrag.aktiv ? 'bg-siegel border-siegel' : 'bg-bogen border-linie',
+          ]}
+          aria-hidden="true"
+        ></span>
+        <p class="font-mono text-xs font-semibold text-siegel tracking-wide">{eintrag.datum}</p>
+        <p class="mt-1 font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">{eintrag.titel}</p>
+        <p class="mt-1.5 text-sm text-blau-soft leading-relaxed max-w-2xl">{eintrag.beschreibung}</p>
+      </div>
+    ))}
+  </div>
+</div>
