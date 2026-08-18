@@ -39,11 +39,14 @@ const nav: { href: string; label: string; kinder?: { href: string; label: string
       { href: '/ratgeber/dsgvo-konforme-ki-alternativen', label: 'DSGVO-konforme KI-Alternativen', kurz: 'EU-gehostete Modelle im Vergleich' },
     ],
   },
-  { href: '/eu-ki-recht', label: 'EU-KI-Recht' },
-  { href: '/integrationen', label: 'Integrationen' },
-  { href: '/preise', label: 'Preise' },
   { href: '/unterlagen', label: 'Unterlagen' },
 ];
+/**
+ * EU-KI-Recht, Integrationen und Preise bewusst nicht in der Kopfzeile:
+ * die auf jeder Sektion sichtbare Navigation soll nicht mit dem einen CTA
+ * konkurrieren, den der Seitenkörper konsequent wiederholt. Alle drei
+ * bleiben erreichbar — inline auf der Startseite und im Footer.
+ */
 ---
 
 <!doctype html>

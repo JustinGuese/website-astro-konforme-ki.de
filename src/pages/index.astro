@@ -10,7 +10,7 @@ import Kontingent from '../components/Kontingent.astro';
 import InfografikForm from '../components/InfografikForm.astro';
 import ZugangForm from '../components/ZugangForm.astro';
 import { buildChain } from '../lib/kette';
-import { SAEULEN } from '../lib/saeulen';
+import { SAEULEN, STANDARD_SAEULE, findSaeule } from '../lib/saeulen';
 import { frei } from '../lib/kontingent';
 
 /**
@@ -28,7 +28,7 @@ const abschnitte = [
   { id: 'nachweis', label: 'Der Nachweis' },
   { id: 'playground', label: 'Playground' },
   { id: 'saeulen', label: 'Die drei Säulen' },
-  { id: 'belege', label: 'Stimmen' },
+  { id: 'belege', label: 'Belege' },
   { id: 'fuer-wen', label: 'Für wen' },
   { id: 'integrationen', label: 'Integrationen' },
   { id: 'angebote', label: 'Angebote' },
@@ -55,6 +55,10 @@ const szenarien = [
     problem: 'Anamnesen und Befunde sind besondere Kategorien personenbezogener Daten nach Art. 9 DSGVO, zusätzlich zu § 203.',
   },
 ];
+
+/** Für #saeulen: Säule 2 als geführte Antwort voran, die anderen zwei knapp danach. */
+const saeuleStandard = findSaeule(STANDARD_SAEULE);
+const saeulenAndere = SAEULEN.filter((s) => s.id !== STANDARD_SAEULE);
 
 const exporte = [
   { titel: 'Art. 30 VVT-Eintrag', beschreibung: 'Automatisch generierter Eintrag in Ihr Verarbeitungsverzeichnis, pro Anfrage aktualisiert.' },
@@ -335,27 +339,38 @@ const faq = [
       <p class="mt-4 text-blau-soft max-w-2xl leading-relaxed">
         Säule 2 und 3 lösen die Subprozessor-Frage nicht durch eine bessere Wahl, sondern indem es keinen externen Subprozessor mehr gibt.
       </p>
-      <div class="mt-10 grid md:grid-cols-3 gap-px bg-linie border border-linie">
-        {SAEULEN.map((s) => (
-          <div
-            class:list={[
-              'bg-bogen-rein p-6 flex flex-col',
-              s.akzent === 'gold' && 'border-t-[3px] border-gold',
-            ]}
-          >
-            <span class={`marke ${s.akzent === 'blau' ? 'marke-neutral' : s.akzent === 'siegel' ? 'marke-siegel' : 'marke-gold'} w-fit`}>
+
+      <!--
+        Geführte Antwort zuerst (Säule 2, der Standard), statt drei
+        gleichrangige Infrastruktur-Spezifikationen nebeneinander — Details
+        zu Subprozessor/Rechenzentrum sind wichtig für die Freigabe, aber
+        keine Startinformation für einen Besucher, der noch entscheidet,
+        ob er das Produkt überhaupt will.
+      -->
+      <div class="mt-10 border border-siegel bg-bogen-rein p-7 sm:p-8 max-w-3xl">
+        <span class="marke marke-siegel w-fit">{saeuleStandard.kurzname} · {saeuleStandard.kosten} · Standard</span>
+        <p class="mt-3 font-display font-bold text-blau text-lg leading-snug" style="font-variation-settings: 'wdth' 90;">{saeuleStandard.name}</p>
+        <p class="mt-2 text-sm text-blau-soft leading-relaxed">{saeuleStandard.beschreibung}</p>
+        <div class="mt-4 pt-4 border-t border-linie flex flex-wrap gap-x-6 gap-y-1 font-mono text-xs text-blau-faint">
+          <span>Subprozessor: {saeuleStandard.subprozessor}</span>
+          <span>Rechenzentrum: {saeuleStandard.rechenzentrum}</span>
+        </div>
+      </div>
+
+      <div class="mt-4 grid sm:grid-cols-2 gap-px bg-linie border border-linie max-w-3xl">
+        {saeulenAndere.map((s) => (
+          <div class:list={['bg-bogen-rein p-5', s.akzent === 'gold' && 'border-t-[3px] border-gold']}>
+            <span class={`marke ${s.akzent === 'blau' ? 'marke-neutral' : 'marke-gold'} w-fit`}>
               {s.kurzname} · {s.kosten}
             </span>
-            <p class="mt-3 font-display font-bold text-blau leading-snug" style="font-variation-settings: 'wdth' 90;">{s.name}</p>
-            <p class="mt-2 text-sm text-blau-soft leading-relaxed flex-1">{s.beschreibung}</p>
-            <p class="mt-4 text-xs text-blau-faint leading-relaxed">{s.eignung}</p>
-            <div class="mt-4 pt-4 border-t border-linie space-y-1 font-mono text-xs text-blau-faint">
-              <p>Subprozessor: {s.subprozessor}</p>
-              <p>Rechenzentrum: {s.rechenzentrum}</p>
-            </div>
+            <p class="mt-2 text-xs text-blau-soft leading-relaxed">{s.eignung}</p>
           </div>
         ))}
       </div>
+      <p class="mt-3 max-w-3xl text-xs text-blau-faint">
+        Details zu beiden im <a href="/playground" class="underline hover:no-underline text-blau-soft">Playground</a> oder auf <a href="/preise" class="underline hover:no-underline text-blau-soft">/preise</a>.
+      </p>
+
       <div class="mt-8 border border-sperr bg-sperr-blass px-6 py-5 max-w-3xl">
         <p class="marke marke-sperr mb-3">Fail closed</p>
         <p class="text-sm text-blau leading-relaxed">
@@ -365,11 +380,15 @@ const faq = [
     </div>
   </section>
 
-  <!-- 7. Belege — sozialer Nachweis zwischen Lösung und Angebot. -->
+  <!--
+    7. Belege — sozialer Nachweis zwischen Lösung und Angebot. Bewusst ohne
+    Kundenzitate: siehe src/lib/belege.ts. Die Ehrlichkeit darüber ist für
+    ein Compliance-Produkt selbst ein Vertrauenssignal.
+  -->
   <section id="belege" class="py-16 sm:py-20 border-b border-linie">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">Stimmen</p>
-      <h2 class="display display-l text-blau max-w-2xl">Wie andere die Freigabe bekommen haben.</h2>
+      <p class="marginalie mb-3">Fakten statt Zitate</p>
+      <h2 class="display display-l text-blau max-w-2xl">Wir zitieren keine Kunden, die wir noch nicht haben. Das hier stimmt trotzdem.</h2>
       <div class="mt-10">
         <Belege />
       </div>
