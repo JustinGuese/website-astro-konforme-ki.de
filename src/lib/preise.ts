@@ -91,7 +91,7 @@ export const LEITER: Stufe[] = [
       'Gegengezeichneter AVV',
       'Individuelle §203-Zusatzvereinbarung',
     ],
-    cta: { label: 'Zugang anfragen', href: zugangHref('compliance') },
+    cta: { label: 'Zugangsschlüssel sichern', href: zugangHref('compliance') },
   },
 ];
 
@@ -131,7 +131,7 @@ export const NUTZUNGSMODELLE: Tarif[] = [
       'EU-Routing (Säule 1) inklusive',
       'Log-Ansicht im Browser',
     ],
-    cta: { label: 'Zugang anfragen', href: zugangHref('pay-per-token') },
+    cta: { label: 'Zugangsschlüssel sichern', href: zugangHref('pay-per-token') },
   },
   {
     tarifId: 'chat',
@@ -145,7 +145,7 @@ export const NUTZUNGSMODELLE: Tarif[] = [
       'EU-Routing (Säule 1)',
       'Fair-Use Nachrichtenlimit',
     ],
-    cta: { label: 'Zugang anfragen', href: zugangHref('chat') },
+    cta: { label: 'Zugangsschlüssel sichern', href: zugangHref('chat') },
     hervorgehoben: true,
   },
   {
@@ -160,7 +160,7 @@ export const NUTZUNGSMODELLE: Tarif[] = [
       'Säule 1 oder 2 wählbar',
       'Priorisierte Warteschlange',
     ],
-    cta: { label: 'Zugang anfragen', href: zugangHref('pro') },
+    cta: { label: 'Zugangsschlüssel sichern', href: zugangHref('pro') },
   },
 ];
 
@@ -179,7 +179,7 @@ export const SERVICE_TARIFE: Tarif[] = [
       'Gegengezeichneter AVV',
       '§203-Zusatzvereinbarung',
     ],
-    cta: { label: 'Zugang anfragen', href: zugangHref('compliance') },
+    cta: { label: 'Zugangsschlüssel sichern', href: zugangHref('compliance') },
     hervorgehoben: true,
   },
   {

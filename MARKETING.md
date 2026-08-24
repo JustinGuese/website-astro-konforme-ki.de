@@ -8,9 +8,12 @@ That's the product. Per request: model, sub-processor, datacenter region, retent
 
 Positioning: **„Der KI-Endpunkt, der Ihrem Datenschutzbeauftragten die Freigabe schreibt."**
 
-## One vertical, not three
+## One vertical, not three — superseded 2026-08-24, kept for the reasoning
 
-Automotive is a trap (TISAX, 12–24-month cycles, OEMs building in-house). Banking under DORA fails a one-person GmbH at vendor due diligence. **§ 203 StGB Berufsgeheimnisträger** — Ärzte, Kanzleien, Steuerberater, Notare, Psychotherapeuten, Pflegedienste — is the one open lane: a real, narrow, unserved, _legally forced_ buyer. They cannot legally use most AI tooling without a §203-compliant processor arrangement. That's the entire wedge; don't dilute it with broad "German Mittelstand CTO" copy.
+Automotive is a trap (TISAX, 12–24-month cycles, OEMs building in-house). Banking under DORA fails a one-person GmbH at vendor due diligence. **§ 203 StGB Berufsgeheimnisträger** — Ärzte, Kanzleien, Steuerberater, Notare, Psychotherapeuten, Pflegedienste — is the one open lane: a real, narrow, unserved, _legally forced_ buyer. They cannot legally use most AI tooling without a §203-compliant processor arrangement. That original reasoning still holds as a read of which verticals are reachable *right now* (see the procurement critique's vertical-gate table below — healthcare is still the cheapest gate) — but "don't dilute it with broad copy" is superseded. Two decisions this session changed the actual homepage:
+
+1. **Audience: broad, not narrow.** The homepage hero no longer opens on §203 alone — it leads with the blockers a *general* EU company actually has (Art. 28 DSGVO, US CLOUD Act/GeschGehG, §87 Abs. 1 Nr. 6 BetrVG Betriebsrat-Mitbestimmung), with §203/Berufsgeheimnisträger kept as a named, still-served niche rather than the whole pitch. Broad top-of-funnel messaging and narrow near-term deal-closing focus aren't in tension — see the note in the procurement critique section.
+2. **Primary offer: Sidecar, not hosted Compliance.** See "Infra & architecture critique" below in full — raw hosted EU inference is a commodity fight against better-capitalized GPU operators; Sidecar (governance/attestation layer over a customer's *existing* Azure OpenAI/Bedrock/own cloud, zero migration, zero GPU capex) is what's actually differentiated and immediately sellable. The homepage now leads with Sidecar; the hosted Compliance tier is the explicit escalation path for cases a customer's own cloud can't cover.
 
 ## Upstreams — and the mistake that would kill the AVV
 
@@ -72,3 +75,194 @@ The biggest risk: building a gateway and discovering the buyer wanted a finished
 ## Two technical notes carried over
 
 Static Astro, not Flutter — Flutter Web bundle size would tank CPC on this kind of page. And leads post to Formspree, not a third-party lead-gen form product — the qualification signal (which document was downloaded, which interesse param) is the actual product of this phase and can't be captured by a generic form widget.
+
+## Procurement critique (2026-08-24) — what's actually missing is the DSB folder, not more product
+
+The hard part is already shipped: the attestation endpoint proves *where a call executed*.
+What's missing is procurement surface, not inference capacity. Read this alongside "One
+vertical, not three" above rather than as a replacement for it — the two operate at
+different altitudes. The homepage-messaging decision this session (broadening the hero away
+from a pure §203 hook) is about not needlessly excluding non-Berufsgeheimnisträger visitors
+at the top of the funnel; the vertical-prioritization read below is about which deals are
+actually closable *right now* given real compliance gates, and it argues for leaning on
+§203/healthcare first regardless of how broad the homepage headline reads. Those aren't in
+tension — broad top-of-funnel messaging, narrow near-term deal focus.
+
+**1. The blocker that voids the sale silently.** The attestation endpoint proves where a
+call *executed*. It says nothing about where mandate/ledger/prompt-log *data rests*. If any
+part of the stack still falls back to OpenRouter, that gap surfaces the moment a
+Rechtsabteilung requests the Subunternehmerverzeichnis — which they always do, before
+signing. State the distinction upfront on the page ("Inferenz in Deutschland, Metadaten in
+X"). Discovered proactively it's a sale; discovered in audit it's a dead account and a
+referral never earned.
+
+**2. The DSB/procurement pack — the actually-missing asset.** Nobody buys an endpoint, they
+buy a folder they can forward to Legal. Should be ungated, downloadable PDF, alongside the
+existing AVV/TOM/Subprozessorenliste/§203-Zusatzvereinbarung/VVT-Muster in `/unterlagen`:
+- **DSFA-Baustein nach Art. 35** — 80% pre-filled. Highest-leverage single asset to build;
+  every regulated buyer must produce one, nobody wants to write it from scratch.
+- **Löschkonzept** — log-TTL, kein Training auf Kundendaten, Prompt-Retention = 0, spelled
+  out as its own document rather than scattered claims.
+- **Rollenzuordnung AI Act** — who is Anbieter, who is Betreiber, what Art. 50/Art. 4 mean
+  for each role.
+- **Muster-Betriebsvereinbarung KI-Nutzung** — unblocks §87 Abs. 1 Nr. 6 BetrVG
+  (Betriebsrat's co-determination right over AI systems used for behavior/performance
+  monitoring — the actual reason a rollout stalls internally at a broad-market buyer).
+
+**3. Each of the three verticals has a hard compliance gate — they are not equally reachable
+today:**
+
+| Vertical | Gate | Reality |
+|---|---|---|
+| Healthcare (§203) | Verpflichtungserklärung nach §203 Abs. 4 per mitwirkende Person | Cheap, doable now — do it first |
+| Banking | DORA + §25b KWG / MaRisk AT 9 | Needs Ausstiegsplan, Prüfrechte, Informationsregister-Eintrag, Konzentrationsrisiko-Analyse before a bank can legally onboard us |
+| Automotive | TISAX / VDA ISA | OEM supplier onboarding is hard-gated on a TISAX label we don't have and won't have this year — drop from the near-term ICP, ad spend against this vertical dies in Einkauf |
+
+**4. Enterprise table stakes still missing:** public per-1M-token pricing (a "Preis auf
+Anfrage" line loses by default against IONOS/StackIT/Telekom/Mistral, all of whom publish),
+Frankfurt latency numbers + model list + context length + rate limits stated plainly, an SLA
+with uptime + deutschsprachiger Support + Gerichtsstand Deutschland + deutscher Vertrag,
+SSO/SAML + RBAC + IP-Allowlist. Audit-log export we already have — that's the
+differentiator, lead with it, don't bury it next to the checkbox items.
+
+**5. The strategic reframe.** Raw EU inference is a commodity fight against better-capitalized
+GPU operators (Nebius, IONOS, Telekom, StackIT, Scaleway, OVH, Mistral) — not a fight to try
+to win on tokens. The win is the Nachweis layer: the attestation endpoint plus the DSB
+folder. Sell the dossier, deliver the tokens as the delivery mechanism underneath it. This
+also means **Sidecar (governance over a customer's existing Azure OpenAI usage) should be
+positioned as the lead product, not a side-channel offer** — it converts buyers who won't
+migrate their existing stack, requires zero GPU capex, and is the one thing nobody else in
+that competitor list offers. Currently Sidecar sits as section 9 of 16 on the homepage; this
+reframe argues it deserves a much more prominent position, possibly co-equal with the main
+gateway pitch rather than a "for the cautious" aside.
+
+## Infra & architecture critique (2026-08-24) — no README.md exists in this repo; filed here as the canonical business-context doc per AGENTS.md
+
+This addendum supersedes nothing above by itself, but it changes the "Sidecar deserves more
+prominence" note in the procurement critique into something stronger: Sidecar-equivalent
+delivery should likely become **the primary offer**, not just a promoted aside. That is a
+bigger pivot than what's been implemented on the homepage so far this session — flagged
+explicitly, not silently reconciled, see the note at the end of this section.
+
+**Kill vast.ai / consumer-GPU marketplaces for anything Nachweis hosts and attests to.**
+Not a cost optimization call, a compliance-disqualification call, for exactly the buyers
+this project targets (banking, healthcare):
+- **Art. 28(2)+(4) DSGVO** — every sub-processor must be named and disclosed, and the
+  customer must be able to object. Marketplace hosts are pseudonymous individuals; none of
+  that is possible.
+- **Art. 32 DSGVO** (TOMs, physical access control) and **DORA Art. 30** (audit rights,
+  on-site inspection) — structurally impossible on a stranger's hardware. A bank cannot
+  sign off on this.
+- **Löschnachweis** — weights and KV-cache sit on a stranger's SSD with no proof of
+  deletion. **Data residency** — "EU" on a marketplace listing is a self-declared checkbox,
+  not audit evidence.
+- **Supply-chain problem a vendor review will find on its own**: NVIDIA's GeForce/Titan
+  consumer-GPU EULA restricts datacenter deployment of that software; a marketplace's
+  40-series supply commonly runs on top of that restriction. Building a regulated-industry
+  backend on hardware whose own licensing terms forbid the deployment is a discoverable
+  problem, not a hidden one.
+- Practically: 24GB/no-NVLink 40-series caps model size (~14B at FP8 realistically),
+  cold-start weight re-pulls (16–140GB) eat the price advantage, and preemptible capacity
+  can't carry an SLA.
+- **Not worthless overall** — see "Plane B" below. The disqualification is specifically for
+  anything sensitive/attested, not for all possible use.
+
+**Kill or reframe the "PII-swap proxy" idea (mask names before forwarding to a third-country
+provider) — as originally framed, it's a company-ending liability, not a shortcut:**
+- Pseudonymised ≠ anonymised (Recital 26 DSGVO) — the data is still personal data, the
+  transfer to a third-country provider is still a Chapter V Drittlandtransfer needing
+  SCCs + a TIA. Masking names doesn't exit GDPR scope at all.
+- Re-identification from free text is trivial ("der Werksleiter unseres Standorts mit 340
+  Mitarbeitern in Ingolstadt" survives any NER pass), §203 protects the *content* not the
+  *name* (masking a patient's name and sending the diagnosis is still `Offenbaren`), and
+  GeschGehG protects the substance of a secret, not its identifiers.
+- NER recall is never 100% — one miss is a `meldepflichtige Datenpanne` at a bank.
+- **Positioning suicide**: the entire site argues data must not leave the EU; this routes
+  it out. A competitor or journalist finding the real sub-processor list ends the company
+  in an afternoon.
+- **The defensible version**: ship it as a DLP/Datenminimierungs-Layer *inside* Sidecar, for
+  customers already on Azure OpenAI/OpenAI who want a mask+audit layer over their existing
+  stack — positioned explicitly as a supporting measure under Art. 5(1)(c), **explicitly
+  not** a legal basis for third-country transfer, with mask/unmask events written into the
+  Prüfspur. Real, defensible, and nobody else ships it with an attached audit trail.
+
+**Two-plane architecture for whatever compute Nachweis itself hosts** (this only applies
+within "Mode C" of the three deployment modes below — see how they compose):
+- **Plane A — Vertrauensebene.** Dedicated EU hardware Nachweis controls (Hetzner dedicated
+  GPU or German colo), named in the AVV, per-tenant cache isolation, attestation on every
+  response, FP8/SGLang, right-sized models. Expensive per token — sold as a subscription,
+  not metered, and that's fine.
+- **Plane B — Volumenebene.** Spot/marketplace capacity, vast.ai included, but
+  contractually restricted by an explicit `Zweckbeschränkung` baked into the API key: no
+  personal data, no Geschäftsgeheimnisse. Batch classification, code, synthetic data,
+  public-document processing only. Customer opts in per key, sees the price difference.
+- **The router between them is the actual product** — classifies each request, picks a
+  plane, enforces the tenant's policy, writes an immutable line saying which plane ran it
+  and why. "Smartest EU AI provider" means provable routing, not cheaper GPUs — nobody else
+  sells that. The existing k8s box is the control plane for this (router/policy/classifier/
+  ledger), never the data plane.
+- **The metric to watch is Plane A utilization, not €/token.** A dedicated GPU at 25% duty
+  cycle costs ~4× per served token versus the same box at 90% — that swamps every
+  quantization/caching gain. Don't buy a second GPU until the first is saturated; use Plane
+  B as the burst valve instead of over-provisioning Plane A.
+
+**Three deployment modes — a separate axis from the two planes above** (the planes describe
+*where hosted inference compute comes from*; the modes describe *who runs the gateway and
+whether Nachweis ever touches customer data at all*):
+
+| Mode | Gateway runs | Inference runs | Nachweis's legal role |
+|---|---|---|---|
+| **A — Self-hosted** | In customer's VPC/k8s | Their own Bedrock/Azure OpenAI/Vertex | Not a processor at all — pure software licence, no AVV needed, no new sub-processor for their DSB, no DORA third-party registration, no TISAX gate |
+| **B — Managed** | Nachweis's k8s (DE) | Customer's cloud | Auftragsverarbeiter for metadata + logs only |
+| **C — Hosted** | Nachweis's k8s (DE) | Nachweis's GPUs (Plane A/B above) | Full Auftragsverarbeiter |
+
+Mode A is currently missing from the product and is argued to be the strongest door:
+because the gateway never touches customer data, procurement collapses from a six-month
+vendor review to a software purchase order — the only door open this year for verticals
+this project currently can't serve at all (automotive/TISAX, per the procurement critique
+above).
+
+**Messaging implication:** current framing is "your cloud is illegal, buy ours" (high
+objection load, narrow TAM, asks a CTO to rip out a working stack day one). Proposed
+reframe: **"Wir machen beweisbar, was Sie schon haben. Und hosten das, was sich nicht
+beweisbar machen lässt."** Sidecar/Mode-A/Mode-B stop being a promoted-but-secondary section
+and become the primary offer; the fully-hosted Mode C becomes the escalation path for
+workloads a customer's own cloud genuinely can't cover (§203 cases, no-EU-region models,
+air-gap requirements) — not the opening ask.
+
+**Competitive honesty**: Mode A/B is a thin gateway, and gateways are commoditized (LiteLLM,
+Portkey, Kong AI Gateway, Cloudflare AI Gateway, Azure APIM policies all do proxy/routing/
+logging, several for free — don't try to out-feature them). What's actually sellable: German
+GmbH / deutscher Vertrag / Gerichtsstand Deutschland, the DSB-Dossier mapped to the
+customer's actual setup (AVV, TOMs, DSFA-Baustein, Löschkonzept), the §203/DORA/§87 BetrVG
+mappings, and the attestation semantics already built. **The code is the delivery
+mechanism, the artifacts are the product** — price per governed volume or per seat, not as
+a cheap infra add-on (pricing it low would anchor below the €290/mo hosted tier and
+cannibalize it).
+
+**Precision requirement, must ship before launch of any self-/managed-hosted mode**: the
+attestation claim differs by mode and must be stated explicitly wherever attestation is
+described — Mode A/B can attest what was received, what policy fired, and what was
+forwarded where, but **cannot** attest what the customer's own cloud did internally; only
+Mode C can attest execution location end to end. Same failure class as the OpenRouter-
+fallback risk already flagged above: an overclaim a competent DSB will find, on a product
+whose only asset is being trustworthy.
+
+**Build order**: Mode B first (fastest to demo, most of it already exists), then Mode A
+(packaging + Helm chart — mostly docs/licensing work, not new engineering), then Mode C only
+once Mode A/B customers start asking for workloads their own cloud can't serve — that
+request is the actual demand signal for buying the first GPU, rather than guessing.
+**Sequencing**: Phase 0 (now–8 weeks) — buy zero GPUs, sell Sidecar + the DSB dossier
+against customers' existing Azure OpenAI, validates willingness-to-pay for the compliance
+artifact (the entire thesis) with no capex/residency risk; if Sidecar doesn't sell, Mode C
+won't either. Phase 1 — one dedicated EU GPU node (Plane A live). Phase 2 — Plane B on spot
+capacity, non-sensitive workloads only. Phase 3 — ISO 27001 (ride the datacenter's cert,
+build a thin ISMS on top), then TISAX only once automotive is actually converting.
+
+**Open tension with the in-progress homepage rewrite (this session):** the homepage
+implementation underway as this was written still centers the hosted Compliance tier
+("Zugangsschlüssel sichern") as the primary CTA everywhere, with Sidecar as a promoted
+section rather than the lead offer. This addendum argues Sidecar/Mode-A-B should become the
+primary homepage offer instead. That's a further, larger pivot than what's currently being
+implemented — not folded in automatically, flagged here for an explicit decision before
+more homepage copy work is built around the wrong primary offer.

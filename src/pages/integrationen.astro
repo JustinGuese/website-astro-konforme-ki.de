@@ -2,6 +2,10 @@
 import Site from '../layouts/Site.astro';
 import KanalKarte from '../components/KanalKarte.astro';
 import CodeTabs from '../components/CodeTabs.astro';
+import { SAEULEN, STANDARD_SAEULE, findSaeule } from '../lib/saeulen';
+
+const saeuleStandard = findSaeule(STANDARD_SAEULE);
+const saeulenAndere = SAEULEN.filter((s) => s.id !== STANDARD_SAEULE);
 
 const title = 'Integrationen | Nachweis';
 const description = 'Nachweis als OpenAI-kompatibler Endpunkt — ein base_url-Wechsel genügt. Kanäle: Teams, Slack, WhatsApp, E-Mail, Webhook, SDK.';
@@ -106,8 +110,48 @@ const client = new OpenAI({
         Rechenzentrum — ändert sich nur der Hostname:
         <code class="font-mono text-xs bg-bogen px-1.5 py-0.5">gateway.ai-nachweis.de</code>
         statt <code class="font-mono text-xs bg-bogen px-1.5 py-0.5">gateway.konforme-ki.de</code>.
-        Ihr Code bleibt sonst identisch. Details zu allen drei Säulen: <a href="/#saeulen" class="text-siegel hover:underline">Startseite</a>.
+        Ihr Code bleibt sonst identisch.
       </p>
+    </div>
+  </section>
+
+  <!-- Säulen — von der Startseite hierher verschoben: Infrastruktur-Details gehören auf
+       die technische Integrationsseite, nicht in den Homepage-Trichter. -->
+  <section id="saeulen" class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="marginalie mb-3">Die drei Säulen</p>
+      <h2 class="display display-m text-blau max-w-2xl">Nicht nur, welcher EU-Anbieter — sondern ob es überhaupt einen gibt.</h2>
+      <p class="mt-4 text-blau-soft max-w-2xl leading-relaxed">
+        Säule 2 und 3 lösen die Subprozessor-Frage nicht durch eine bessere Wahl, sondern indem es keinen externen Subprozessor mehr gibt.
+      </p>
+
+      <div class="mt-10 border border-siegel bg-bogen-rein p-7 sm:p-8 max-w-3xl">
+        <span class="marke marke-siegel w-fit">{saeuleStandard.kurzname} · {saeuleStandard.kosten} · Standard</span>
+        <p class="mt-3 font-display font-bold text-blau text-lg leading-snug" style="font-variation-settings: 'wdth' 90;">{saeuleStandard.name}</p>
+        <p class="mt-2 text-sm text-blau-soft leading-relaxed">{saeuleStandard.beschreibung}</p>
+        <div class="mt-4 pt-4 border-t border-linie flex flex-wrap gap-x-6 gap-y-1 font-mono text-xs text-blau-faint">
+          <span>Subprozessor: {saeuleStandard.subprozessor}</span>
+          <span>Rechenzentrum: {saeuleStandard.rechenzentrum}</span>
+        </div>
+      </div>
+
+      <div class="mt-4 grid sm:grid-cols-2 gap-px bg-linie border border-linie max-w-3xl">
+        {saeulenAndere.map((s) => (
+          <div class:list={['bg-bogen-rein p-5', s.akzent === 'gold' && 'border-t-[3px] border-gold']}>
+            <span class={`marke ${s.akzent === 'blau' ? 'marke-neutral' : 'marke-gold'} w-fit`}>
+              {s.kurzname} · {s.kosten}
+            </span>
+            <p class="mt-2 text-xs text-blau-soft leading-relaxed">{s.eignung}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-8 border border-sperr bg-sperr-blass px-6 py-5 max-w-3xl">
+        <p class="marke marke-sperr mb-3">Fail closed</p>
+        <p class="text-sm text-blau leading-relaxed">
+          Für Säule 1 gilt: kein Fallback außerhalb der EU-Routingliste. Ist kein EU-Modell verfügbar, schlägt die Anfrage fehl — sie wird nicht umgeleitet. Für Säule 2/3 stellt sich die Frage erst gar nicht — sehen Sie sich das im <a href="/playground" class="underline hover:no-underline">Playground</a> an.
+        </p>
+      </div>
     </div>
   </section>
 

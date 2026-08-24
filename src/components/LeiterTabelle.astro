@@ -1,9 +1,20 @@
 ---
 import { LEITER, ANKER } from '../lib/preise';
+import type { Stufe } from '../lib/preise';
+
+interface Props {
+  /** Optional: gefilterte/angepasste Anzeige-Kopie der Leiter (z. B. Startseite ohne
+   * Dossier-Stufe). Default = die volle `LEITER`. Immer eine Kopie übergeben, nie die
+   * geteilten `LEITER`-Objekte mutieren — `ArtikelUpsell.astro` liest dieselben Objekte
+   * positionsbasiert. */
+  stufen?: Stufe[];
+}
+
+const { stufen = LEITER } = Astro.props;
 ---
 
-<div class="grid md:grid-cols-3 gap-px bg-linie border border-linie">
-  {LEITER.map((stufe) => (
+<div class:list={['grid gap-px bg-linie border border-linie', stufen.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3']}>
+  {stufen.map((stufe) => (
     <div class:list={['flex flex-col p-6 sm:p-7', stufe.hervorgehoben ? 'bg-blau-tief text-bogen' : 'bg-bogen-rein']}>
       <div class="flex items-center justify-between gap-3">
         <p class:list={['marginalie', stufe.hervorgehoben ? 'text-siegel-hell' : '']}>Stufe {stufe.nummer}</p>

@@ -10,55 +10,34 @@ import Kontingent from '../components/Kontingent.astro';
 import InfografikForm from '../components/InfografikForm.astro';
 import ZugangForm from '../components/ZugangForm.astro';
 import { buildChain } from '../lib/kette';
-import { SAEULEN, STANDARD_SAEULE, findSaeule } from '../lib/saeulen';
+import { LEITER } from '../lib/preise';
 import { frei } from '../lib/kontingent';
 
 /**
- * Reihenfolge folgt der Trichterlogik, nicht der Produktlogik:
- * Schmerz (problem) → kostenloser Einstieg (checkliste) → Lösung
- * (nachweis/playground/saeulen) → Beleg (belege) → Angebot (angebote) →
- * Handlung (zugang). Vertrauens- und Einschränkungsabschnitte
- * (unterlagen, eu-ki-recht, nicht, faq) stehen bewusst NACH dem Formular:
- * vor dem Formular kosten sie Momentum, danach räumen sie Restzweifel ab.
+ * Reihenfolge folgt der Trichterlogik, nicht der Produktlogik — überarbeitet
+ * 2026-08-24: Sidecar (Prüfspur über bestehende Cloud) ist jetzt das
+ * Hauptangebot, nicht mehr ein Abschnitt für „Vorsichtige". Vollständig
+ * gehostete Inferenz (Angebote/Zugang) ist der Eskalationspfad, nicht der
+ * Einstieg — siehe MARKETING.md „Infra & architecture critique". Zielgruppe
+ * ist breit (jedes Unternehmen mit DSB oder Betriebsrat), § 203 StGB bleibt
+ * eine bediente, benannte Nische statt der gesamten Ansprache — siehe
+ * MARKETING.md „One vertical, not three".
  */
 const abschnitte = [
   { id: 'hero', label: 'Einstieg' },
   { id: 'problem', label: 'Das Problem' },
-  { id: 'checkliste', label: 'Checkliste' },
-  { id: 'nachweis', label: 'Der Nachweis' },
+  { id: 'sidecar', label: 'Sidecar' },
   { id: 'playground', label: 'Playground' },
-  { id: 'saeulen', label: 'Die drei Säulen' },
-  { id: 'belege', label: 'Belege' },
-  { id: 'fuer-wen', label: 'Für wen' },
+  { id: 'nachweis', label: 'Der Nachweis' },
+  { id: 'unterlagen', label: 'Unterlagen' },
+  { id: 'checkliste', label: 'Checkliste' },
   { id: 'integrationen', label: 'Integrationen' },
   { id: 'angebote', label: 'Angebote' },
   { id: 'zugang', label: 'Zugang' },
-  { id: 'unterlagen', label: 'Unterlagen' },
-  { id: 'eu-ki-recht', label: 'EU-KI-Recht' },
-  { id: 'nicht', label: 'Was es nicht ist' },
   { id: 'faq', label: 'FAQ' },
   { id: 'abschluss', label: 'Abschluss' },
 ];
 const gliedes = buildChain('index', abschnitte);
-
-const szenarien = [
-  {
-    beruf: 'Steuerberatung',
-    problem: '§ 203 Abs. 1 Nr. 3 StGB — Mandantenunterlagen dürfen keinem US-Prozessor ohne belastbaren AVV anvertraut werden.',
-  },
-  {
-    beruf: 'Rechtsanwaltschaft',
-    problem: 'Schriftsätze und Mandantenkorrespondenz enthalten Berufsgeheimnisse — ChatGPT ist ohne Zusatzvereinbarung ausgeschlossen.',
-  },
-  {
-    beruf: 'Arzt- / Zahnarztpraxis',
-    problem: 'Anamnesen und Befunde sind besondere Kategorien personenbezogener Daten nach Art. 9 DSGVO, zusätzlich zu § 203.',
-  },
-];
-
-/** Für #saeulen: Säule 2 als geführte Antwort voran, die anderen zwei knapp danach. */
-const saeuleStandard = findSaeule(STANDARD_SAEULE);
-const saeulenAndere = SAEULEN.filter((s) => s.id !== STANDARD_SAEULE);
 
 const exporte = [
   { titel: 'Art. 30 VVT-Eintrag', beschreibung: 'Automatisch generierter Eintrag in Ihr Verarbeitungsverzeichnis, pro Anfrage aktualisiert.' },
@@ -67,25 +46,33 @@ const exporte = [
   { titel: 'Signierter Export', beschreibung: 'Ein Klick: CSV und PDF, kryptografisch signiert, bereit für Ihren Prüfer.' },
 ];
 
-const nicht = [
-  { titel: 'Keine Rechtsberatung', beschreibung: 'Nachweis ersetzt nicht die Prüfung durch Ihre eigene Rechtsberatung im Einzelfall.' },
-  { titel: 'Kein Medizinprodukt', beschreibung: 'Der Gateway ist kein Medizinprodukt im Sinne der MDR — er verarbeitet, aber bewertet nicht.' },
-  { titel: 'Keine Haftungsübernahme', beschreibung: 'Ihre Berufspflichten bleiben bei Ihnen. Wir liefern die Infrastruktur und den Nachweis dazu.' },
-  { titel: 'Kein Vertragsersatz', beschreibung: 'Unser AVV ergänzt, ersetzt aber nicht Ihre eigene Mandantenvereinbarung zur KI-Nutzung.' },
-];
+/**
+ * Für #angebote: Leiter ohne die €39-Dossier-Stufe (die bleibt als SKU voll
+ * erreichbar — Ratgeber-Upsell, direkter Link — nur nicht mehr auf der
+ * Startseite gezeigt), Compliance hervorgehoben. Kopie, nie die geteilten
+ * LEITER-Objekte mutieren — ArtikelUpsell.astro liest dieselben Objekte
+ * positionsbasiert (LEITER.slice(0,2)).
+ */
+const angeboteLeiter = LEITER.filter((s) => s.tarifId !== 'dossier').map((s) =>
+  s.tarifId === 'compliance' ? { ...s, hervorgehoben: true } : s
+);
 
 const faq = [
   {
+    frage: 'Kann ich mit meiner bestehenden Cloud starten?',
+    antwort: 'Ja, genau das ist der Sidecar-Ansatz: Nachweis läuft neben Ihrer bestehenden Azure-OpenAI-, Bedrock- oder Cloud-Inferenz und übernimmt nur die Prüfspur — Sie ändern nichts an Ihrer Infrastruktur. Reicht Ihre eigene Cloud für einen Fall nicht aus (z. B. kein passendes EU-Modell, ein besonders sensibles Mandat), hosten wir die Inferenz stattdessen vollständig — siehe „Angebote".',
+  },
+  {
+    frage: 'Was hat der Betriebsrat damit zu tun?',
+    antwort: 'Wenn Ihr Unternehmen einen Betriebsrat hat und die KI Verhalten oder Leistung von Mitarbeitenden erfassen kann, greift die Mitbestimmung nach § 87 Abs. 1 Nr. 6 BetrVG. Die Prüfspur beantwortet dieselbe Frage wie für Ihren Datenschutzbeauftragten: wer hat wann worauf zugegriffen, mit welchem Modell, bei welchem Anbieter.',
+  },
+  {
+    frage: 'Was, wenn unser bisheriger Anbieter in den USA sitzt?',
+    antwort: 'Dann unterliegt er dem US CLOUD Act — US-Behörden können theoretisch Zugriff auf dort verarbeitete Daten verlangen, unabhängig vom Serverstandort. Unsere Routingliste für gehostete Inferenz ist ausschließlich EU-jurisdiktionell (Scaleway, IONOS, Mistral AI, OVHcloud), ohne Fallback außerhalb.',
+  },
+  {
     frage: 'Ist Nachweis selbst ein Berufsgeheimnisträger-konformer Subprozessor?',
     antwort: 'Wir sind Ihr Auftragsverarbeiter nach Art. 28 DSGVO und werden im Rahmen der Zusatzvereinbarung nach § 203 Abs. 3 StGB als mitwirkende Person eingebunden — vorausgesetzt, Sie schließen die entsprechende Vereinbarung mit uns ab. Ein Muster liegt unter „Unterlagen".',
-  },
-  {
-    frage: 'Was genau ist im §203-Freigabedossier für €39 enthalten?',
-    antwort: 'AVV-Vorlage nach Art. 28 DSGVO, die §203-Zusatzvereinbarung, ein vorausgefüllter Art. 30 VVT-Eintrag, eine DSB-Freigabevorlage mit vorformuliertem Begründungstext sowie TOM-Beschreibung und Subprozessorenliste. Alle Dokumente sind ausfüllbar, nicht nur zum Lesen. Der Betrag wird vollständig verrechnet, wenn Sie später ein Compliance-Abo abschließen.',
-  },
-  {
-    frage: 'Warum ist die Checkliste kostenlos, das Dossier aber nicht?',
-    antwort: 'Die Checkliste sagt Ihnen, was zu prüfen ist — das sollte niemandem etwas kosten. Das Dossier ist die Arbeit danach: fertige, unterschriftsreife Dokumente, mit denen Sie die Freigabe intern tatsächlich durchbekommen.',
   },
   {
     frage: 'Welche Modelle stehen zur Verfügung?',
@@ -108,12 +95,24 @@ const faq = [
     antwort: 'Ja, bis 5 Mio. Token ohne Zahlungsmittel. Danach informieren wir Sie, bevor Kosten entstehen.',
   },
   {
-    frage: 'Kann ich Nachweis neben meiner bestehenden KI-Lösung nutzen?',
-    antwort: 'Ja — sehen Sie sich den Sidecar-Ansatz unter „Integrationen" an. Sie erhalten die Prüfspur, ohne Ihre bestehende Inferenz zu ersetzen.',
-  },
-  {
     frage: 'Was kostet ein Machbarkeits-Check?',
     antwort: 'Zwischen €1.900 und €9.000 einmalig, abhängig von Umfang und Anzahl der zu integrierenden Kanäle. Details unter „Angebote".',
+  },
+  {
+    frage: 'Ist Nachweis Rechtsberatung?',
+    antwort: 'Nein. Nachweis ersetzt nicht die Prüfung durch Ihre eigene Rechtsberatung im Einzelfall.',
+  },
+  {
+    frage: 'Ist der Gateway ein Medizinprodukt?',
+    antwort: 'Nein — er verarbeitet, aber bewertet nicht, und ist damit kein Medizinprodukt im Sinne der MDR.',
+  },
+  {
+    frage: 'Übernimmt Nachweis meine Haftung?',
+    antwort: 'Nein. Ihre Berufspflichten bleiben bei Ihnen. Wir liefern die Infrastruktur und den Nachweis dazu.',
+  },
+  {
+    frage: 'Ersetzt der AVV meine Mandantenvereinbarung?',
+    antwort: 'Nein — unser AVV ergänzt, ersetzt aber nicht Ihre eigene Mandantenvereinbarung zur KI-Nutzung.',
   },
 ];
 ---
@@ -159,20 +158,25 @@ const faq = [
 
   <Kette gliedes={gliedes} slot="kette" />
 
-  <!-- 1. Hero — der Einstieg ist das Angebot, nicht die Produkttour. -->
+  <!-- 1. Hero — Sidecar ist das Hauptangebot; gehostete Inferenz ist der Eskalationspfad. -->
   <section id="hero" class="py-14 sm:py-20 border-b border-linie">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <Hero
-        marginalie="Für Berufsgeheimnisträger nach § 203 StGB"
-        primaryCta={{ label: 'Zugang anfragen', href: '/?tarif=compliance#zugang' }}
+        marginalie="Für Ihre bestehende KI — Azure OpenAI, Bedrock oder eigene Cloud"
+        primaryCta={{ label: 'Sidecar einrichten', href: '/kontakt?interesse=sidecar' }}
         secondaryCta={{ label: 'Playground öffnen', href: '/playground' }}
       >
-        <Fragment slot="titel">§ 203 StGB verbietet Ihnen ChatGPT. <span class="text-siegel">Nicht die KI.</span></Fragment>
+        <Fragment slot="titel">Der Betriebsrat blockt. Der DSB blockt. <span class="text-siegel">Wir liefern beiden den Nachweis.</span></Fragment>
         <Fragment slot="subtitel">
-          EU-Inferenz mit lückenloser, exportierbarer Prüfspur — der Nachweis, den Ihr Datenschutzbeauftragter verlangt, bevor er KI in Ihrer Kanzlei oder Praxis freigibt.
+          Nachweis läuft als Sidecar neben Ihrer bestehenden KI — Sie ändern nichts an Ihrer Infrastruktur, wir liefern die exportierbare Prüfspur. Reicht Ihre eigene Cloud für einen Fall nicht aus, hosten wir ihn.
         </Fragment>
 
-        <Kontingent slot="hinweis" variante="zeile" />
+        <div slot="hinweis" class="flex flex-col gap-2 items-start">
+          <Kontingent variante="zeile" />
+          <a href="/?tarif=compliance#zugang" class="font-mono text-xs text-blau-faint hover:text-siegel underline underline-offset-2" data-tarif-cta="hero-hosted-alt">
+            Lieber direkt gehostete Inferenz? Zugangsschlüssel sichern →
+          </a>
+        </div>
 
         <div slot="bullets">
           <span class="marke marke-neutral">Kein US-Fallback</span>
@@ -196,34 +200,158 @@ const faq = [
     </div>
   </section>
 
-  <!-- 2. Problem -->
+  <!-- 2. Problem — breite Blocker, nicht mehr §203-exklusiv. -->
   <section id="problem" class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <p class="marginalie mb-3">Das Problem</p>
-      <h2 class="display display-l text-blau max-w-3xl">Drei Gründe, warum „einfach ChatGPT nehmen" für Sie keine Option ist.</h2>
+      <h2 class="display display-l text-blau max-w-3xl">Drei Gründe, warum „einfach ChatGPT nehmen" keine Option ist.</h2>
       <div class="mt-10 grid md:grid-cols-3 gap-px bg-linie border border-linie">
-        <div class="bg-bogen-rein p-6">
-          <p class="font-mono text-xs text-sperr font-semibold">§ 203 Abs. 3 StGB</p>
-          <p class="mt-2 font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">Mitwirkende Personen</p>
-          <p class="mt-2 text-sm text-blau-soft leading-relaxed">Ein externer KI-Anbieter darf nur unter engen Voraussetzungen Zugang zu Berufsgeheimnissen erhalten — ohne belastbare Vereinbarung machen Sie sich strafbar.</p>
-        </div>
         <div class="bg-bogen-rein p-6">
           <p class="font-mono text-xs text-sperr font-semibold">Art. 28 DSGVO</p>
           <p class="mt-2 font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">Kein unterschreibbarer AVV</p>
           <p class="mt-2 text-sm text-blau-soft leading-relaxed">Mit einem US-Anbieter, dessen Verarbeitung Sie nicht auditierbar nachweisen können, lässt sich kein belastbarer Auftragsverarbeitungsvertrag schließen.</p>
         </div>
         <div class="bg-bogen-rein p-6">
-          <p class="font-mono text-xs text-sperr font-semibold">Art. 30 DSGVO</p>
-          <p class="mt-2 font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">Dokumentationspflicht</p>
-          <p class="mt-2 text-sm text-blau-soft leading-relaxed">Sie müssen jede Verarbeitung in Ihr Verarbeitungsverzeichnis eintragen können — ein „wir nutzen halt KI" reicht bei einer Prüfung nicht.</p>
+          <p class="font-mono text-xs text-sperr font-semibold">US CLOUD Act · GeschGehG</p>
+          <p class="mt-2 font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">Fremdes Zugriffsrecht</p>
+          <p class="mt-2 text-sm text-blau-soft leading-relaxed">Ein US-Anbieter unterliegt dem US CLOUD Act — US-Behörden können Zugriff verlangen, unabhängig vom Serverstandort. Für Geschäftsgeheimnisse nach dem GeschGehG löst eine EU-AVV allein das nicht.</p>
+        </div>
+        <div class="bg-bogen-rein p-6">
+          <p class="font-mono text-xs text-sperr font-semibold">§ 87 Abs. 1 Nr. 6 BetrVG</p>
+          <p class="mt-2 font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">Der Betriebsrat redet mit</p>
+          <p class="mt-2 text-sm text-blau-soft leading-relaxed">KI-Systeme, die Verhalten oder Leistung von Mitarbeitenden erfassen können, unterliegen der Mitbestimmung. Ohne Betriebsvereinbarung steht ein Rollout auf wackligen Beinen — unabhängig davon, ob die Technik selbst compliant ist.</p>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- 3. Sidecar — das Hauptangebot: Prüfspur über die KI, die Sie schon haben. -->
+  <section id="sidecar" class="py-16 sm:py-20 border-b border-linie">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="marginalie mb-3">Das Angebot</p>
+      <h2 class="display display-l text-blau max-w-2xl">Ihre KI, unsere Prüfspur.</h2>
+      <p class="mt-4 text-blau-soft max-w-2xl leading-relaxed">
+        Sie müssen Ihre bestehende KI-Lösung nicht ersetzen, um zu starten. Nachweis läuft als Sidecar neben Ihrer aktuellen Inferenz — Azure OpenAI, AWS Bedrock oder eigene Cloud — und übernimmt ausschließlich die Prüfspur. Derselbe Nutzen, ohne Umstellungsrisiko und ohne eigene GPU-Kosten.
+      </p>
+      <div class="mt-10 border border-linie bg-bogen-rein p-8 sm:p-10 grid lg:grid-cols-[1.2fr_1fr] gap-8 items-center">
+        <div>
+          <p class="marginalie mb-3">Wie es funktioniert</p>
+          <h3 class="display display-m text-blau">Sie ändern nichts an Ihrer Infrastruktur.</h3>
+          <p class="mt-4 text-sm text-blau-soft leading-relaxed max-w-lg">
+            Der Sidecar beobachtet Ihre bestehenden Anfragen und schreibt dieselbe Prüfspur, die Sie im Playground sehen — Modell, Subprozessor, Hash, Zeitstempel. Reicht Ihre eigene Cloud für einen Fall nicht aus, etwa weil kein passendes EU-Modell verfügbar ist oder ein Mandat besonders sensibel ist, hosten wir die Inferenz stattdessen vollständig.
+          </p>
+        </div>
+        <a href="/kontakt?interesse=sidecar" class="knopf knopf-siegel w-full sm:w-fit sm:ml-auto" data-tarif-cta="sidecar">Sidecar einrichten</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Playground -->
+  <section id="playground" class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-end justify-between gap-4 flex-wrap mb-8">
+        <div>
+          <p class="marginalie mb-3">Playground</p>
+          <h2 class="display display-l text-blau">Probieren Sie den Ernstfall aus.</h2>
+        </div>
+        <a href="/playground" class="text-sm font-semibold text-siegel hover:underline">Playground in voller Größe →</a>
+      </div>
+      <Playground compact />
+    </div>
+  </section>
+
+  <!-- 5. Der Nachweis — die größte Fläche der Seite, inkl. Exportformate. -->
+  <section id="nachweis" class="py-16 sm:py-24 border-b border-linie">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <p class="marginalie mb-3">Der Nachweis</p>
+          <h2 class="display display-l text-blau">Nicht die Tokens sind das Produkt. <span class="text-siegel">Diese Zeile ist es.</span></h2>
+          <p class="mt-5 text-blau-soft leading-relaxed max-w-lg">
+            Jede EU-Inferenzplattform verkauft Ihnen Tokens und einen PDF-AVV. Keine gibt Ihrem Datenschutzbeauftragten oder Prüfer eine per Anfrage exportierbare Beweiskette. Das ist der Unterschied zwischen „wir sind konform" und „hier ist der Beweis".
+          </p>
+          <dl class="mt-8 space-y-4 text-sm">
+            <div class="flex gap-3">
+              <dt class="font-mono text-blau-faint w-32 shrink-0">modell</dt>
+              <dd class="text-blau-soft">welches Modell tatsächlich geantwortet hat</dd>
+            </div>
+            <div class="flex gap-3">
+              <dt class="font-mono text-blau-faint w-32 shrink-0">subprozessor</dt>
+              <dd class="text-blau-soft">wer die Anfrage verarbeitet hat, namentlich</dd>
+            </div>
+            <div class="flex gap-3">
+              <dt class="font-mono text-blau-faint w-32 shrink-0">hash</dt>
+              <dd class="text-blau-soft">verkettet mit der vorherigen Anfrage, manipulationssicher</dd>
+            </div>
+            <div class="flex gap-3">
+              <dt class="font-mono text-blau-faint w-32 shrink-0">ablageort</dt>
+              <dd class="text-blau-soft">Prüfspur liegt immer auf eigener DataFortress-Infrastruktur in Frankfurt — ob Sidecar über Ihre Cloud oder vollständig gehostet</dd>
+            </div>
+          </dl>
+        </div>
+        <RekordKarte
+          kopf="req_5d94e120 · vollständig"
+          felder={[
+            { schluessel: 'anfrage_id', wert: 'req_5d94e120' },
+            { schluessel: 'modell', wert: 'nachweis-llm-70b' },
+            { schluessel: 'subprozessor', wert: 'Keiner — DataFortress.cloud GmbH', ton: 'gut' },
+            { schluessel: 'rechenzentrum', wert: 'Frankfurt, DE · eigenes RZ' },
+            { schluessel: 'retention', wert: 'kein Training · 0 Tage' },
+            { schluessel: 'tokens_in / out', wert: '890 / 143' },
+            { schluessel: 'hash', wert: 'c91a3e6f204b8d71…' },
+            { schluessel: 'vorgänger_hash', wert: '7be1c4a9f3d820e6…' },
+          ]}
+          fuss="Exportierbar als Art. 30 VVT-Eintrag, signiertes PDF oder CSV."
+        />
+      </div>
+
+      <p class="mt-16 marginalie mb-3">Was Sie damit exportieren</p>
+      <h3 class="display display-m text-blau max-w-2xl">Vier Dokumente, die Sie mit einem Klick bekommen.</h3>
+      <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-linie border border-linie">
+        {exporte.map((e) => (
+          <div class="bg-bogen-rein p-6">
+            <p class="font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">{e.titel}</p>
+            <p class="mt-2 text-sm text-blau-soft leading-relaxed">{e.beschreibung}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Handlungspfad mitten im langen Erklärteil, nicht erst nach dem Scrollen. -->
+      <div class="mt-10 flex flex-wrap items-center gap-4">
+        <a href="/?tarif=compliance#zugang" class="knopf knopf-siegel" data-tarif-cta="nachweis-inline">Zugangsschlüssel sichern</a>
+        <Kontingent variante="zeile" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Unterlagen + Belege, zusammengeführt — Dokumenten-Vertrauen statt Kundenzitate. -->
+  <section id="unterlagen" class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <p class="marginalie mb-3">Unterlagen</p>
+        <h2 class="display display-l text-blau max-w-2xl mx-auto">Laden Sie herunter, was Ihr Datenschutzbeauftragter braucht — ohne sich anzumelden.</h2>
+        <p class="mt-4 text-blau-soft max-w-xl mx-auto leading-relaxed">
+          AVV, TOM, Subprozessorenliste, §203-Zusatzvereinbarung und ein VVT-Muster. Kein Formular, keine E-Mail-Pflicht.
+        </p>
+        <a href="/unterlagen" class="knopf knopf-linie mt-7">Unterlagen ansehen</a>
+      </div>
+
+      <div class="mt-14">
+        <p class="marginalie mb-3">Fakten statt Zitate</p>
+        <h3 class="display display-m text-blau max-w-2xl">Wir zitieren keine Kunden, die wir noch nicht haben. Das hier stimmt trotzdem.</h3>
+        <div class="mt-8">
+          <Belege />
+        </div>
+      </div>
+
+      <p class="mt-8 text-sm text-blau-faint max-w-2xl">
+        Zusätzlich Berufsgeheimnisträger — Kanzlei, Praxis, Steuerberatung? Die §203-Zusatzvereinbarung oben ist genau dafür.
+      </p>
+    </div>
+  </section>
+
   <!--
-    3. Checkliste — die kostenlose Stufe der Angebotsleiter, bewusst direkt
-    hinter dem Schmerz und lange vor der Preistabelle. Einziges Feld: E-Mail.
+    7. Checkliste — die kostenlose Stufe der Angebotsleiter. Einziges Feld: E-Mail.
   -->
   <section id="checkliste" class="py-16 sm:py-20 border-b border-linie">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -257,172 +385,13 @@ const faq = [
     </div>
   </section>
 
-  <!-- 4. Der Nachweis — die größte Fläche der Seite, inkl. Exportformate. -->
-  <section id="nachweis" class="py-16 sm:py-24 border-b border-linie bg-bogen-tief">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid lg:grid-cols-2 gap-12 items-center">
-        <div>
-          <p class="marginalie mb-3">Der Nachweis</p>
-          <h2 class="display display-l text-blau">Nicht die Tokens sind das Produkt. <span class="text-siegel">Diese Zeile ist es.</span></h2>
-          <p class="mt-5 text-blau-soft leading-relaxed max-w-lg">
-            Jede EU-Inferenzplattform verkauft Ihnen Tokens und einen PDF-AVV. Keine gibt Ihrem Datenschutzbeauftragten oder Prüfer eine per Anfrage exportierbare Beweiskette. Das ist der Unterschied zwischen „wir sind konform" und „hier ist der Beweis".
-          </p>
-          <dl class="mt-8 space-y-4 text-sm">
-            <div class="flex gap-3">
-              <dt class="font-mono text-blau-faint w-32 shrink-0">modell</dt>
-              <dd class="text-blau-soft">welches Modell tatsächlich geantwortet hat</dd>
-            </div>
-            <div class="flex gap-3">
-              <dt class="font-mono text-blau-faint w-32 shrink-0">subprozessor</dt>
-              <dd class="text-blau-soft">wer die Anfrage verarbeitet hat, namentlich</dd>
-            </div>
-            <div class="flex gap-3">
-              <dt class="font-mono text-blau-faint w-32 shrink-0">hash</dt>
-              <dd class="text-blau-soft">verkettet mit der vorherigen Anfrage, manipulationssicher</dd>
-            </div>
-          </dl>
-        </div>
-        <RekordKarte
-          kopf="req_5d94e120 · vollständig"
-          felder={[
-            { schluessel: 'anfrage_id', wert: 'req_5d94e120' },
-            { schluessel: 'modell', wert: 'nachweis-llm-70b' },
-            { schluessel: 'subprozessor', wert: 'Keiner — DataFortress.cloud GmbH', ton: 'gut' },
-            { schluessel: 'rechenzentrum', wert: 'Frankfurt, DE · eigenes RZ' },
-            { schluessel: 'retention', wert: 'kein Training · 0 Tage' },
-            { schluessel: 'tokens_in / out', wert: '890 / 143' },
-            { schluessel: 'hash', wert: 'c91a3e6f204b8d71…' },
-            { schluessel: 'vorgänger_hash', wert: '7be1c4a9f3d820e6…' },
-          ]}
-          fuss="Exportierbar als Art. 30 VVT-Eintrag, signiertes PDF oder CSV."
-        />
-      </div>
-
-      <p class="mt-16 marginalie mb-3">Was Sie damit exportieren</p>
-      <h3 class="display display-m text-blau max-w-2xl">Vier Dokumente, die Sie mit einem Klick bekommen.</h3>
-      <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-linie border border-linie">
-        {exporte.map((e) => (
-          <div class="bg-bogen-rein p-6">
-            <p class="font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">{e.titel}</p>
-            <p class="mt-2 text-sm text-blau-soft leading-relaxed">{e.beschreibung}</p>
-          </div>
-        ))}
-      </div>
-
-      <!-- Handlungspfad mitten im langen Erklärteil, nicht erst nach dem Scrollen. -->
-      <div class="mt-10 flex flex-wrap items-center gap-4">
-        <a href="/?tarif=compliance#zugang" class="knopf knopf-siegel" data-tarif-cta="nachweis-inline">Zugang anfragen</a>
-        <Kontingent variante="zeile" />
-      </div>
-    </div>
-  </section>
-
-  <!-- 5. Playground -->
-  <section id="playground" class="py-16 sm:py-20 border-b border-linie">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-end justify-between gap-4 flex-wrap mb-8">
-        <div>
-          <p class="marginalie mb-3">Playground</p>
-          <h2 class="display display-l text-blau">Probieren Sie den Ernstfall aus.</h2>
-        </div>
-        <a href="/playground" class="text-sm font-semibold text-siegel hover:underline">Playground in voller Größe →</a>
-      </div>
-      <Playground compact />
-    </div>
-  </section>
-
-  <!-- 6. Die drei Säulen -->
-  <section id="saeulen" class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">Die drei Säulen</p>
-      <h2 class="display display-l text-blau max-w-2xl">Nicht nur, welcher EU-Anbieter — sondern ob es überhaupt einen gibt.</h2>
-      <p class="mt-4 text-blau-soft max-w-2xl leading-relaxed">
-        Säule 2 und 3 lösen die Subprozessor-Frage nicht durch eine bessere Wahl, sondern indem es keinen externen Subprozessor mehr gibt.
-      </p>
-
-      <!--
-        Geführte Antwort zuerst (Säule 2, der Standard), statt drei
-        gleichrangige Infrastruktur-Spezifikationen nebeneinander — Details
-        zu Subprozessor/Rechenzentrum sind wichtig für die Freigabe, aber
-        keine Startinformation für einen Besucher, der noch entscheidet,
-        ob er das Produkt überhaupt will.
-      -->
-      <div class="mt-10 border border-siegel bg-bogen-rein p-7 sm:p-8 max-w-3xl">
-        <span class="marke marke-siegel w-fit">{saeuleStandard.kurzname} · {saeuleStandard.kosten} · Standard</span>
-        <p class="mt-3 font-display font-bold text-blau text-lg leading-snug" style="font-variation-settings: 'wdth' 90;">{saeuleStandard.name}</p>
-        <p class="mt-2 text-sm text-blau-soft leading-relaxed">{saeuleStandard.beschreibung}</p>
-        <div class="mt-4 pt-4 border-t border-linie flex flex-wrap gap-x-6 gap-y-1 font-mono text-xs text-blau-faint">
-          <span>Subprozessor: {saeuleStandard.subprozessor}</span>
-          <span>Rechenzentrum: {saeuleStandard.rechenzentrum}</span>
-        </div>
-      </div>
-
-      <div class="mt-4 grid sm:grid-cols-2 gap-px bg-linie border border-linie max-w-3xl">
-        {saeulenAndere.map((s) => (
-          <div class:list={['bg-bogen-rein p-5', s.akzent === 'gold' && 'border-t-[3px] border-gold']}>
-            <span class={`marke ${s.akzent === 'blau' ? 'marke-neutral' : 'marke-gold'} w-fit`}>
-              {s.kurzname} · {s.kosten}
-            </span>
-            <p class="mt-2 text-xs text-blau-soft leading-relaxed">{s.eignung}</p>
-          </div>
-        ))}
-      </div>
-      <p class="mt-3 max-w-3xl text-xs text-blau-faint">
-        Details zu beiden im <a href="/playground" class="underline hover:no-underline text-blau-soft">Playground</a> oder auf <a href="/preise" class="underline hover:no-underline text-blau-soft">/preise</a>.
-      </p>
-
-      <div class="mt-8 border border-sperr bg-sperr-blass px-6 py-5 max-w-3xl">
-        <p class="marke marke-sperr mb-3">Fail closed</p>
-        <p class="text-sm text-blau leading-relaxed">
-          Für Säule 1 gilt: kein Fallback außerhalb der EU-Routingliste. Ist kein EU-Modell verfügbar, schlägt die Anfrage fehl — sie wird nicht umgeleitet. Für Säule 2/3 stellt sich die Frage erst gar nicht — sehen Sie sich das im <a href="/playground" class="underline hover:no-underline">Playground</a> an.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!--
-    7. Belege — sozialer Nachweis zwischen Lösung und Angebot. Bewusst ohne
-    Kundenzitate: siehe src/lib/belege.ts. Die Ehrlichkeit darüber ist für
-    ein Compliance-Produkt selbst ein Vertrauenssignal.
-  -->
-  <section id="belege" class="py-16 sm:py-20 border-b border-linie">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">Fakten statt Zitate</p>
-      <h2 class="display display-l text-blau max-w-2xl">Wir zitieren keine Kunden, die wir noch nicht haben. Das hier stimmt trotzdem.</h2>
-      <div class="mt-10">
-        <Belege />
-      </div>
-    </div>
-  </section>
-
-  <!-- 8. Für wen -->
-  <section id="fuer-wen" class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">Für wen</p>
-      <h2 class="display display-l text-blau max-w-2xl">§ 203 Abs. 1 StGB nennt Sie namentlich.</h2>
-      <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-linie border border-linie">
-        {['Steuerberater · Wirtschaftsprüfer', 'Rechtsanwälte · Notare', 'Ärzte · Zahnärzte', 'Psychotherapeuten', 'Ambulante Pflegedienste', 'Sonstige Berufsgeheimnisträger'].map((b) => (
-          <div class="bg-bogen-rein p-6 text-sm font-semibold text-blau">{b}</div>
-        ))}
-      </div>
-      <div class="mt-10 grid md:grid-cols-3 gap-6">
-        {szenarien.map((s) => (
-          <div class="border-l-2 border-siegel pl-4">
-            <p class="font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">{s.beruf}</p>
-            <p class="mt-1.5 text-sm text-blau-soft leading-relaxed">{s.problem}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- 9. Integrationen — inkl. Sidecar, damit vor dem Angebot ein Abschnitt weniger steht. -->
-  <section id="integrationen" class="py-16 sm:py-20 border-b border-linie">
+  <!-- 8. Integrationen — Kanäle für den gehosteten Pfad; der Sidecar-Pitch steht bereits oben. -->
+  <section id="integrationen" class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-end justify-between gap-4 flex-wrap">
         <div>
           <p class="marginalie mb-3">Integrationen</p>
-          <h2 class="display display-l text-blau max-w-xl">Da, wo Sie ohnehin schon arbeiten.</h2>
+          <h2 class="display display-l text-blau max-w-xl">Wenn Sie doch gehostete Inferenz wollen: da, wo Sie ohnehin schon arbeiten.</h2>
         </div>
         <a href="/integrationen" class="text-sm font-semibold text-siegel hover:underline">Alle Kanäle ansehen →</a>
       </div>
@@ -431,35 +400,25 @@ const faq = [
           <span class="marke marke-neutral !text-sm !py-1.5 !px-3">{k}</span>
         ))}
       </div>
-
-      <div class="mt-10 border border-linie bg-bogen-rein p-8 sm:p-10 grid lg:grid-cols-[1.2fr_1fr] gap-8 items-center">
-        <div>
-          <p class="marginalie mb-3">Für Vorsichtige</p>
-          <h3 class="display display-m text-blau">Sie nutzen bereits Azure OpenAI? Nehmen Sie nur die Prüfspur.</h3>
-          <p class="mt-4 text-sm text-blau-soft leading-relaxed max-w-lg">
-            Sie müssen Ihre bestehende KI-Lösung nicht ersetzen, um zu starten. Nachweis kann als Sidecar neben Ihrer aktuellen Inferenz laufen und ausschließlich die Protokollierung übernehmen — derselbe Nutzen, ohne Umstellungsrisiko.
-          </p>
-        </div>
-        <a href="/kontakt?interesse=sidecar" class="knopf knopf-linie w-full sm:w-fit sm:ml-auto" data-tarif-cta="sidecar">Sidecar anfragen</a>
-      </div>
     </div>
   </section>
 
   <!--
-    10. Angebote — die Leiter. Ersetzt die frühere Token-Preistabelle an
-    dieser Stelle: hier fällt die Kaufentscheidung, Abrechnungsdetails
+    9. Angebote — der gehostete Pfad, ausdrücklich als Eskalation zum Sidecar
+    gerahmt, nicht als Haupteinstieg. Ersetzt die frühere Token-Preistabelle
+    an dieser Stelle: hier fällt die Kaufentscheidung, Abrechnungsdetails
     stehen auf /preise.
   -->
-  <section id="angebote" class="py-16 sm:py-24 border-b border-linie bg-bogen-tief">
+  <section id="angebote" class="py-16 sm:py-24 border-b border-linie">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <p class="marginalie mb-3">Angebote</p>
-      <h2 class="display display-l text-blau max-w-2xl">Drei Stufen — Sie steigen ein, wo Sie gerade stehen.</h2>
+      <h2 class="display display-l text-blau max-w-2xl">Wenn Sie lieber vollständig gehostete Inferenz wollen.</h2>
       <p class="mt-4 text-blau-soft max-w-2xl leading-relaxed">
-        Sie müssen nicht mit einem Vertrag anfangen. Fangen Sie mit der Checkliste an, kaufen Sie das Dossier, wenn Sie Papier brauchen — und buchen Sie die laufende Prüfspur erst, wenn KI bei Ihnen tatsächlich produktiv ist.
+        Statt eines Sidecars über Ihre bestehende Cloud: drei Stufen, Sie steigen ein, wo Sie stehen. Ein individueller Machbarkeits-Check kostet €1.900–9.000 einmalig — die laufende Prüfspur für €290 im Monat ist der günstigere, sofort startbare Weg dorthin.
       </p>
 
       <div class="mt-10">
-        <LeiterTabelle />
+        <LeiterTabelle stufen={angeboteLeiter} />
       </div>
 
       <div class="mt-8 flex flex-wrap items-center justify-between gap-4 border border-linie bg-bogen-rein px-6 py-4">
@@ -471,11 +430,11 @@ const faq = [
     </div>
   </section>
 
-  <!-- 11. Zugang — direkt hinter dem Angebot, ohne Zwischenabschnitte. -->
-  <section id="zugang" class="py-16 sm:py-20 border-b border-linie">
+  <!-- 10. Zugang — der Eskalationspfad zur gehosteten Inferenz. -->
+  <section id="zugang" class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
       <p class="marginalie mb-3 text-center">Zugang</p>
-      <h2 class="display display-l text-blau text-center">Zugang anfragen.</h2>
+      <h2 class="display display-l text-blau text-center">Zugangsschlüssel sichern.</h2>
       <p class="mt-4 text-blau-soft text-center leading-relaxed">Keine Kreditkarte, kein Verkaufsgespräch. Wir vergeben Zugangsschlüssel aktuell manuell.</p>
       <Kontingent class="mt-8" />
       <div class="mt-4">
@@ -484,73 +443,7 @@ const faq = [
     </div>
   </section>
 
-  <!-- 12. Unterlagen -->
-  <section id="unterlagen" class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <p class="marginalie mb-3">Unterlagen</p>
-      <h2 class="display display-l text-blau max-w-2xl mx-auto">Laden Sie herunter, was Ihr Datenschutzbeauftragter braucht — ohne sich anzumelden.</h2>
-      <p class="mt-4 text-blau-soft max-w-xl mx-auto leading-relaxed">
-        AVV, TOM, Subprozessorenliste, §203-Zusatzvereinbarung und ein VVT-Muster. Kein Formular, keine E-Mail-Pflicht.
-      </p>
-      <a href="/unterlagen" class="knopf knopf-linie mt-7">Unterlagen ansehen</a>
-    </div>
-  </section>
-
-  <!-- 13. EU-KI-Recht & Ratgeber — die beiden Wissensflächen, gemeinsam,
-       damit die Startseite nicht noch einen Abschnitt mehr bekommt. -->
-  <section id="eu-ki-recht" class="py-16 sm:py-20 border-b border-linie">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">Wissen</p>
-      <h2 class="display display-l text-blau max-w-2xl">Was beim KI-Einsatz wirklich gilt.</h2>
-      <div class="mt-10 grid md:grid-cols-2 gap-px bg-linie border border-linie">
-        <div class="bg-bogen-rein p-7 flex flex-col">
-          <p class="font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">EU-KI-Recht im Überblick</p>
-          <p class="mt-2.5 text-sm text-blau-soft leading-relaxed flex-1">
-            AI Act, DSGVO und § 203 StGB verständlich erklärt — für jedes Unternehmen, mit zusätzlicher Tiefe für Berufsgeheimnisträger. Inklusive Fristen-Zeitstrahl.
-          </p>
-          <a href="/eu-ki-recht" class="knopf knopf-linie mt-6 w-full sm:w-fit">EU-KI-Recht ansehen</a>
-        </div>
-        <div class="bg-bogen-rein p-7 flex flex-col">
-          <p class="font-display font-bold text-blau" style="font-variation-settings: 'wdth' 90;">Ratgeber nach Berufsgruppe</p>
-          <p class="mt-2.5 text-sm text-blau-soft leading-relaxed">
-            Konkrete Leitfäden zu den Fragen, die uns am häufigsten gestellt werden:
-          </p>
-          <ul class="mt-4 space-y-2 flex-1">
-            {[
-              { href: '/ratgeber/chatgpt-kanzlei-datenschutz', label: 'ChatGPT in der Kanzlei — was § 203 StGB verbietet' },
-              { href: '/ratgeber/chatgpt-steuerberater', label: 'ChatGPT für Steuerberater — Mandantendaten' },
-              { href: '/ratgeber/ki-arztpraxis-datenschutz', label: 'KI in der Arztpraxis — Patientendaten' },
-              { href: '/ratgeber/avv-ki-anbieter', label: 'AVV mit KI-Anbietern nach Art. 28 DSGVO' },
-            ].map((a) => (
-              <li class="flex items-start gap-2.5 text-sm">
-                <span class="mt-1.5 h-1.5 w-1.5 shrink-0 bg-siegel"></span>
-                <a href={a.href} class="text-blau-soft hover:text-siegel transition-colors">{a.label}</a>
-              </li>
-            ))}
-          </ul>
-          <a href="/ratgeber" class="knopf knopf-linie mt-6 w-full sm:w-fit">Alle Ratgeber ansehen</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 14. Was es nicht ist — Einschränkungen bewusst nach dem Formular. -->
-  <section id="nicht" class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">Zur Klarheit</p>
-      <h2 class="display display-l text-blau max-w-2xl">Was Nachweis nicht ist.</h2>
-      <div class="mt-10 grid sm:grid-cols-2 gap-px bg-linie border border-linie">
-        {nicht.map((n) => (
-          <div class="bg-bogen-rein p-6">
-            <p class="font-display font-bold text-sperr" style="font-variation-settings: 'wdth' 90;">{n.titel}</p>
-            <p class="mt-2 text-sm text-blau-soft leading-relaxed">{n.beschreibung}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- 15. FAQ -->
+  <!-- 11. FAQ -->
   <section id="faq" class="py-16 sm:py-20 border-b border-linie">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       <p class="marginalie mb-3">FAQ</p>
@@ -569,21 +462,21 @@ const faq = [
     </div>
   </section>
 
-  <!-- 16. Abschluss — die Seite endet auf einer Handlung, nicht auf einer Frage. -->
+  <!-- 12. Abschluss — die Seite endet auf einer Handlung, nicht auf einer Frage. -->
   <section id="abschluss" class="py-20 sm:py-24 bg-blau-tief text-bogen">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <span class="marke marke-dunkel">Noch {frei} Plätze diesen Monat</span>
       <h2 class="mt-5 display display-l text-bogen">Ihr Datenschutzbeauftragter wartet auf einen Beleg. Holen Sie ihn sich.</h2>
       <p class="mt-5 text-bogen/70 leading-relaxed max-w-xl mx-auto">
-        Fangen Sie kostenlos mit der Checkliste an oder fragen Sie direkt einen Zugangsschlüssel an — beides ohne Zahlungsmittel und ohne Verkaufsgespräch.
+        Sidecar über Ihre bestehende KI oder direkt gehostete Inferenz — beides ohne Zahlungsmittel und ohne Verkaufsgespräch.
       </p>
       <div class="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3">
-        <a href="/?tarif=compliance#zugang" class="knopf knopf-siegel w-full sm:w-auto" data-tarif-cta="abschluss">
-          Zugang anfragen
+        <a href="/kontakt?interesse=sidecar" class="knopf knopf-siegel w-full sm:w-auto" data-tarif-cta="abschluss-sidecar">
+          Sidecar einrichten
           <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
         </a>
-        <a href="#checkliste" class="knopf knopf-dunkel w-full sm:w-auto" data-tarif-cta="abschluss-checkliste">
-          Erst die Checkliste
+        <a href="/?tarif=compliance#zugang" class="knopf knopf-dunkel w-full sm:w-auto" data-tarif-cta="abschluss-zugang">
+          Direkt gehostete Inferenz
         </a>
       </div>
     </div>
