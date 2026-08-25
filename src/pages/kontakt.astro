@@ -1,11 +1,8 @@
 ---
 import Site from '../layouts/Site.astro';
-import TrackingFields from '@justinguese/astro-kit/TrackingFields.astro';
+import FormBlock from '@justinguese/astro-kit/FormBlock.astro';
 import ConversionTracking from '@justinguese/astro-kit/ConversionTracking.astro';
-import { formspreeAction } from '@justinguese/astro-kit/lib/site';
 import { site } from '../config/site';
-
-const landingPage = Astro.url.pathname;
 
 const title = 'Kontakt | Nachweis';
 const description = 'Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Compliance-Tarif? Schreiben Sie uns.';
@@ -26,16 +23,15 @@ const description = 'Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Complia
         <p class="mt-2">Danke! Ihre Nachricht ist angekommen — wir melden uns in Kürze.</p>
       </div>
 
-      <form
-        id="kontakt-form"
-        action={formspreeAction(site.formspreeId!)}
-        method="POST"
-        class="bg-surface border border-line p-6 sm:p-8 space-y-5"
+      <FormBlock
+        formspreeId={site.formspreeId!}
+        variant="allgemein"
+        name="kontakt"
+        success={{ flag: 'kontakt_gesendet' }}
+        submitLabel="Nachricht senden"
+        class="kontakt-form bg-surface border border-line p-6 sm:p-8 space-y-5"
       >
-        <input type="hidden" name="form" value="kontakt" />
         <input type="hidden" id="interesse-field" name="interesse" value="allgemein" />
-        <input type="hidden" id="next-field" name="_next" value={`${landingPage}?kontakt_gesendet=1`} />
-        <TrackingFields variant="allgemein" />
 
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
@@ -100,15 +96,12 @@ const description = 'Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Complia
           ></textarea>
         </div>
 
-        <button type="submit" class="knopf knopf-accent w-full !py-4">
-          Nachricht senden
-          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
-        </button>
+        <svg slot="submit-icon" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
 
-        <p class="font-mono text-xs text-ink-faint text-center">
+        <p slot="note" class="font-mono text-xs text-ink-faint text-center">
           Mit dem Absenden stimmen Sie unserer <a href="/datenschutz" class="underline hover:text-ink">Datenschutzerklärung</a> zu.
         </p>
-      </form>
+      </FormBlock>
     </div>
   </section>
 
@@ -128,7 +121,8 @@ const description = 'Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Complia
         if (preHeader) preHeader.textContent = copy[interesse];
         const interesseField = document.getElementById('interesse-field');
         if (interesseField) interesseField.value = interesse;
-        const nextField = document.getElementById('next-field');
+        // FormBlock's _next field has no id — select it by attribute instead.
+        const nextField = document.querySelector('.kontakt-form input[name="_next"]');
         if (nextField) nextField.value = nextField.value + `&interesse=${interesse}`;
       }
 
@@ -136,7 +130,7 @@ const description = 'Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Complia
       // übernimmt ConversionTracking unten (derselbe Flag-Name).
       if (params.get('kontakt_gesendet') === '1') {
         document.getElementById('sent-banner')?.classList.remove('hidden');
-        document.getElementById('kontakt-form')?.classList.add('hidden');
+        document.querySelector('.kontakt-form')?.classList.add('hidden');
       }
     })();
   </script>

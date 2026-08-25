@@ -1,4 +1,12 @@
 ---
+/**
+ * Not wrapped in `@justinguese/astro-kit`'s FormBlock: FormBlock's `_next` is
+ * a single value computed once from `success`, and its `submitLabel` is a
+ * static string — this form needs both to change client-side after the
+ * `?tarif=` param is read (see the script below), which FormBlock has no hook
+ * for. TrackingFields is still used directly, which is the part that matters
+ * (real UTM/click-id attribution on every submission).
+ */
 import TrackingFields from '@justinguese/astro-kit/TrackingFields.astro';
 import { formspreeAction } from '@justinguese/astro-kit/lib/site';
 import { site } from '../config/site';

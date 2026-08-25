@@ -413,6 +413,16 @@
   --color-signal: var(--color-accent);
 }
 
+/* FormBlock.astro's submit button is `width: 100%` by design (it's usually
+   the only thing on its own row). The Infografik form puts it next to an
+   email input in one flex row instead — without this it fights the input
+   for width. The installed 0.3.0 has no `submitClass` escape hatch yet. */
+.df-form--inline .df-form__submit {
+  width: auto;
+  padding-block: 0.75rem;
+  white-space: nowrap;
+}
+
 /* ---------------------------------------------------------------------------
    Langtext (Impressum / Datenschutz / AGB / Unterlagen) — Basisstruktur kommt
    aus @justinguese/astro-kit/styles/prose.css. Hier stehen nur die
