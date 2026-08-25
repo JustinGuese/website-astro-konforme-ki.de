@@ -15,15 +15,15 @@ const { Content } = await render(doc);
 ---
 
 <Site title={`${doc.data.title} | Nachweis`} description={doc.data.kurz}>
-  <div class="druck-kopf max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 text-xs text-blau-faint font-mono">
+  <div class="druck-kopf max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 text-xs text-ink-faint font-mono">
     konforme-ki.de/unterlagen/{doc.id} · {doc.data.version} · Stand: {doc.data.stand}
   </div>
 
   <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <div class="kein-druck flex items-center justify-between gap-4 flex-wrap mb-10 pb-6 border-b border-linie">
-      <a href="/unterlagen" class="text-sm font-semibold text-siegel hover:underline">← Alle Unterlagen</a>
+    <div class="kein-druck flex items-center justify-between gap-4 flex-wrap mb-10 pb-6 border-b border-line">
+      <a href="/unterlagen" class="text-sm font-semibold text-accent hover:underline">← Alle Unterlagen</a>
       <div class="flex items-center gap-3">
-        <span class="font-mono text-xs text-blau-faint">{doc.data.version} · Stand: {doc.data.stand}</span>
+        <span class="font-mono text-xs text-ink-faint">{doc.data.version} · Stand: {doc.data.stand}</span>
         <button type="button" onclick="window.print()" class="knopf knopf-linie !py-2 !px-3.5 !text-xs">Drucken / Als PDF</button>
       </div>
     </div>

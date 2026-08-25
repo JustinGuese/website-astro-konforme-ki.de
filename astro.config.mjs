@@ -1,5 +1,6 @@
 // @ts-check
 import sitemap from '@astrojs/sitemap';
+import { sitemapConfig } from '@justinguese/astro-kit/lib/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
 
@@ -7,24 +8,19 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: 'https://konforme-ki.de',
   integrations: [
-    sitemap({
-      filter: (page) => !page.includes('/pdf-quelle'),
-      // Startseite und Ratgeber sind die Einstiegspunkte aus der Suche;
-      // Rechtstexte werden indexiert, sollen aber nicht um Rang konkurrieren.
-      // `changefreq` wird bewusst weggelassen — Google wertet es nicht aus.
-      serialize(item) {
-        const pfad = new URL(item.url).pathname;
-        if (pfad === '/') item.priority = 1.0;
-        else if (pfad === '/ratgeber/') item.priority = 0.9;
-        else if (pfad.startsWith('/ratgeber/')) item.priority = 0.8;
-        else if (/^\/(impressum|datenschutz|agb|rdg-hinweis)\/$/.test(pfad))
-          item.priority = 0.2;
-        else item.priority = 0.6;
-        return item;
-      },
-    }),
+    sitemap(
+      sitemapConfig({
+        priorities: { '/': 1.0, '/ratgeber/': 0.9 },
+        legalPaths: ['/impressum', '/datenschutz', '/agb', '/rdg-hinweis'],
+        exclude: ['/pdf-quelle'],
+      }),
+    ),
   ],
   vite: {
     plugins: [tailwindcss()],
+    // Required while the kit is consumed via `npm link`: Astro keys its compile
+    // cache by resolved path, so a symlinked .astro component's scoped <style>
+    // can never be found. Harmless once installed from the registry.
+    resolve: { preserveSymlinks: true },
   },
 });

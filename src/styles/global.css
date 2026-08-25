@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "@justinguese/astro-kit/styles/tokens.css";
+@import "@justinguese/astro-kit/styles/prose.css";
 
 /* ============================================================================
    Nachweis — Design-System „Königsblau Ledger"
@@ -17,34 +19,39 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
   /* Grund — kühl, blaustichig, bewusst kein Creme */
-  --color-bogen: #f1f3f7;
-  --color-bogen-rein: #ffffff;
-  --color-bogen-tief: #e4e8f0;
+  --color-canvas: #f1f3f7;
+  --color-surface: #ffffff;
+  --color-canvas-deep: #e4e8f0;
 
   /* Königsblau — Tinte, dunkle Flächen */
-  --color-blau: #17243f;
-  --color-blau-tief: #0d1526;
-  --color-blau-soft: #46536e;
-  --color-blau-faint: #6b778f;
+  --color-ink: #17243f;
+  --color-ink-deep: #0d1526;
+  --color-ink-soft: #46536e;
+  --color-ink-faint: #6b778f;
 
   /* Siegel — Grünspan. Die einzige Handlungsfarbe. */
-  --color-siegel: #1e6b58;
-  --color-siegel-hell: #37a98c;
-  --color-siegel-blass: #dcece6;
+  --color-accent: #1e6b58;
+  --color-accent-bright: #37a98c;
+  --color-accent-pale: #dcece6;
+
+  /* Diese Seite hat keine eigene "positive" Zweitfarbe getrennt vom Siegel —
+     auf den Akzent aliasen, statt das Kit-Platzhaltergrau zu übernehmen. */
+  --color-support: var(--color-accent);
+  --color-support-bright: var(--color-accent-bright);
 
   /* Sperr — ausschließlich „fail closed" / blockiert. Nie Dekoration. */
-  --color-sperr: #b4341f;
-  --color-sperr-hell: #e4735e;
-  --color-sperr-blass: #f7e4e0;
+  --color-signal: #b4341f;
+  --color-signal-bright: #e4735e;
+  --color-signal-pale: #f7e4e0;
 
-  --color-linie: #cbd2e0;
-  --color-linie-dark: #26334f;
+  --color-line: #cbd2e0;
+  --color-line-deep: #26334f;
 
   /* Gold — ausschließlich Säule 3 (dediziert, in Ihrem Rechenzentrum). Keine
      weitere Verwendung, sonst verliert es seine Bedeutung als "höchste Stufe". */
-  --color-gold: #8a6a28;
-  --color-gold-hell: #c9a04e;
-  --color-gold-blass: #f2ead2;
+  --color-premium: #8a6a28;
+  --color-premium-bright: #c9a04e;
+  --color-premium-pale: #f2ead2;
 
   --shadow-karte: 0 1px 2px rgb(23 36 63 / 0.06), 0 8px 24px rgb(23 36 63 / 0.06);
   --shadow-karte-hoch: 0 2px 4px rgb(23 36 63 / 0.08), 0 16px 40px rgb(23 36 63 / 0.10);
@@ -57,12 +64,12 @@
   }
 
   ::selection {
-    background: var(--color-siegel);
+    background: var(--color-accent);
     color: #fff;
   }
 
   :focus-visible {
-    outline: 2.5px solid var(--color-siegel);
+    outline: 2.5px solid var(--color-accent);
     outline-offset: 2px;
   }
 
@@ -134,7 +141,7 @@
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-blau-faint);
+  color: var(--color-ink-faint);
 }
 
 /* ---------------------------------------------------------------------------
@@ -191,7 +198,7 @@
   top: 50%;
   width: 1px;
   height: calc(100% + 0.6rem);
-  background: var(--color-linie);
+  background: var(--color-line);
 }
 
 .kette-glied:last-child::before { display: none; }
@@ -202,15 +209,15 @@
   flex-shrink: 0;
   width: 7px;
   height: 7px;
-  background: var(--color-bogen);
-  border: 1.5px solid var(--color-linie);
+  background: var(--color-canvas);
+  border: 1.5px solid var(--color-line);
   border-radius: 50%;
   transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
 .kette-glied[data-aktiv="true"] .kette-punkt {
-  background: var(--color-siegel);
-  border-color: var(--color-siegel);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
 }
 
 .kette-text {
@@ -219,20 +226,20 @@
   font-family: var(--font-mono);
   font-size: 0.6rem;
   line-height: 1.35;
-  color: var(--color-blau-faint);
+  color: var(--color-ink-faint);
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.kette-glied[data-aktiv="true"] .kette-text { color: var(--color-blau-soft); }
+.kette-glied[data-aktiv="true"] .kette-text { color: var(--color-ink-soft); }
 
 .kette-hash {
   display: block;
   font-size: 0.54rem;
-  color: var(--color-linie);
+  color: var(--color-line);
 }
 
-.kette-glied[data-aktiv="true"] .kette-hash { color: var(--color-blau-faint); }
+.kette-glied[data-aktiv="true"] .kette-hash { color: var(--color-ink-faint); }
 
 /* Mobiler Ersatz: Fortschrittsstrich */
 .kette-strich {
@@ -241,7 +248,7 @@
   left: 0;
   height: 2px;
   width: 0%;
-  background: var(--color-siegel);
+  background: var(--color-accent);
   z-index: 60;
   transition: width 0.12s linear;
 }
@@ -257,9 +264,9 @@
 .rekord {
   font-family: var(--font-mono);
   font-size: 0.8125rem;
-  background: var(--color-blau-tief);
+  background: var(--color-ink-deep);
   color: #dbe2ef;
-  border: 1px solid var(--color-linie-dark);
+  border: 1px solid var(--color-line-deep);
 }
 
 .rekord-kopf {
@@ -268,11 +275,11 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 0.7rem 1rem;
-  border-bottom: 1px solid var(--color-linie-dark);
+  border-bottom: 1px solid var(--color-line-deep);
   font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-blau-faint);
+  color: var(--color-ink-faint);
 }
 
 .rekord-zeile {
@@ -286,7 +293,7 @@
 .rekord-zeile + .rekord-zeile { border-top: 1px solid rgb(38 51 79 / 0.5); }
 
 .rekord-schluessel {
-  color: var(--color-blau-faint);
+  color: var(--color-ink-faint);
   font-size: 0.72rem;
 }
 
@@ -295,15 +302,15 @@
   overflow-wrap: anywhere;
 }
 
-.rekord-wert-gut { color: var(--color-siegel-hell); }
-.rekord-wert-sperr { color: var(--color-sperr-hell); }
+.rekord-wert-ok { color: var(--color-accent-bright); }
+.rekord-wert-signal { color: var(--color-signal-bright); }
 
 .rekord-fuss {
   padding: 0.7rem 1rem;
-  border-top: 1px solid var(--color-linie-dark);
+  border-top: 1px solid var(--color-line-deep);
   background: rgb(23 36 63 / 0.5);
   font-size: 0.68rem;
-  color: var(--color-blau-faint);
+  color: var(--color-ink-faint);
 }
 
 @media (max-width: 480px) {
@@ -331,11 +338,11 @@
   white-space: nowrap;
 }
 
-.marke-siegel { color: var(--color-siegel); background: var(--color-siegel-blass); }
-.marke-sperr { color: var(--color-sperr); background: var(--color-sperr-blass); }
-.marke-neutral { color: var(--color-blau-faint); border-color: var(--color-linie); }
-.marke-dunkel { color: var(--color-siegel-hell); border-color: currentColor; background: transparent; }
-.marke-gold { color: var(--color-gold); background: var(--color-gold-blass); }
+.marke-accent { color: var(--color-accent); background: var(--color-accent-pale); }
+.marke-signal { color: var(--color-signal); background: var(--color-signal-pale); }
+.marke-neutral { color: var(--color-ink-faint); border-color: var(--color-line); }
+.marke-dunkel { color: var(--color-accent-bright); border-color: currentColor; background: transparent; }
+.marke-premium { color: var(--color-premium); background: var(--color-premium-pale); }
 
 /* ---------------------------------------------------------------------------
    Aufklappmenü in der Kopfzeile — <details>-basiert, also ohne JS bedienbar
@@ -344,7 +351,7 @@
    ------------------------------------------------------------------------ */
 
 .menue > summary::-webkit-details-marker { display: none; }
-.menue[open] > summary { color: var(--color-blau); }
+.menue[open] > summary { color: var(--color-ink); }
 .menue[open] > summary svg { transform: rotate(180deg); }
 
 .menue-tafel { z-index: 60; }
@@ -376,131 +383,37 @@
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-.knopf-siegel {
-  background: var(--color-siegel);
+.knopf-accent {
+  background: var(--color-accent);
   color: #fff;
 }
-.knopf-siegel:hover { background: #185745; }
+.knopf-accent:hover { background: color-mix(in srgb, var(--color-accent) 88%, black); }
 
 .knopf-linie {
   background: transparent;
-  color: var(--color-blau);
-  border-color: var(--color-linie);
+  color: var(--color-ink);
+  border-color: var(--color-line);
 }
-.knopf-linie:hover { border-color: var(--color-blau); background: var(--color-bogen-rein); }
+.knopf-linie:hover { border-color: var(--color-ink); background: var(--color-surface); }
 
 .knopf-dunkel {
   background: transparent;
   color: #e8edf6;
-  border-color: var(--color-linie-dark);
+  border-color: var(--color-line-deep);
 }
-.knopf-dunkel:hover { border-color: var(--color-siegel-hell); color: var(--color-siegel-hell); }
+.knopf-dunkel:hover { border-color: var(--color-accent-bright); color: var(--color-accent-bright); }
 
 /* ---------------------------------------------------------------------------
-   Langtext (Impressum / Datenschutz / AGB / Unterlagen)
+   Langtext (Impressum / Datenschutz / AGB / Unterlagen) — Basisstruktur kommt
+   aus @justinguese/astro-kit/styles/prose.css. Hier stehen nur die
+   Abweichungen, die bewusst NICHT von dort übernommen werden.
    ------------------------------------------------------------------------ */
 
-.article-body {
-  color: var(--color-blau-soft);
-  font-size: 1.0625rem;
-  line-height: 1.75;
-}
-.article-body > * + * { margin-top: 1.1em; }
-
-.article-body h1 {
-  font-family: var(--font-display);
-  font-variation-settings: "wdth" 87.5;
-  font-size: clamp(1.5rem, 3.6vw, 2.25rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-  color: var(--color-blau);
-  margin-bottom: 2rem;
-}
-
-.article-body h2 {
-  font-family: var(--font-display);
-  font-variation-settings: "wdth" 92;
-  font-size: 1.3rem;
-  line-height: 1.3;
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  color: var(--color-blau);
-  margin-top: 3rem;
-  margin-bottom: 1rem;
-  padding-bottom: 0.7rem;
-  border-bottom: 1px solid var(--color-linie);
-}
-.article-body > h2:first-child { margin-top: 0; }
-
-.article-body h3 {
-  font-family: var(--font-sans);
-  font-size: 1.1rem;
-  line-height: 1.4;
-  font-weight: 700;
-  color: var(--color-siegel);
-  margin-top: 2rem;
-  margin-bottom: 0.4rem;
-}
-
-.article-body h4 {
-  font-size: 1.0625rem;
-  font-weight: 700;
-  color: var(--color-blau);
-  margin-top: 1.6rem;
-  margin-bottom: 0.2rem;
-}
-
-.article-body p { margin: 0; }
-.article-body strong { color: var(--color-blau); font-weight: 600; }
-
-.article-body a {
-  color: var(--color-siegel);
-  text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--color-siegel) 35%, transparent);
-  transition: border-color 0.15s;
-}
-.article-body a:hover { border-bottom-color: var(--color-siegel); }
-
-.article-body ul, .article-body ol { padding-left: 1.5rem; margin: 1.1em 0; }
-.article-body ul { list-style: none; padding-left: 0; }
-.article-body ul > li {
-  position: relative;
-  padding-left: 1.4rem;
-  margin-top: 0.45rem;
-}
-.article-body ul > li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.72em;
-  width: 0.35rem;
-  height: 0.35rem;
-  background-color: var(--color-siegel);
-}
-.article-body ol { list-style: decimal; }
-.article-body ol > li { margin-top: 0.45rem; padding-left: 0.25rem; }
-.article-body ol > li::marker { color: var(--color-siegel); font-weight: 600; }
-
-.article-body blockquote {
-  border-left: 3px solid var(--color-siegel);
-  background: var(--color-bogen-tief);
-  padding: 1rem 1.25rem;
-  color: var(--color-blau);
-}
-.article-body blockquote > * + * { margin-top: 0.6em; }
-
-.article-body code {
-  font-family: var(--font-mono);
-  background: var(--color-bogen-tief);
-  padding: 0.12rem 0.38rem;
-  font-size: 0.88em;
-  color: var(--color-blau);
-}
-
+/* Der Kit-Import deckt <pre> nicht ab — ohne dies wären Codeblöcke
+   ungestylt. */
 .article-body pre {
   font-family: var(--font-mono);
-  background: var(--color-blau-tief);
+  background: var(--color-ink-deep);
   color: #dbe2ef;
   padding: 1rem 1.15rem;
   font-size: 0.82rem;
@@ -509,48 +422,33 @@
 }
 .article-body pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
 
-/* Markdown-Tabellen kommen ohne Wrapper aus dem Renderer. `display: block`
-   macht die Tabelle selbst zum Scroll-Container — sonst schiebt eine
-   vierspaltige Tabelle die ganze Seite horizontal auf. Die Zellen bleiben
-   dank anonymer Tabellenbox korrekt ausgerichtet; ein Rahmen geht nicht
-   verloren, weil die Rahmen ohnehin auf th/td liegen. */
+/* Tabellen dürfen die Seite nie horizontal schieben (realer Vorfall, siehe
+   AGENTS.md). Der Kit-Standard ist `width: 100%` + `min-width` auf Zellen —
+   das reißt genau dieses Problem wieder auf, deshalb bleibt es hier bei
+   `max-content` + `max-width: 100%` ohne `min-width`. */
 .article-body table {
-  display: block;
   width: max-content;
   max-width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  border-collapse: collapse;
-  font-size: 0.9375rem;
 }
-.article-body th, .article-body td {
-  border: 1px solid var(--color-linie);
-  padding: 0.5rem 0.7rem;
-  text-align: left;
-  vertical-align: top;
-}
-.article-body th {
-  background: var(--color-bogen-tief);
-  color: var(--color-blau);
-  font-weight: 600;
+.article-body td {
+  min-width: 0;
 }
 
-.article-body hr { border: 0; border-top: 1px solid var(--color-linie); margin: 2.5rem 0; }
-
-/* Tabellen dürfen die Seite nie horizontal schieben. Markdown-Tabellen werden
-   dazu beim Build automatisch hierin gehüllt (siehe astro.config.mjs). */
-.tabelle-scroll {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  max-width: 100%;
+/* Die Kit-Sonderbox für "erste Liste nach der ersten H2" ist rein
+   positionsbasiert und trifft in diesem Corpus nicht nur echte
+   Zusammenfassungen (agb.md „Auf einen Blick" passt, tom.md „1.
+   Vertraulichkeit" nicht) — deaktiviert statt dokumentabhängig zu raten. */
+.article-body > h2:first-of-type + ul {
+  background: none;
+  border-left: none;
+  padding: 0;
+  margin-top: 1.1em;
 }
-
-/* Auf schmalen Viewports mehr Text pro Zeile. Kein `min-width` — das würde
-   `max-width: 100%` überstimmen und die Seite doch wieder aufschieben. */
-@media (max-width: 640px) {
-  .article-body table { font-size: 0.82rem; }
-  .article-body th,
-  .article-body td { padding: 0.4rem 0.5rem; }
+.article-body > h2:first-of-type + ul > li {
+  padding-left: 1.5rem;
+}
+.article-body > h2:first-of-type + ul > li::before {
+  top: 0.7em;
 }
 
 /* ---------------------------------------------------------------------------

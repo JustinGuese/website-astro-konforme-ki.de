@@ -11,38 +11,38 @@ const { variante = 'block', class: klasse = '' } = Astro.props;
 ---
 
 {variante === 'zeile' ? (
-  <p class:list={['flex items-center gap-2.5 font-mono text-xs text-blau-soft', klasse]}>
+  <p class:list={['flex items-center gap-2.5 font-mono text-xs text-ink-soft', klasse]}>
     <span class="relative flex h-2 w-2 shrink-0">
-      <span class="absolute inline-flex h-full w-full animate-ping bg-siegel opacity-60 motion-reduce:hidden"></span>
-      <span class="relative inline-flex h-2 w-2 bg-siegel"></span>
+      <span class="absolute inline-flex h-full w-full animate-ping bg-accent opacity-60 motion-reduce:hidden"></span>
+      <span class="relative inline-flex h-2 w-2 bg-accent"></span>
     </span>
     <span>
-      Noch <strong class="font-semibold text-blau">{frei} von {KONTINGENT.plaetze}</strong> Zugangsschlüsseln diesen Monat frei
+      Noch <strong class="font-semibold text-ink">{frei} von {KONTINGENT.plaetze}</strong> Zugangsschlüsseln diesen Monat frei
     </span>
   </p>
 ) : (
-  <div class:list={['border border-linie bg-bogen-rein p-5', klasse]}>
+  <div class:list={['border border-line bg-surface p-5', klasse]}>
     <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
       <p class="marginalie">Kontingent diesen Monat</p>
-      <p class="font-mono text-xs text-blau-soft">
-        <strong class="text-blau">{KONTINGENT.vergeben}</strong> / {KONTINGENT.plaetze} vergeben
+      <p class="font-mono text-xs text-ink-soft">
+        <strong class="text-ink">{KONTINGENT.vergeben}</strong> / {KONTINGENT.plaetze} vergeben
       </p>
     </div>
 
     <div
-      class="mt-3 h-1.5 w-full bg-bogen-tief"
+      class="mt-3 h-1.5 w-full bg-canvas-deep"
       role="meter"
       aria-valuenow={KONTINGENT.vergeben}
       aria-valuemin="0"
       aria-valuemax={KONTINGENT.plaetze}
       aria-label={`Zugangsschlüssel diesen Monat: ${KONTINGENT.vergeben} von ${KONTINGENT.plaetze} vergeben`}
     >
-      <div class="h-full bg-siegel" style={`width: ${belegtProzent}%`}></div>
+      <div class="h-full bg-accent" style={`width: ${belegtProzent}%`}></div>
     </div>
 
-    <p class="mt-3 text-sm text-blau-soft leading-relaxed">
+    <p class="mt-3 text-sm text-ink-soft leading-relaxed">
       Wir vergeben Zugangsschlüssel manuell und begleiten jeden Start persönlich — deshalb pro Monat begrenzt.
-      <strong class="font-semibold text-blau">Noch {frei} frei.</strong>
+      <strong class="font-semibold text-ink">Noch {frei} frei.</strong>
     </p>
   </div>
 )}

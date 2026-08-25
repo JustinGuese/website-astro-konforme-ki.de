@@ -9,7 +9,7 @@ export interface Saeule {
   eignung: string;
   subprozessor: string;
   rechenzentrum: string;
-  akzent: 'blau' | 'siegel' | 'gold';
+  akzent: 'neutral' | 'accent' | 'premium';
 }
 
 /**
@@ -30,7 +30,7 @@ export const SAEULEN: Saeule[] = [
     eignung: 'Einstieg und Standardfälle ohne besondere Sensibilität.',
     subprozessor: 'wechselnd — Scaleway SAS, IONOS SE, Mistral AI oder OVHcloud',
     rechenzentrum: 'Frankreich / Deutschland, je nach Anbieter',
-    akzent: 'blau',
+    akzent: 'neutral',
   },
   {
     id: 2,
@@ -42,7 +42,7 @@ export const SAEULEN: Saeule[] = [
     eignung: 'Wenn Sie keinen externen Subprozessor mehr wollen, aber keine dedizierte Hardware brauchen.',
     subprozessor: 'Keiner — DataFortress.cloud GmbH direkt',
     rechenzentrum: 'Frankfurt, DE (eigenes Rechenzentrum, geteilt)',
-    akzent: 'siegel',
+    akzent: 'accent',
   },
   {
     id: 3,
@@ -54,7 +54,7 @@ export const SAEULEN: Saeule[] = [
     eignung: 'Besonders sensible Mandate oder wenn Ihr Datenschutzbeauftragter physische Kontrolle verlangt.',
     subprozessor: 'Keiner — Hardware in Ihrem eigenen Rechenzentrum',
     rechenzentrum: 'Ihr Rechenzentrum / Ihre Colocation',
-    akzent: 'gold',
+    akzent: 'premium',
   },
 ];
 

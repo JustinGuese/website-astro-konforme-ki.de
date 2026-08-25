@@ -180,19 +180,19 @@ const nav: { href: string; label: string; kinder?: { href: string; label: string
       if (bestehendeEinwilligung === 'true') anwendenEinwilligung(true);
     </script>
   </head>
-  <body class="bg-bogen text-blau font-sans antialiased flex flex-col min-h-screen">
+  <body class="bg-canvas text-ink font-sans antialiased flex flex-col min-h-screen">
     <div class="kette-strich" id="kette-strich"></div>
 
-    <header class="border-b border-linie py-3.5 relative z-50 bg-bogen/95 backdrop-blur">
+    <header class="border-b border-line py-3.5 relative z-50 bg-canvas/95 backdrop-blur">
       <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center gap-4">
         <a href="/" class="flex items-center gap-2.5 group shrink-0">
-          <span class="inline-flex h-8 w-8 items-center justify-center bg-blau text-bogen font-mono text-xs font-bold">K</span>
-          <span class="font-display text-[15px] font-bold tracking-tight text-blau" style="font-variation-settings: 'wdth' 90;">
-            konforme-ki<span class="text-siegel">.de</span>
+          <span class="inline-flex h-8 w-8 items-center justify-center bg-ink text-canvas font-mono text-xs font-bold">K</span>
+          <span class="font-display text-[15px] font-bold tracking-tight text-ink" style="font-variation-settings: 'wdth' 90;">
+            konforme-ki<span class="text-accent">.de</span>
           </span>
         </a>
 
-        <div class="hidden lg:flex items-center gap-6 text-sm text-blau-soft">
+        <div class="hidden lg:flex items-center gap-6 text-sm text-ink-soft">
           {/*
             Aufklappmenü ohne JS: <details> öffnet per Klick und ist per
             Tastatur bedienbar. Ein reines :hover-Menü wäre auf Touch-Geräten
@@ -200,31 +200,31 @@ const nav: { href: string; label: string; kinder?: { href: string; label: string
           */}
           {nav.map((item) => (item.kinder ? (
             <details class="menue relative">
-              <summary class="flex items-center gap-1.5 cursor-pointer list-none hover:text-blau transition-colors">
+              <summary class="flex items-center gap-1.5 cursor-pointer list-none hover:text-ink transition-colors">
                 {item.label}
                 <svg class="h-3 w-3 transition-transform" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                   <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                 </svg>
               </summary>
-              <div class="menue-tafel absolute left-1/2 -translate-x-1/2 top-full mt-3 w-[22rem] border border-linie bg-bogen-rein shadow-[var(--shadow-karte-hoch)]">
-                <a href={item.href} class="block px-5 py-3.5 border-b border-linie hover:bg-bogen-tief transition-colors">
+              <div class="menue-tafel absolute left-1/2 -translate-x-1/2 top-full mt-3 w-[22rem] border border-line bg-surface shadow-[var(--shadow-karte-hoch)]">
+                <a href={item.href} class="block px-5 py-3.5 border-b border-line hover:bg-canvas-deep transition-colors">
                   <span class="marginalie">Alle Ratgeber</span>
-                  <span class="mt-1 block text-sm font-semibold text-blau">Übersicht ansehen →</span>
+                  <span class="mt-1 block text-sm font-semibold text-ink">Übersicht ansehen →</span>
                 </a>
                 {item.kinder.map((kind) => (
-                  <a href={kind.href} class="block px-5 py-3 border-b border-linie last:border-b-0 hover:bg-bogen-tief transition-colors">
-                    <span class="block text-sm font-semibold text-blau">{kind.label}</span>
-                    <span class="mt-0.5 block text-xs text-blau-faint leading-snug">{kind.kurz}</span>
+                  <a href={kind.href} class="block px-5 py-3 border-b border-line last:border-b-0 hover:bg-canvas-deep transition-colors">
+                    <span class="block text-sm font-semibold text-ink">{kind.label}</span>
+                    <span class="mt-0.5 block text-xs text-ink-faint leading-snug">{kind.kurz}</span>
                   </a>
                 ))}
               </div>
             </details>
           ) : (
-            <a href={item.href} class="hover:text-blau transition-colors">{item.label}</a>
+            <a href={item.href} class="hover:text-ink transition-colors">{item.label}</a>
           )))}
         </div>
 
-        <a href="/?tarif=compliance#zugang" class="knopf knopf-siegel !py-2 !px-3 sm:!px-4 !text-sm shrink-0" data-tarif-cta="header">
+        <a href="/?tarif=compliance#zugang" class="knopf knopf-accent !py-2 !px-3 sm:!px-4 !text-sm shrink-0" data-tarif-cta="header">
           <!-- Auf sehr schmalen Geräten würde die Langform Kopfzeile und Seite
                horizontal aufschieben; unten steht ohnehin die Sticky-Leiste. -->
           <span class="sm:hidden">Zugang</span>
@@ -238,52 +238,52 @@ const nav: { href: string; label: string; kinder?: { href: string; label: string
       <slot />
     </main>
 
-    <footer class="bg-bogen-tief border-t border-linie py-10 mt-12 kein-druck">
+    <footer class="bg-canvas-deep border-t border-line py-10 mt-12 kein-druck">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-8 text-sm">
           <div>
-            <span class="font-display text-sm font-bold text-blau" style="font-variation-settings: 'wdth' 90;">konforme-ki<span class="text-siegel">.de</span></span>
-            <p class="mt-3 text-blau-faint leading-relaxed">Prüfspur über Ihre bestehende KI oder gehostete EU-Inferenz.</p>
+            <span class="font-display text-sm font-bold text-ink" style="font-variation-settings: 'wdth' 90;">konforme-ki<span class="text-accent">.de</span></span>
+            <p class="mt-3 text-ink-faint leading-relaxed">Prüfspur über Ihre bestehende KI oder gehostete EU-Inferenz.</p>
           </div>
           <div>
             <p class="marginalie mb-3">Produkt</p>
-            <div class="flex flex-col gap-2 text-blau-soft">
-              <a href="/playground" class="hover:text-blau">Playground</a>
-              <a href="/integrationen" class="hover:text-blau">Integrationen</a>
-              <a href="/preise" class="hover:text-blau">Preise</a>
+            <div class="flex flex-col gap-2 text-ink-soft">
+              <a href="/playground" class="hover:text-ink">Playground</a>
+              <a href="/integrationen" class="hover:text-ink">Integrationen</a>
+              <a href="/preise" class="hover:text-ink">Preise</a>
             </div>
           </div>
           <div>
             <p class="marginalie mb-3">Recht &amp; Nachweis</p>
-            <div class="flex flex-col gap-2 text-blau-soft">
-              <a href="/eu-ki-recht" class="hover:text-blau">EU-KI-Recht</a>
-              <a href="/unterlagen" class="hover:text-blau">Unterlagen</a>
-              <a href="/kontakt" class="hover:text-blau" data-contact-cta="footer">Kontakt</a>
+            <div class="flex flex-col gap-2 text-ink-soft">
+              <a href="/eu-ki-recht" class="hover:text-ink">EU-KI-Recht</a>
+              <a href="/unterlagen" class="hover:text-ink">Unterlagen</a>
+              <a href="/kontakt" class="hover:text-ink" data-contact-cta="footer">Kontakt</a>
             </div>
           </div>
           <div>
             <p class="marginalie mb-3">Ratgeber</p>
-            <div class="flex flex-col gap-2 text-blau-soft">
+            <div class="flex flex-col gap-2 text-ink-soft">
               {nav.find((n) => n.href === '/ratgeber')?.kinder?.slice(0, 4).map((kind) => (
-                <a href={kind.href} class="hover:text-blau">{kind.label}</a>
+                <a href={kind.href} class="hover:text-ink">{kind.label}</a>
               ))}
-              <a href="/ratgeber" class="text-siegel hover:underline">Alle Ratgeber →</a>
+              <a href="/ratgeber" class="text-accent hover:underline">Alle Ratgeber →</a>
             </div>
           </div>
           <div>
             <p class="marginalie mb-3">Rechtliches</p>
-            <div class="flex flex-col gap-2 text-blau-soft">
-              <a href="/impressum" class="hover:text-blau">Impressum</a>
-              <a href="/datenschutz" class="hover:text-blau">Datenschutzerklärung</a>
-              <a href="/agb" class="hover:text-blau">AGB</a>
-              <a href="/rdg-hinweis" class="hover:text-blau">RDG-Hinweis</a>
-              <button type="button" data-consent-reopen class="text-left hover:text-blau cursor-pointer underline-offset-4 hover:underline">
+            <div class="flex flex-col gap-2 text-ink-soft">
+              <a href="/impressum" class="hover:text-ink">Impressum</a>
+              <a href="/datenschutz" class="hover:text-ink">Datenschutzerklärung</a>
+              <a href="/agb" class="hover:text-ink">AGB</a>
+              <a href="/rdg-hinweis" class="hover:text-ink">RDG-Hinweis</a>
+              <button type="button" data-consent-reopen class="text-left hover:text-ink cursor-pointer underline-offset-4 hover:underline">
                 Cookie-Einstellungen
               </button>
             </div>
           </div>
         </div>
-        <p class="mt-10 font-mono text-xs text-blau-faint">&copy; {new Date().getFullYear()} DataFortress.cloud GmbH — Gewerbestraße 13, 82064 Straßlach-Dingharting</p>
+        <p class="mt-10 font-mono text-xs text-ink-faint">&copy; {new Date().getFullYear()} DataFortress.cloud GmbH — Gewerbestraße 13, 82064 Straßlach-Dingharting</p>
       </div>
     </footer>
     <CookieBanner />
@@ -293,11 +293,11 @@ const nav: { href: string; label: string; kinder?: { href: string; label: string
       class="lg:hidden fixed inset-x-0 bottom-0 z-40 translate-y-full opacity-0 transition-all duration-300 pointer-events-none kein-druck"
       aria-hidden="true"
     >
-      <div class="bg-bogen-rein/95 backdrop-blur border-t border-linie shadow-[0_-4px_20px_rgba(23,36,63,0.10)] px-4 py-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)]">
-        <p class="mb-2 font-mono text-[0.68rem] text-blau-faint text-center">
+      <div class="bg-surface/95 backdrop-blur border-t border-line shadow-[0_-4px_20px_rgba(23,36,63,0.10)] px-4 py-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)]">
+        <p class="mb-2 font-mono text-[0.68rem] text-ink-faint text-center">
           Noch {frei} von {KONTINGENT.plaetze} Zugangsschlüsseln diesen Monat frei
         </p>
-        <a href="/?tarif=compliance#zugang" class="knopf knopf-siegel w-full active:scale-[0.98]" data-tarif-cta="sticky">
+        <a href="/?tarif=compliance#zugang" class="knopf knopf-accent w-full active:scale-[0.98]" data-tarif-cta="sticky">
           Zugangsschlüssel sichern
           <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
         </a>

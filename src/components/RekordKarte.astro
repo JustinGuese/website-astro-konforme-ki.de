@@ -2,7 +2,7 @@
 interface Feld {
   schluessel: string;
   wert: string;
-  ton?: 'gut' | 'sperr';
+  ton?: 'ok' | 'signal';
 }
 
 interface Props {
@@ -24,14 +24,14 @@ const { kopf, felder, fuss, class: klasse = '', status = 'beispiel' } = Astro.pr
   <div class="rekord-kopf">
     <span>{kopf}</span>
     <span class="inline-flex items-center gap-1.5">
-      <span class:list={['h-1.5 w-1.5 rounded-full', status === 'live' ? 'bg-siegel-hell' : 'bg-blau-faint']}></span>
+      <span class:list={['h-1.5 w-1.5 rounded-full', status === 'live' ? 'bg-accent-bright' : 'bg-ink-faint']}></span>
       {status}
     </span>
   </div>
   {felder.map((feld) => (
     <div class="rekord-zeile">
       <span class="rekord-schluessel">{feld.schluessel}</span>
-      <span class:list={['rekord-wert', feld.ton === 'gut' && 'rekord-wert-gut', feld.ton === 'sperr' && 'rekord-wert-sperr']}>
+      <span class:list={['rekord-wert', feld.ton === 'ok' && 'rekord-wert-ok', feld.ton === 'signal' && 'rekord-wert-signal']}>
         {feld.wert}
       </span>
     </div>

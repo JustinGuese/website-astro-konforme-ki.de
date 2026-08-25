@@ -21,13 +21,13 @@ const {
 const formspreeId = import.meta.env.PUBLIC_FORMSPREE_INFOGRAFIK_ID || 'maewgpzk';
 ---
 
-<div id={`${id}-gesendet`} class="hidden border border-siegel bg-siegel-blass text-blau p-6 text-sm">
-  <span class="marke marke-siegel mb-3">Angekommen</span>
+<div id={`${id}-gesendet`} class="hidden border border-accent bg-accent-pale text-ink p-6 text-sm">
+  <span class="marke marke-accent mb-3">Angekommen</span>
   <p class="mt-2">Danke! Hier ist Ihre Checkliste als PDF.</p>
   <a
     href="/downloads/eu-ki-recht-checkliste.pdf"
     download
-    class="knopf knopf-siegel mt-4"
+    class="knopf knopf-accent mt-4"
     data-infografik-download
   >
     PDF herunterladen
@@ -38,7 +38,7 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_INFOGRAFIK_ID || 'maewgpzk'
   id={`${id}-form`}
   action={`https://formspree.io/f/${formspreeId}`}
   method="POST"
-  class="bg-bogen-rein border border-linie p-6 sm:p-7 flex flex-col sm:flex-row gap-4 items-stretch"
+  class="bg-surface border border-line p-6 sm:p-7 flex flex-col sm:flex-row gap-4 items-stretch"
 >
   <input type="hidden" name="form" value="infografik" />
   <input type="hidden" name="quelle" value={quelle} />
@@ -49,15 +49,15 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_INFOGRAFIK_ID || 'maewgpzk'
   <label for={`${id}-email`} class="sr-only">E-Mail</label>
   <input
     id={`${id}-email`} name="email" type="email" required autocomplete="email"
-    class="flex-1 border border-linie bg-bogen px-4 py-3 text-base text-blau placeholder-blau-faint focus:outline-none focus:border-siegel"
+    class="flex-1 border border-line bg-canvas px-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-accent"
     placeholder="sie@unternehmen.de"
   />
-  <button type="submit" class="knopf knopf-siegel !py-3 whitespace-nowrap">
+  <button type="submit" class="knopf knopf-accent !py-3 whitespace-nowrap">
     Checkliste per PDF
   </button>
 </form>
-<p class="mt-3 font-mono text-xs text-blau-faint">
-  Keine Weiterleitung an Dritte. Mit dem Absenden stimmen Sie unserer <a href="/datenschutz" class="underline hover:text-blau">Datenschutzerklärung</a> zu.
+<p class="mt-3 font-mono text-xs text-ink-faint">
+  Keine Weiterleitung an Dritte. Mit dem Absenden stimmen Sie unserer <a href="/datenschutz" class="underline hover:text-ink">Datenschutzerklärung</a> zu.
 </p>
 
 <script is:inline define:vars={{ id, quelle }}>

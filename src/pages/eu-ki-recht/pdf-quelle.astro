@@ -20,9 +20,9 @@ const zeitstrahl = [
 ];
 
 const risikoklassen = [
-  { name: 'Verboten', frist: 'seit 2.2.2025', ton: 'sperr', text: 'Social Scoring, manipulative Systeme, biometrische Echtzeit-Überwachung. Betrifft die meisten Unternehmen nicht.' },
+  { name: 'Verboten', frist: 'seit 2.2.2025', ton: 'signal', text: 'Social Scoring, manipulative Systeme, biometrische Echtzeit-Überwachung. Betrifft die meisten Unternehmen nicht.' },
   { name: 'Hochrisiko', frist: 'ab 2.12.2027', ton: 'neutral', text: 'Personalauswahl, Kreditvergabe, kritische Infrastruktur (Anhang III). Ein Chat-Assistent fällt i. d. R. nicht darunter.' },
-  { name: 'Transparenzpflicht', frist: 'seit 2.8.2026', ton: 'siegel', text: 'Kennzeichnung von KI-Interaktionen, Deepfakes, synthetischen Inhalten (Art. 50). Betrifft praktisch jedes Unternehmen.' },
+  { name: 'Transparenzpflicht', frist: 'seit 2.8.2026', ton: 'accent', text: 'Kennzeichnung von KI-Interaktionen, Deepfakes, synthetischen Inhalten (Art. 50). Betrifft praktisch jedes Unternehmen.' },
   { name: 'GPAI-Anbieter', frist: 'seit 2.8.2025', ton: 'neutral', text: 'Nur wer selbst ein KI-Modell bereitstellt, nicht wer eines nutzt.' },
 ];
 
@@ -188,8 +188,8 @@ const checkliste = [
     border-left-width: 3px;
     padding: 0.55rem 0.7rem;
   }
-  .risiko-karte.ton-sperr { border-left-color: #a3311f; }
-  .risiko-karte.ton-siegel { border-left-color: #1c7a5e; }
+  .risiko-karte.ton-signal { border-left-color: #a3311f; }
+  .risiko-karte.ton-accent { border-left-color: #1c7a5e; }
   .risiko-karte.ton-neutral { border-left-color: #9aa3b8; }
   .risiko-name {
     font-weight: 700;

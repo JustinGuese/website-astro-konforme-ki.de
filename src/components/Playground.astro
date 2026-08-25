@@ -9,22 +9,22 @@ interface Props {
 const { compact = false } = Astro.props;
 ---
 
-<div class="border border-linie bg-bogen-rein shadow-[var(--shadow-karte)]">
+<div class="border border-line bg-surface shadow-[var(--shadow-karte)]">
   <!-- Säulen-Auswahl -->
-  <div class="flex flex-wrap items-stretch gap-px bg-linie border-b border-linie">
+  <div class="flex flex-wrap items-stretch gap-px bg-line border-b border-line">
     {SAEULEN.map((saeule) => (
       <button
         type="button"
         data-saeule-btn={saeule.id}
         data-akzent={saeule.akzent}
-        class="saeule-knopf flex-1 min-w-[9rem] text-left px-4 py-3 bg-bogen-rein hover:bg-bogen-tief transition-colors"
+        class="saeule-knopf flex-1 min-w-[9rem] text-left px-4 py-3 bg-surface hover:bg-canvas-deep transition-colors"
         aria-pressed={saeule.id === STANDARD_SAEULE ? 'true' : 'false'}
       >
         <span class="flex items-center justify-between gap-2">
-          <span class="font-display font-bold text-sm text-blau" style="font-variation-settings: 'wdth' 90;">{saeule.kurzname}</span>
-          <span class="font-mono text-xs text-blau-faint">{saeule.kosten}</span>
+          <span class="font-display font-bold text-sm text-ink" style="font-variation-settings: 'wdth' 90;">{saeule.kurzname}</span>
+          <span class="font-mono text-xs text-ink-faint">{saeule.kosten}</span>
         </span>
-        <span class="mt-0.5 block text-xs text-blau-soft leading-snug">{saeule.name}</span>
+        <span class="mt-0.5 block text-xs text-ink-soft leading-snug">{saeule.name}</span>
       </button>
     ))}
   </div>
@@ -33,18 +33,18 @@ const { compact = false } = Astro.props;
     <!-- Chat -->
     <!-- min-w-0: Grid-Kinder haben min-width:auto und würden sonst von der
          nicht umbrechenden Demo-Marke über die Viewport-Breite gedrückt. -->
-    <div class="flex flex-col min-w-0 border-b lg:border-b-0 lg:border-r border-linie">
-      <div class="flex items-center justify-between gap-3 px-5 py-3.5 border-b border-linie bg-bogen-tief">
+    <div class="flex flex-col min-w-0 border-b lg:border-b-0 lg:border-r border-line">
+      <div class="flex items-center justify-between gap-3 px-5 py-3.5 border-b border-line bg-canvas-deep">
         <span class="marginalie">Chat</span>
         <span class="marke marke-neutral !whitespace-normal text-right">Demo · aufgezeichnete Antworten, keine Live-Inferenz</span>
       </div>
 
-      <div class="flex flex-wrap gap-2 px-5 py-4 border-b border-linie">
+      <div class="flex flex-wrap gap-2 px-5 py-4 border-b border-line">
         {PLAYGROUND_SCRIPT.map((turn) => (
           <button
             type="button"
             data-playground-chip={turn.id}
-            class="text-left text-sm px-3 py-2 border border-linie bg-bogen hover:border-siegel hover:text-siegel transition-colors"
+            class="text-left text-sm px-3 py-2 border border-line bg-canvas hover:border-accent hover:text-accent transition-colors"
           >
             {turn.prompt}
           </button>
@@ -52,43 +52,43 @@ const { compact = false } = Astro.props;
       </div>
 
       <div class={`flex-1 px-5 py-5 space-y-4 overflow-y-auto ${compact ? 'min-h-[14rem] max-h-[20rem]' : 'min-h-[22rem] max-h-[32rem]'}`} data-playground-verlauf>
-        <p class="text-sm text-blau-faint">Wählen Sie oben eine Säule und eine Anfrage, um zu sehen, wie sich die Prüfspur je nach Infrastruktur unterscheidet.</p>
+        <p class="text-sm text-ink-faint">Wählen Sie oben eine Säule und eine Anfrage, um zu sehen, wie sich die Prüfspur je nach Infrastruktur unterscheidet.</p>
       </div>
     </div>
 
     <!-- Nachweis-Panel -->
-    <div class="flex flex-col min-w-0 bg-blau-tief">
-      <div class="flex items-center justify-between gap-3 px-5 py-3.5 border-b border-linie-dark">
-        <span class="marginalie text-blau-faint">Nachweis-Panel</span>
-        <button type="button" data-playground-export class="text-xs font-mono text-siegel-hell hover:underline" disabled>
+    <div class="flex flex-col min-w-0 bg-ink-deep">
+      <div class="flex items-center justify-between gap-3 px-5 py-3.5 border-b border-line-deep">
+        <span class="marginalie text-ink-faint">Nachweis-Panel</span>
+        <button type="button" data-playground-export class="text-xs font-mono text-accent-bright hover:underline" disabled>
           Nachweis exportieren
         </button>
       </div>
       <div class="flex-1 px-5 py-5" data-playground-panel>
-        <p class="font-mono text-sm text-blau-faint">Noch keine Anfrage gesendet.</p>
+        <p class="font-mono text-sm text-ink-faint">Noch keine Anfrage gesendet.</p>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Export-Modal -->
-<div data-playground-modal class="hidden fixed inset-0 z-[200] items-center justify-center bg-blau/60 backdrop-blur-sm p-4">
-  <div class="bg-bogen-rein max-w-lg w-full border border-linie shadow-[var(--shadow-karte-hoch)]">
-    <div class="flex items-center justify-between px-5 py-4 border-b border-linie">
+<div data-playground-modal class="hidden fixed inset-0 z-[200] items-center justify-center bg-ink/60 backdrop-blur-sm p-4">
+  <div class="bg-surface max-w-lg w-full border border-line shadow-[var(--shadow-karte-hoch)]">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-line">
       <span class="marginalie">Art. 30 VVT-Eintrag (Vorschau)</span>
-      <button type="button" data-playground-modal-schliessen class="text-blau-faint hover:text-blau" aria-label="Schließen">✕</button>
+      <button type="button" data-playground-modal-schliessen class="text-ink-faint hover:text-ink" aria-label="Schließen">✕</button>
     </div>
     <div class="px-5 py-5 space-y-4 text-sm">
-      <p class="text-blau-soft">Signierter PDF-Export ist Bestandteil des <a href="/preise" class="text-siegel hover:underline">Compliance-Tarifs</a>. Unten: CSV-Vorschau derselben Zeile.</p>
-      <pre class="bg-bogen-tief border border-linie p-3 text-xs font-mono overflow-x-auto" data-playground-csv>anfrage_id,modell,subprozessor,rechenzentrum,tokens_in,tokens_out,zeitstempel,hash</pre>
+      <p class="text-ink-soft">Signierter PDF-Export ist Bestandteil des <a href="/preise" class="text-accent hover:underline">Compliance-Tarifs</a>. Unten: CSV-Vorschau derselben Zeile.</p>
+      <pre class="bg-canvas-deep border border-line p-3 text-xs font-mono overflow-x-auto" data-playground-csv>anfrage_id,modell,subprozessor,rechenzentrum,tokens_in,tokens_out,zeitstempel,hash</pre>
     </div>
   </div>
 </div>
 
 <style>
-  .saeule-knopf[data-akzent="blau"][aria-pressed="true"] { box-shadow: inset 0 -3px 0 var(--color-blau); background: var(--color-bogen-tief); }
-  .saeule-knopf[data-akzent="siegel"][aria-pressed="true"] { box-shadow: inset 0 -3px 0 var(--color-siegel); background: var(--color-siegel-blass); }
-  .saeule-knopf[data-akzent="gold"][aria-pressed="true"] { box-shadow: inset 0 -3px 0 var(--color-gold); background: var(--color-gold-blass); }
+  .saeule-knopf[data-akzent="neutral"][aria-pressed="true"] { box-shadow: inset 0 -3px 0 var(--color-ink); background: var(--color-canvas-deep); }
+  .saeule-knopf[data-akzent="accent"][aria-pressed="true"] { box-shadow: inset 0 -3px 0 var(--color-accent); background: var(--color-accent-pale); }
+  .saeule-knopf[data-akzent="premium"][aria-pressed="true"] { box-shadow: inset 0 -3px 0 var(--color-premium); background: var(--color-premium-pale); }
 </style>
 
 <script>
@@ -115,12 +115,12 @@ const { compact = false } = Astro.props;
     let aktiveSaeule: SaeuleId = STANDARD_SAEULE;
 
     const saeuleBadgeKlasse = (id: SaeuleId) =>
-      id === 1 ? 'marke-neutral' : id === 2 ? 'marke-siegel' : 'marke-gold';
+      id === 1 ? 'marke-neutral' : id === 2 ? 'marke-accent' : 'marke-premium';
 
-    const feldZeile = (schluessel: string, wert: string | number, ton?: 'gut' | 'sperr') => `
+    const feldZeile = (schluessel: string, wert: string | number, ton?: 'ok' | 'signal') => `
       <div class="rekord-zeile">
         <span class="rekord-schluessel">${schluessel}</span>
-        <span class="rekord-wert ${ton === 'gut' ? 'rekord-wert-gut' : ''} ${ton === 'sperr' ? 'rekord-wert-sperr' : ''}">${wert}</span>
+        <span class="rekord-wert ${ton === 'ok' ? 'rekord-wert-ok' : ''} ${ton === 'signal' ? 'rekord-wert-signal' : ''}">${wert}</span>
       </div>`;
 
     const renderRecord = (r: NachweisRecord, saeule: SaeuleId) => {
@@ -131,10 +131,10 @@ const { compact = false } = Astro.props;
         <div class="rekord">
           <div class="rekord-kopf">
             <span>${r.anfrage_id}</span>
-            <span class="marke ${gesperrt ? 'marke-sperr' : 'marke-siegel'}">${gesperrt ? 'GESPERRT · fail closed' : 'Freigegeben'}</span>
+            <span class="marke ${gesperrt ? 'marke-signal' : 'marke-accent'}">${gesperrt ? 'GESPERRT · fail closed' : 'Freigegeben'}</span>
           </div>
           ${feldZeile('modell', r.modell)}
-          ${feldZeile('subprozessor', r.subprozessor, gesperrt ? 'sperr' : 'gut')}
+          ${feldZeile('subprozessor', r.subprozessor, gesperrt ? 'signal' : 'ok')}
           ${feldZeile('rechenzentrum', r.rechenzentrum)}
           ${feldZeile('retention', r.retention)}
           ${feldZeile('tokens_in / out', `${r.tokens_in} / ${r.tokens_out}`)}
@@ -147,7 +147,7 @@ const { compact = false } = Astro.props;
 
     const sendeAnfrage = (turnId: string) => {
       aktiverTurnId = turnId;
-      panel!.innerHTML = '<p class="font-mono text-sm text-blau-faint">Anfrage wird verarbeitet…</p>';
+      panel!.innerHTML = '<p class="font-mono text-sm text-ink-faint">Anfrage wird verarbeitet…</p>';
 
       transport.sendPrompt(turnId, aktiveSaeule, {
         onToken: (partial) => {
@@ -178,14 +178,14 @@ const { compact = false } = Astro.props;
     chips.forEach((chip) => {
       chip.addEventListener('click', () => {
         const id = chip.dataset.playgroundChip!;
-        chips.forEach((c) => c.classList.remove('border-siegel', 'text-siegel'));
-        chip.classList.add('border-siegel', 'text-siegel');
+        chips.forEach((c) => c.classList.remove('border-accent', 'text-accent'));
+        chip.classList.add('border-accent', 'text-accent');
 
         const eintrag = document.createElement('div');
         eintrag.className = 'space-y-2';
         eintrag.innerHTML = `
-          <p class="text-sm font-semibold text-blau">${chip.textContent}</p>
-          <p class="text-sm text-blau-soft leading-relaxed whitespace-pre-line" data-antwort></p>`;
+          <p class="text-sm font-semibold text-ink">${chip.textContent}</p>
+          <p class="text-sm text-ink-soft leading-relaxed whitespace-pre-line" data-antwort></p>`;
         verlauf!.innerHTML = '';
         verlauf!.appendChild(eintrag);
 

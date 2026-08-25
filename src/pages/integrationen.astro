@@ -91,64 +91,63 @@ const client = new OpenAI({
 ---
 
 <Site title={title} description={description}>
-  <section class="py-14 sm:py-20 border-b border-linie">
+  <section class="py-14 sm:py-20 border-b border-line">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <p class="marginalie mb-3">Integrationen</p>
-      <h1 class="display display-l text-blau max-w-2xl">Der Wechsel ist eine Zeile Code.</h1>
-      <p class="mt-4 text-blau-soft max-w-2xl leading-relaxed">
-        Nachweis ist ein OpenAI-kompatibler Endpunkt. Alles, was heute gegen OpenAI oder Azure OpenAI spricht, spricht mit einer geänderten <code class="font-mono text-sm bg-bogen-tief px-1.5 py-0.5">base_url</code> stattdessen mit EU-Modellen — inklusive Prüfspur.
+      <h1 class="display display-l text-ink max-w-2xl">Der Wechsel ist eine Zeile Code.</h1>
+      <p class="mt-4 text-ink-soft max-w-2xl leading-relaxed">
+        Nachweis ist ein OpenAI-kompatibler Endpunkt. Alles, was heute gegen OpenAI oder Azure OpenAI spricht, spricht mit einer geänderten <code class="font-mono text-sm bg-canvas-deep px-1.5 py-0.5">base_url</code> stattdessen mit EU-Modellen — inklusive Prüfspur.
       </p>
     </div>
   </section>
 
-  <section class="py-12 border-b border-linie bg-bogen-tief">
+  <section class="py-12 border-b border-line bg-canvas-deep">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <CodeTabs tabs={codeTabs} />
-      <p class="mt-4 text-sm text-blau-faint leading-relaxed">
+      <p class="mt-4 text-sm text-ink-faint leading-relaxed">
         Das Beispiel oben nutzt Säule 1 (EU-Anbieter-Autorouting). Für Säule 2 oder 3 —
         Server der DataFortress.cloud GmbH, geteilt oder dediziert in Ihrem
-        Rechenzentrum — ändert sich nur der Hostname:
-        <code class="font-mono text-xs bg-bogen px-1.5 py-0.5">gateway.ai-nachweis.de</code>
-        statt <code class="font-mono text-xs bg-bogen px-1.5 py-0.5">gateway.konforme-ki.de</code>.
-        Ihr Code bleibt sonst identisch.
+        Rechenzentrum — bleibt der Hostname
+        <code class="font-mono text-xs bg-canvas px-1.5 py-0.5">gateway.konforme-ki.de</code>
+        gleich, nur der Modellname ändert sich. Ihr Code bleibt sonst identisch.
       </p>
     </div>
   </section>
 
   <!-- Säulen — von der Startseite hierher verschoben: Infrastruktur-Details gehören auf
        die technische Integrationsseite, nicht in den Homepage-Trichter. -->
-  <section id="saeulen" class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
+  <section id="saeulen" class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <p class="marginalie mb-3">Die drei Säulen</p>
-      <h2 class="display display-m text-blau max-w-2xl">Nicht nur, welcher EU-Anbieter — sondern ob es überhaupt einen gibt.</h2>
-      <p class="mt-4 text-blau-soft max-w-2xl leading-relaxed">
+      <h2 class="display display-m text-ink max-w-2xl">Nicht nur, welcher EU-Anbieter — sondern ob es überhaupt einen gibt.</h2>
+      <p class="mt-4 text-ink-soft max-w-2xl leading-relaxed">
         Säule 2 und 3 lösen die Subprozessor-Frage nicht durch eine bessere Wahl, sondern indem es keinen externen Subprozessor mehr gibt.
       </p>
 
-      <div class="mt-10 border border-siegel bg-bogen-rein p-7 sm:p-8 max-w-3xl">
-        <span class="marke marke-siegel w-fit">{saeuleStandard.kurzname} · {saeuleStandard.kosten} · Standard</span>
-        <p class="mt-3 font-display font-bold text-blau text-lg leading-snug" style="font-variation-settings: 'wdth' 90;">{saeuleStandard.name}</p>
-        <p class="mt-2 text-sm text-blau-soft leading-relaxed">{saeuleStandard.beschreibung}</p>
-        <div class="mt-4 pt-4 border-t border-linie flex flex-wrap gap-x-6 gap-y-1 font-mono text-xs text-blau-faint">
+      <div class="mt-10 border border-accent bg-surface p-7 sm:p-8 max-w-3xl">
+        <span class="marke marke-accent w-fit">{saeuleStandard.kurzname} · {saeuleStandard.kosten} · Standard</span>
+        <p class="mt-3 font-display font-bold text-ink text-lg leading-snug" style="font-variation-settings: 'wdth' 90;">{saeuleStandard.name}</p>
+        <p class="mt-2 text-sm text-ink-soft leading-relaxed">{saeuleStandard.beschreibung}</p>
+        <div class="mt-4 pt-4 border-t border-line flex flex-wrap gap-x-6 gap-y-1 font-mono text-xs text-ink-faint">
           <span>Subprozessor: {saeuleStandard.subprozessor}</span>
           <span>Rechenzentrum: {saeuleStandard.rechenzentrum}</span>
         </div>
       </div>
 
-      <div class="mt-4 grid sm:grid-cols-2 gap-px bg-linie border border-linie max-w-3xl">
+      <div class="mt-4 grid sm:grid-cols-2 gap-px bg-line border border-line max-w-3xl">
         {saeulenAndere.map((s) => (
-          <div class:list={['bg-bogen-rein p-5', s.akzent === 'gold' && 'border-t-[3px] border-gold']}>
-            <span class={`marke ${s.akzent === 'blau' ? 'marke-neutral' : 'marke-gold'} w-fit`}>
+          <div class:list={['bg-surface p-5', s.akzent === 'premium' && 'border-t-[3px] border-premium']}>
+            <span class={`marke ${s.akzent === 'neutral' ? 'marke-neutral' : 'marke-premium'} w-fit`}>
               {s.kurzname} · {s.kosten}
             </span>
-            <p class="mt-2 text-xs text-blau-soft leading-relaxed">{s.eignung}</p>
+            <p class="mt-2 text-xs text-ink-soft leading-relaxed">{s.eignung}</p>
           </div>
         ))}
       </div>
 
-      <div class="mt-8 border border-sperr bg-sperr-blass px-6 py-5 max-w-3xl">
-        <p class="marke marke-sperr mb-3">Fail closed</p>
-        <p class="text-sm text-blau leading-relaxed">
+      <div class="mt-8 border border-signal bg-signal-pale px-6 py-5 max-w-3xl">
+        <p class="marke marke-signal mb-3">Fail closed</p>
+        <p class="text-sm text-ink leading-relaxed">
           Für Säule 1 gilt: kein Fallback außerhalb der EU-Routingliste. Ist kein EU-Modell verfügbar, schlägt die Anfrage fehl — sie wird nicht umgeleitet. Für Säule 2/3 stellt sich die Frage erst gar nicht — sehen Sie sich das im <a href="/playground" class="underline hover:no-underline">Playground</a> an.
         </p>
       </div>
@@ -158,12 +157,12 @@ const client = new OpenAI({
   <section class="py-16 sm:py-20">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <p class="marginalie mb-3">Kanäle</p>
-      <h2 class="display display-m text-blau mb-8">Da, wo Sie ohnehin schon arbeiten.</h2>
+      <h2 class="display display-m text-ink mb-8">Da, wo Sie ohnehin schon arbeiten.</h2>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {kanaele.map((kanal) => <KanalKarte {...kanal} />)}
       </div>
-      <p class="mt-8 text-sm text-blau-faint max-w-2xl">
-        Kanäle mit dem Status „In Vorbereitung" oder „Auf Anfrage" sind noch nicht produktiv verfügbar. Interesse an einem bestimmten Kanal? <a href="/kontakt" class="text-siegel hover:underline" data-contact-cta="integrationen">Schreiben Sie uns</a>.
+      <p class="mt-8 text-sm text-ink-faint max-w-2xl">
+        Kanäle mit dem Status „In Vorbereitung" oder „Auf Anfrage" sind noch nicht produktiv verfügbar. Interesse an einem bestimmten Kanal? <a href="/kontakt" class="text-accent hover:underline" data-contact-cta="integrationen">Schreiben Sie uns</a>.
       </p>
     </div>
   </section>

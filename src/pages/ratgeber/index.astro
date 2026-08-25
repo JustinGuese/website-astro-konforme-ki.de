@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Site from '../../layouts/Site.astro';
 import ArtikelUpsell from '../../components/ArtikelUpsell.astro';
+import { site } from '../../config/site';
 
 const artikel = (await getCollection('ratgeber')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
 
@@ -21,12 +22,12 @@ const schema = {
   name: 'Ratgeber',
   description,
   inLanguage: 'de-DE',
-  url: 'https://konforme-ki.de/ratgeber',
+  url: `${site.url}/ratgeber`,
   hasPart: artikel.map((a) => ({
     '@type': 'Article',
     headline: a.data.title,
     description: a.data.beschreibung,
-    url: `https://konforme-ki.de/ratgeber/${a.id}`,
+    url: `${site.url}/ratgeber/${a.id}`,
   })),
 };
 ---
@@ -34,16 +35,16 @@ const schema = {
 <Site title={title} description={description}>
   <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(schema)} />
 
-  <section class="py-14 sm:py-20 border-b border-linie">
+  <section class="py-14 sm:py-20 border-b border-line">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       <p class="marginalie mb-3">Ratgeber</p>
-      <h1 class="display display-l text-blau">KI einsetzen, ohne Ihre Berufspflichten zu verletzen.</h1>
-      <p class="mt-5 text-lg text-blau-soft leading-relaxed">
+      <h1 class="display display-l text-ink">KI einsetzen, ohne Ihre Berufspflichten zu verletzen.</h1>
+      <p class="mt-5 text-lg text-ink-soft leading-relaxed">
         Was beim KI-Einsatz tatsächlich gilt — nach Berufsgruppe und nach Pflicht sortiert. Jeder Beitrag beantwortet
         eine konkrete Frage, die uns Kanzleien, Steuerberatungen und Praxen regelmäßig stellen, und nennt die
         Rechtsgrundlage dazu.
       </p>
-      <p class="mt-4 text-sm text-blau-faint leading-relaxed">
+      <p class="mt-4 text-sm text-ink-faint leading-relaxed">
         Informationsangebot, keine Rechtsberatung — siehe den Hinweis am Ende jedes Beitrags.
       </p>
     </div>
@@ -53,16 +54,16 @@ const schema = {
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
       {nachKategorie.map((gruppe) => (
         <div>
-          <h2 class="display display-m text-blau">{gruppe.kategorie}</h2>
-          <div class="mt-5 divide-y divide-linie border-t border-b border-linie">
+          <h2 class="display display-m text-ink">{gruppe.kategorie}</h2>
+          <div class="mt-5 divide-y divide-line border-t border-b border-line">
             {gruppe.eintraege.map((a) => (
-              <a href={`/ratgeber/${a.id}`} class="group flex items-start justify-between gap-4 py-6 hover:bg-bogen-tief -mx-4 px-4 transition-colors">
+              <a href={`/ratgeber/${a.id}`} class="group flex items-start justify-between gap-4 py-6 hover:bg-canvas-deep -mx-4 px-4 transition-colors">
                 <div>
-                  <p class="font-display font-bold text-blau group-hover:text-siegel transition-colors" style="font-variation-settings: 'wdth' 90;">{a.data.title}</p>
-                  <p class="mt-1.5 text-sm text-blau-soft leading-relaxed">{a.data.kurz}</p>
-                  <p class="mt-2 font-mono text-xs text-blau-faint">{a.data.lesezeit} · Stand: {a.data.stand}</p>
+                  <p class="font-display font-bold text-ink group-hover:text-accent transition-colors" style="font-variation-settings: 'wdth' 90;">{a.data.title}</p>
+                  <p class="mt-1.5 text-sm text-ink-soft leading-relaxed">{a.data.kurz}</p>
+                  <p class="mt-2 font-mono text-xs text-ink-faint">{a.data.lesezeit} · Stand: {a.data.stand}</p>
                 </div>
-                <span class="shrink-0 text-siegel text-xl leading-none mt-1">→</span>
+                <span class="shrink-0 text-accent text-xl leading-none mt-1">→</span>
               </a>
             ))}
           </div>

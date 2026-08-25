@@ -8,33 +8,33 @@ interface Props {
 const { tarife } = Astro.props;
 ---
 
-<div class:list={['grid gap-px bg-linie border border-linie', tarife.length === 2 ? 'md:grid-cols-2 max-w-3xl' : 'md:grid-cols-3']}>
+<div class:list={['grid gap-px bg-line border border-line', tarife.length === 2 ? 'md:grid-cols-2 max-w-3xl' : 'md:grid-cols-3']}>
   {tarife.map((tarif) => (
-    <div class:list={['flex flex-col p-6 sm:p-7', tarif.hervorgehoben ? 'bg-blau-tief text-bogen' : 'bg-bogen-rein']}>
+    <div class:list={['flex flex-col p-6 sm:p-7', tarif.hervorgehoben ? 'bg-ink-deep text-canvas' : 'bg-surface']}>
       {tarif.hervorgehoben && <span class="marke marke-dunkel w-fit mb-4">Empfohlen</span>}
-      <p class:list={['marginalie', tarif.hervorgehoben ? 'text-siegel-hell' : '']}>{tarif.name}</p>
+      <p class:list={['marginalie', tarif.hervorgehoben ? 'text-accent-bright' : '']}>{tarif.name}</p>
       <p class="mt-3 flex items-baseline gap-2">
-        <span class:list={['display display-m', tarif.hervorgehoben ? 'text-bogen' : 'text-blau']}>{tarif.preis}</span>
-        {tarif.einheit && <span class={tarif.hervorgehoben ? 'text-bogen/60 text-sm' : 'text-blau-faint text-sm'}>{tarif.einheit}</span>}
+        <span class:list={['display display-m', tarif.hervorgehoben ? 'text-canvas' : 'text-ink']}>{tarif.preis}</span>
+        {tarif.einheit && <span class={tarif.hervorgehoben ? 'text-canvas/60 text-sm' : 'text-ink-faint text-sm'}>{tarif.einheit}</span>}
       </p>
-      <p class:list={['mt-3 text-sm leading-relaxed', tarif.hervorgehoben ? 'text-bogen/75' : 'text-blau-soft']}>{tarif.beschreibung}</p>
+      <p class:list={['mt-3 text-sm leading-relaxed', tarif.hervorgehoben ? 'text-canvas/75' : 'text-ink-soft']}>{tarif.beschreibung}</p>
 
       <ul class="mt-6 space-y-2.5 flex-1">
         {tarif.leistungen.map((leistung) => (
-          <li class:list={['flex items-start gap-2.5 text-sm', tarif.hervorgehoben ? 'text-bogen/90' : 'text-blau-soft']}>
-            <span class:list={['mt-1 h-1.5 w-1.5 shrink-0', tarif.hervorgehoben ? 'bg-siegel-hell' : 'bg-siegel']}></span>
+          <li class:list={['flex items-start gap-2.5 text-sm', tarif.hervorgehoben ? 'text-canvas/90' : 'text-ink-soft']}>
+            <span class:list={['mt-1 h-1.5 w-1.5 shrink-0', tarif.hervorgehoben ? 'bg-accent-bright' : 'bg-accent']}></span>
             {leistung}
           </li>
         ))}
       </ul>
 
       {tarif.hinweis && (
-        <p class:list={['mt-4 text-xs', tarif.hervorgehoben ? 'text-bogen/60' : 'text-blau-faint']}>{tarif.hinweis}</p>
+        <p class:list={['mt-4 text-xs', tarif.hervorgehoben ? 'text-canvas/60' : 'text-ink-faint']}>{tarif.hinweis}</p>
       )}
 
       <a
         href={tarif.cta.href}
-        class:list={['knopf mt-7 w-full', tarif.hervorgehoben ? 'knopf-dunkel !border-siegel-hell !text-siegel-hell' : 'knopf-linie']}
+        class:list={['knopf mt-7 w-full', tarif.hervorgehoben ? 'knopf-dunkel !border-accent-bright !text-accent-bright' : 'knopf-linie']}
         data-tarif-cta={tarif.tarifId}
       >
         {tarif.cta.label}

@@ -13,8 +13,8 @@ const tarifNamen = Object.fromEntries(
 );
 ---
 
-<div id="zugang-gesendet" class="hidden border border-siegel bg-siegel-blass text-blau p-6 text-sm">
-  <span class="marke marke-siegel mb-3">Angekommen</span>
+<div id="zugang-gesendet" class="hidden border border-accent bg-accent-pale text-ink p-6 text-sm">
+  <span class="marke marke-accent mb-3">Angekommen</span>
   <p class="mt-2">Danke! Ihre Anfrage ist angekommen. Sie erhalten Ihren Zugangsschlüssel per E-Mail, in der Regel werktags binnen 24 Stunden.</p>
 </div>
 
@@ -22,7 +22,7 @@ const tarifNamen = Object.fromEntries(
   id="zugang-form"
   action={`https://formspree.io/f/${formspreeId}`}
   method="POST"
-  class="bg-bogen-rein border border-linie p-6 sm:p-8 space-y-5"
+  class="bg-surface border border-line p-6 sm:p-8 space-y-5"
 >
   <input type="hidden" name="form" value="zugang" />
   <input type="hidden" name="_next" id="zugang-next" value="/?zugang_gesendet=1#zugang" />
@@ -38,30 +38,30 @@ const tarifNamen = Object.fromEntries(
 
   <div
     id="zugang-tarif-anzeige"
-    class="hidden items-center justify-between gap-3 flex-wrap border border-siegel bg-siegel-blass px-4 py-3"
+    class="hidden items-center justify-between gap-3 flex-wrap border border-accent bg-accent-pale px-4 py-3"
   >
-    <p class="text-sm text-blau">
+    <p class="text-sm text-ink">
       Ihr Interesse: <strong class="font-semibold" id="zugang-tarif-label"></strong>
     </p>
-    <button type="button" id="zugang-tarif-loeschen" class="font-mono text-xs text-siegel underline hover:no-underline">
+    <button type="button" id="zugang-tarif-loeschen" class="font-mono text-xs text-accent underline hover:no-underline">
       ändern
     </button>
   </div>
 
   <div class="grid sm:grid-cols-2 gap-5">
     <div>
-      <label for="zugang-email" class="block font-mono text-xs uppercase tracking-wider text-blau-faint mb-1.5">E-Mail</label>
+      <label for="zugang-email" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">E-Mail</label>
       <input
         id="zugang-email" name="email" type="email" required autocomplete="email"
-        class="w-full border border-linie bg-bogen px-4 py-3 text-base text-blau placeholder-blau-faint focus:outline-none focus:border-siegel"
+        class="w-full border border-line bg-canvas px-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-accent"
         placeholder="sie@unternehmen.de"
       />
     </div>
     <div>
-      <label for="zugang-firma" class="block font-mono text-xs uppercase tracking-wider text-blau-faint mb-1.5">Unternehmen</label>
+      <label for="zugang-firma" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">Unternehmen</label>
       <input
         id="zugang-firma" name="firma" type="text" required autocomplete="organization"
-        class="w-full border border-linie bg-bogen px-4 py-3 text-base text-blau placeholder-blau-faint focus:outline-none focus:border-siegel"
+        class="w-full border border-line bg-canvas px-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-accent"
         placeholder="Name Ihres Unternehmens"
       />
     </div>
@@ -69,8 +69,8 @@ const tarifNamen = Object.fromEntries(
 
   <div class="grid sm:grid-cols-2 gap-5">
     <div>
-      <label for="berufsgruppe" class="block font-mono text-xs uppercase tracking-wider text-blau-faint mb-1.5">Branche / Berufsgruppe</label>
-      <select id="berufsgruppe" name="berufsgruppe" required class="w-full border border-linie bg-bogen px-4 py-3 text-base text-blau focus:outline-none focus:border-siegel">
+      <label for="berufsgruppe" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">Branche / Berufsgruppe</label>
+      <select id="berufsgruppe" name="berufsgruppe" required class="w-full border border-line bg-canvas px-4 py-3 text-base text-ink focus:outline-none focus:border-accent">
         <option value="">Bitte wählen</option>
         <option value="unternehmen">Unternehmen (kein Berufsgeheimnisträger)</option>
         <option value="steuerberatung">Steuerberatung</option>
@@ -83,8 +83,8 @@ const tarifNamen = Object.fromEntries(
       </select>
     </div>
     <div>
-      <label for="volumen" class="block font-mono text-xs uppercase tracking-wider text-blau-faint mb-1.5">Anfragevolumen / Monat</label>
-      <select id="volumen" name="anfragevolumen" class="w-full border border-linie bg-bogen px-4 py-3 text-base text-blau focus:outline-none focus:border-siegel">
+      <label for="volumen" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">Anfragevolumen / Monat</label>
+      <select id="volumen" name="anfragevolumen" class="w-full border border-line bg-canvas px-4 py-3 text-base text-ink focus:outline-none focus:border-accent">
         <option value="unter-1000">unter 1.000 Anfragen</option>
         <option value="1000-10000">1.000–10.000 Anfragen</option>
         <option value="ueber-10000">über 10.000 Anfragen</option>
@@ -94,8 +94,8 @@ const tarifNamen = Object.fromEntries(
   </div>
 
   <div>
-    <label for="ki-nutzung" class="block font-mono text-xs uppercase tracking-wider text-blau-faint mb-1.5">Bestehende KI-Nutzung</label>
-    <select id="ki-nutzung" name="ki_nutzung" class="w-full border border-linie bg-bogen px-4 py-3 text-base text-blau focus:outline-none focus:border-siegel">
+    <label for="ki-nutzung" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">Bestehende KI-Nutzung</label>
+    <select id="ki-nutzung" name="ki_nutzung" class="w-full border border-line bg-canvas px-4 py-3 text-base text-ink focus:outline-none focus:border-accent">
       <option value="keine">Noch keine</option>
       <option value="chatgpt-privat">ChatGPT / privat, ungeregelt</option>
       <option value="azure-openai">Azure OpenAI o. ä. (mit AVV)</option>
@@ -103,13 +103,13 @@ const tarifNamen = Object.fromEntries(
     </select>
   </div>
 
-  <button type="submit" class="knopf knopf-siegel w-full !py-4">
+  <button type="submit" class="knopf knopf-accent w-full !py-4">
     <span id="zugang-absenden-label">Zugangsschlüssel sichern</span>
     <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
   </button>
 
-  <p class="font-mono text-xs text-blau-faint text-center">
-    Zugangsschlüssel per E-Mail, werktags binnen 24 Stunden. Mit dem Absenden stimmen Sie unserer <a href="/datenschutz" class="underline hover:text-blau">Datenschutzerklärung</a> zu.
+  <p class="font-mono text-xs text-ink-faint text-center">
+    Zugangsschlüssel per E-Mail, werktags binnen 24 Stunden. Mit dem Absenden stimmen Sie unserer <a href="/datenschutz" class="underline hover:text-ink">Datenschutzerklärung</a> zu.
   </p>
 </form>
 

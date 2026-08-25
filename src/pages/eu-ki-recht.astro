@@ -17,25 +17,25 @@ const zeitstrahl = [
 ---
 
 <Site title={title} description={description}>
-  <section class="py-14 sm:py-20 border-b border-linie">
+  <section class="py-14 sm:py-20 border-b border-line">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       <p class="marginalie mb-3">EU-KI-Recht</p>
-      <h1 class="display display-l text-blau">Was beim KI-Einsatz wirklich gilt.</h1>
-      <p class="mt-4 text-blau-soft leading-relaxed">
+      <h1 class="display display-l text-ink">Was beim KI-Einsatz wirklich gilt.</h1>
+      <p class="mt-4 text-ink-soft leading-relaxed">
         Ein Überblick über AI Act, DSGVO und § 203 StGB — für jedes Unternehmen, das KI einsetzt, mit zusätzlicher Tiefe für Berufsgeheimnisträger. Diese Seite ist Informationsangebot, keine Rechtsberatung; für Ihren Einzelfall wenden Sie sich an Ihre eigene Rechtsberatung.
       </p>
-      <p class="mt-3 font-mono text-xs text-blau-faint">Stand: 6. August 2026</p>
+      <p class="mt-3 font-mono text-xs text-ink-faint">Stand: 6. August 2026</p>
     </div>
   </section>
 
-  <section class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
+  <section class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
       <p class="marginalie mb-3">Zeitstrahl</p>
-      <h2 class="display display-m text-blau mb-10">Der AI Act, Termin für Termin.</h2>
+      <h2 class="display display-m text-ink mb-10">Der AI Act, Termin für Termin.</h2>
       <Zeitstrahl eintraege={zeitstrahl} />
-      <div class="mt-8 border border-linie bg-bogen-rein p-5">
-        <p class="text-sm font-semibold text-blau">Was das für Ihre Kanzlei / Praxis bedeutet</p>
-        <ul class="mt-2 space-y-1.5 text-sm text-blau-soft">
+      <div class="mt-8 border border-line bg-surface p-5">
+        <p class="text-sm font-semibold text-ink">Was das für Ihre Kanzlei / Praxis bedeutet</p>
+        <ul class="mt-2 space-y-1.5 text-sm text-ink-soft">
           <li>· Die Verschiebung der Hochrisiko-Pflichten entlastet die meisten Berufsgeheimnisträger — Ihr Nutzungsfall ist in aller Regel kein Hochrisiko-System nach Anhang III.</li>
           <li>· Die Transparenzpflichten (Art. 50) gelten unverändert ab 2. August 2026 — kennzeichnen Sie KI-generierte Inhalte, wo vorgeschrieben.</li>
           <li>· Der eigentliche Blocker bleibt unverändert: § 203 StGB und Art. 28 DSGVO, nicht der AI Act.</li>
@@ -44,7 +44,7 @@ const zeitstrahl = [
     </div>
   </section>
 
-  <section class="py-16 sm:py-20 border-b border-linie">
+  <section class="py-16 sm:py-20 border-b border-line">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
       <h2>Pflichten für jedes Unternehmen</h2>
       <p>Der AI Act gilt nicht nur für Berufsgeheimnisträger — er gilt für jedes Unternehmen, das KI-Systeme einsetzt oder bereitstellt. Die folgenden Pflichten treffen Sie unabhängig von Ihrer Branche.</p>
@@ -61,9 +61,9 @@ const zeitstrahl = [
       <h3>Art. 4 — KI-Kompetenz</h3>
       <p>Seit 2. Februar 2025 gilt: Anbieter und Betreiber von KI-Systemen müssen sicherstellen, dass ihr Personal über ausreichende KI-Kompetenz verfügt — angemessen für den jeweiligen Einsatzkontext. Das ist keine Empfehlung, sondern eine geltende Pflicht, unabhängig von Branche oder Unternehmensgröße, und einer der wenigen Punkte, die sich konkret prüfen und dokumentieren lassen.</p>
 
-      <div class="mt-6 border border-linie bg-bogen-tief p-5">
-        <p class="text-sm font-semibold text-blau">Betrifft mich das?</p>
-        <ul class="mt-2 space-y-1.5 text-sm text-blau-soft">
+      <div class="mt-6 border border-line bg-canvas-deep p-5">
+        <p class="text-sm font-semibold text-ink">Betrifft mich das?</p>
+        <ul class="mt-2 space-y-1.5 text-sm text-ink-soft">
           <li>· Setzen Mitarbeitende KI-Tools ein (auch nur ChatGPT im Alltag)? Dann greift mindestens Art. 4.</li>
           <li>· Ist ein Chatbot oder KI-generierter Inhalt für Kunden sichtbar? Dann prüfen Sie Art. 50.</li>
           <li>· Sind Sie zusätzlich Berufsgeheimnisträger (Kanzlei, Praxis, Notariat)? Dann gilt zusätzlich alles Folgende.</li>
@@ -72,7 +72,7 @@ const zeitstrahl = [
     </div>
   </section>
 
-  <section class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
+  <section class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
       <h2>DSGVO</h2>
       <h3>Art. 28 DSGVO — Auftragsverarbeitung</h3>
@@ -87,9 +87,9 @@ const zeitstrahl = [
       <h3>Kapitel V DSGVO — Drittlandtransfer</h3>
       <p>Die Angemessenheitsentscheidung zum EU-US Data Privacy Framework ist derzeit gültiges Recht; sie wurde vom Gericht der Europäischen Union im September 2025 bestätigt, gegen dieses Urteil ist jedoch ein Rechtsmittel beim EuGH anhängig (Rechtssache C-703/25 P). Nach zwei vorangegangenen Aufhebungen von Transatlantik-Rahmen (Safe Harbor, Privacy Shield) ist diese Unsicherheit ein eigenständiger Grund, sich nicht auf US-Verarbeitung zu verlassen, wenn eine EU-Alternative besteht.</p>
 
-      <div class="mt-6 border border-linie bg-bogen-rein p-5">
-        <p class="text-sm font-semibold text-blau">Was das für Ihre Kanzlei / Praxis bedeutet</p>
-        <ul class="mt-2 space-y-1.5 text-sm text-blau-soft">
+      <div class="mt-6 border border-line bg-surface p-5">
+        <p class="text-sm font-semibold text-ink">Was das für Ihre Kanzlei / Praxis bedeutet</p>
+        <ul class="mt-2 space-y-1.5 text-sm text-ink-soft">
           <li>· Verlangen Sie von jedem KI-Anbieter einen konkreten, benannten AVV — kein Sammel-Dokument.</li>
           <li>· Führen Sie den KI-Einsatz als eigenen Eintrag in Ihrem Verarbeitungsverzeichnis.</li>
           <li>· Bevorzugen Sie EU-Verarbeitung, wo verfügbar — unabhängig vom aktuellen Stand des Drittlandtransfers.</li>
@@ -98,7 +98,7 @@ const zeitstrahl = [
     </div>
   </section>
 
-  <section class="py-16 sm:py-20 border-b border-linie">
+  <section class="py-16 sm:py-20 border-b border-line">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
       <h2>§ 203 StGB — Verletzung von Privatgeheimnissen</h2>
       <h3>Abs. 1 — wer betroffen ist</h3>
@@ -107,9 +107,9 @@ const zeitstrahl = [
       <h3>Abs. 3 — mitwirkende Personen</h3>
       <p>Seit der Reform 2017 gilt: Die Weitergabe an „mitwirkende Personen" — Dienstleister, die im Rahmen der Berufsausübung tätig werden, etwa IT- oder Cloud-Anbieter — ist kein Offenbaren im Sinne des § 203 StGB, wenn diese Personen sorgfältig ausgewählt und wirksam zur Verschwiegenheit verpflichtet wurden. Das ist die rechtliche Grundlage, auf der ein externer KI-Gateway für Berufsgeheimnisträger überhaupt zulässig sein kann.</p>
 
-      <div class="mt-6 border border-linie bg-bogen-tief p-5">
-        <p class="text-sm font-semibold text-blau">Was das für Ihre Kanzlei / Praxis bedeutet</p>
-        <ul class="mt-2 space-y-1.5 text-sm text-blau-soft">
+      <div class="mt-6 border border-line bg-canvas-deep p-5">
+        <p class="text-sm font-semibold text-ink">Was das für Ihre Kanzlei / Praxis bedeutet</p>
+        <ul class="mt-2 space-y-1.5 text-sm text-ink-soft">
           <li>· Ohne wirksame Verschwiegenheitsverpflichtung des Anbieters bleibt jede Weitergabe strafbar — das ist der Kern des Risikos.</li>
           <li>· Eine reine AGB-Zustimmung eines US-Chatbot-Anbieters erfüllt diese Anforderung in aller Regel nicht.</li>
           <li>· Eine dedizierte §203-Zusatzvereinbarung ist der Unterschied zwischen zulässiger Auslagerung und Straftat.</li>
@@ -118,7 +118,7 @@ const zeitstrahl = [
     </div>
   </section>
 
-  <section class="py-16 sm:py-20 border-b border-linie bg-bogen-tief">
+  <section class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
       <h2>Angrenzende Regelwerke</h2>
       <h3>NIS2</h3>
@@ -132,11 +132,11 @@ const zeitstrahl = [
     </div>
   </section>
 
-  <section id="infografik" class="py-16 sm:py-20 border-b border-linie">
+  <section id="infografik" class="py-16 sm:py-20 border-b border-line">
     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <p class="marginalie mb-3">PDF-Checkliste</p>
-      <h2 class="display display-m text-blau">Alles oben, auf einer Seite.</h2>
-      <p class="mt-4 text-blau-soft leading-relaxed">
+      <h2 class="display display-m text-ink">Alles oben, auf einer Seite.</h2>
+      <p class="mt-4 text-ink-soft leading-relaxed">
         Risikoklassen, Art. 4 & Art. 50, AVV/VVT/TOM, § 203 StGB — als Ein-Seiten-Checkliste zum Ausdrucken oder Aufhängen. Der Download-Button erscheint direkt nach dem Absenden.
       </p>
       <div class="mt-7 max-w-md mx-auto text-left">
@@ -145,10 +145,10 @@ const zeitstrahl = [
     </div>
   </section>
 
-  <section class="py-14 border-t border-linie bg-bogen-tief text-center">
+  <section class="py-14 border-t border-line bg-canvas-deep text-center">
     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="text-blau-soft">Die passenden Dokumente dazu — AVV, TOM, §203-Zusatzvereinbarung — finden Sie ungefiltert zum Download.</p>
-      <a href="/unterlagen" class="knopf knopf-siegel mt-5">Unterlagen ansehen</a>
+      <p class="text-ink-soft">Die passenden Dokumente dazu — AVV, TOM, §203-Zusatzvereinbarung — finden Sie ungefiltert zum Download.</p>
+      <a href="/unterlagen" class="knopf knopf-accent mt-5">Unterlagen ansehen</a>
     </div>
   </section>
 </Site>

@@ -4,11 +4,11 @@ import { SIEGEL } from '../lib/belege';
 
 <!-- Nachprüfbare Aussagen — Produkteigenschaften statt Kundenzitaten, die wir
      noch nicht haben. Siehe die Begründung in src/lib/belege.ts. -->
-<dl class="grid grid-cols-2 lg:grid-cols-4 gap-px bg-linie border border-linie">
+<dl class="grid grid-cols-2 lg:grid-cols-4 gap-px bg-line border border-line">
   {SIEGEL.map((k) => (
-    <div class="bg-bogen-rein p-7">
-      <dt class="display display-xl text-siegel">{k.wert}</dt>
-      <dd class="mt-2 text-sm text-blau-soft leading-relaxed">{k.label}</dd>
+    <div class="bg-surface p-7">
+      <dt class="display display-xl text-accent">{k.wert}</dt>
+      <dd class="mt-2 text-sm text-ink-soft leading-relaxed">{k.label}</dd>
     </div>
   ))}
 </dl>

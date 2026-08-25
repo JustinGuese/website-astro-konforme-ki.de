@@ -8,18 +8,18 @@ const title = 'Kontakt | Nachweis';
 const description = 'Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Compliance-Tarif? Schreiben Sie uns.';
 ---
 <Site title={title} description={description}>
-  <section class="bg-bogen-tief border-b border-linie">
+  <section class="bg-canvas-deep border-b border-line">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 text-center">
       <p class="marginalie mb-3">Kontakt</p>
-      <h1 class="display display-l text-blau">Lassen Sie uns reden.</h1>
-      <p id="pre-header" class="mt-4 text-lg text-blau-soft max-w-2xl mx-auto">Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Compliance-Tarif? Schreiben Sie uns — wir antworten in der Regel innerhalb eines Werktages.</p>
+      <h1 class="display display-l text-ink">Lassen Sie uns reden.</h1>
+      <p id="pre-header" class="mt-4 text-lg text-ink-soft max-w-2xl mx-auto">Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Compliance-Tarif? Schreiben Sie uns — wir antworten in der Regel innerhalb eines Werktages.</p>
     </div>
   </section>
 
   <section class="py-16">
     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div id="sent-banner" class="hidden mb-6 p-4 border border-siegel bg-siegel-blass text-blau text-sm">
-        <span class="marke marke-siegel mb-2">Angekommen</span>
+      <div id="sent-banner" class="hidden mb-6 p-4 border border-accent bg-accent-pale text-ink text-sm">
+        <span class="marke marke-accent mb-2">Angekommen</span>
         <p class="mt-2">Danke! Ihre Nachricht ist angekommen — wir melden uns in Kürze.</p>
       </div>
 
@@ -27,7 +27,7 @@ const description = 'Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Complia
         id="kontakt-form"
         action={`https://formspree.io/f/${formspreeId}`}
         method="POST"
-        class="bg-bogen-rein border border-linie p-6 sm:p-8 space-y-5"
+        class="bg-surface border border-line p-6 sm:p-8 space-y-5"
       >
         <input type="hidden" name="form" value="kontakt" />
         <input type="hidden" id="interesse-field" name="interesse" value="allgemein" />
@@ -37,36 +37,36 @@ const description = 'Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Complia
 
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
-            <label for="name" class="block font-mono text-xs uppercase tracking-wider text-blau-faint mb-1.5">Name</label>
+            <label for="name" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">Name</label>
             <input
               id="name" name="name" type="text" required autocomplete="name"
-              class="w-full border border-linie bg-bogen px-4 py-3 text-base text-blau placeholder-blau-faint focus:outline-none focus:border-siegel"
+              class="w-full border border-line bg-canvas px-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-accent"
               placeholder="Ihr Name"
             />
           </div>
           <div>
-            <label for="firma" class="block font-mono text-xs uppercase tracking-wider text-blau-faint mb-1.5">Kanzlei / Praxis</label>
+            <label for="firma" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">Kanzlei / Praxis</label>
             <input
               id="firma" name="firma" type="text" required autocomplete="organization"
-              class="w-full border border-linie bg-bogen px-4 py-3 text-base text-blau placeholder-blau-faint focus:outline-none focus:border-siegel"
+              class="w-full border border-line bg-canvas px-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-accent"
               placeholder="Name Ihrer Kanzlei / Praxis"
             />
           </div>
         </div>
 
         <div>
-          <label for="email" class="block font-mono text-xs uppercase tracking-wider text-blau-faint mb-1.5">E-Mail</label>
+          <label for="email" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">E-Mail</label>
           <input
             id="email" name="email" type="email" required autocomplete="email"
-            class="w-full border border-linie bg-bogen px-4 py-3 text-base text-blau placeholder-blau-faint focus:outline-none focus:border-siegel"
+            class="w-full border border-line bg-canvas px-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-accent"
             placeholder="sie@kanzlei.de"
           />
         </div>
 
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
-            <label for="berufsgruppe" class="block font-mono text-xs uppercase tracking-wider text-blau-faint mb-1.5">Berufsgruppe</label>
-            <select id="berufsgruppe" name="berufsgruppe" class="w-full border border-linie bg-bogen px-4 py-3 text-base text-blau focus:outline-none focus:border-siegel">
+            <label for="berufsgruppe" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">Berufsgruppe</label>
+            <select id="berufsgruppe" name="berufsgruppe" class="w-full border border-line bg-canvas px-4 py-3 text-base text-ink focus:outline-none focus:border-accent">
               <option value="">Bitte wählen</option>
               <option value="steuerberatung">Steuerberatung</option>
               <option value="rechtsanwaltschaft">Rechtsanwaltschaft</option>
@@ -78,33 +78,33 @@ const description = 'Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Complia
             </select>
           </div>
           <div>
-            <label for="phone" class="block font-mono text-xs uppercase tracking-wider text-blau-faint mb-1.5">
-              Telefon <span class="normal-case font-sans text-blau-faint/80">(optional)</span>
+            <label for="phone" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">
+              Telefon <span class="normal-case font-sans text-ink-faint/80">(optional)</span>
             </label>
             <input
               id="phone" name="phone" type="tel" autocomplete="tel"
-              class="w-full border border-linie bg-bogen px-4 py-3 text-base text-blau placeholder-blau-faint focus:outline-none focus:border-siegel"
+              class="w-full border border-line bg-canvas px-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-accent"
               placeholder="+49 …"
             />
           </div>
         </div>
 
         <div>
-          <label for="message" class="block font-mono text-xs uppercase tracking-wider text-blau-faint mb-1.5">Nachricht</label>
+          <label for="message" class="block font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">Nachricht</label>
           <textarea
             id="message" name="message" required rows="6"
-            class="w-full border border-linie bg-bogen px-4 py-3 text-base text-blau placeholder-blau-faint focus:outline-none focus:border-siegel"
+            class="w-full border border-line bg-canvas px-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-accent"
             placeholder="Worum geht es?"
           ></textarea>
         </div>
 
-        <button type="submit" class="knopf knopf-siegel w-full !py-4">
+        <button type="submit" class="knopf knopf-accent w-full !py-4">
           Nachricht senden
           <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
         </button>
 
-        <p class="font-mono text-xs text-blau-faint text-center">
-          Mit dem Absenden stimmen Sie unserer <a href="/datenschutz" class="underline hover:text-blau">Datenschutzerklärung</a> zu.
+        <p class="font-mono text-xs text-ink-faint text-center">
+          Mit dem Absenden stimmen Sie unserer <a href="/datenschutz" class="underline hover:text-ink">Datenschutzerklärung</a> zu.
         </p>
       </form>
     </div>
