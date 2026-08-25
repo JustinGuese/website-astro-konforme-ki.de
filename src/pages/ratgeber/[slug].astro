@@ -1,6 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Site from '../../layouts/Site.astro';
+import ArticleLayout from '@justinguese/astro-kit/ArticleLayout.astro';
+import { tocFrom } from '@justinguese/astro-kit/lib/article';
 import ArtikelUpsell from '../../components/ArtikelUpsell.astro';
 import { site } from '../../config/site';
 import { formatDeDatum } from '../../lib/format';
@@ -13,12 +15,16 @@ export async function getStaticPaths() {
 const { doc, alle } = Astro.props;
 const { Content, headings } = await render(doc);
 
-/** Nur H2 ins Inhaltsverzeichnis — H3/H4 machen es bei 1.500 Wörtern unlesbar. */
-const gliederung = headings.filter((h) => h.depth === 2);
-
 const verwandt = doc.data.related
   .map((slug) => alle.find((a) => a.id === slug))
   .filter((a) => a !== undefined);
+
+const verwandtCards = verwandt.map((a) => ({
+  href: `/ratgeber/${a.id}`,
+  title: a.data.title,
+  description: a.data.kurz,
+  cta: 'Lesen',
+}));
 
 const url = new URL(`/ratgeber/${doc.id}`, Astro.site ?? Astro.url).href;
 const standAnzeige = formatDeDatum(doc.data.updated);
@@ -60,62 +66,29 @@ const schema = [
 >
   <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(schema)} />
 
-  <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-    <nav aria-label="Brotkrumen" class="kein-druck flex items-center gap-2 font-mono text-xs text-ink-faint">
-      <a href="/" class="hover:text-ink">Start</a>
-      <span aria-hidden="true">/</span>
-      <a href="/ratgeber" class="hover:text-ink">Ratgeber</a>
-    </nav>
+  <ArticleLayout
+    title={doc.data.title}
+    description={doc.data.kurz}
+    breadcrumbs={[{ label: 'Start', href: '/' }, { label: 'Ratgeber', href: '/ratgeber' }, { label: doc.data.title }]}
+    breadcrumbLabel="Brotkrumen"
+    meta={[`${doc.data.readingTime} Minuten Lesezeit`, `Stand: ${standAnzeige}`]}
+    toc={tocFrom(headings)}
+    tocTitle="Inhalt"
+    related={verwandtCards}
+    relatedTitle="Weiterlesen"
+    progress={false}
+  >
+    <span slot="kicker" class="marke marke-neutral">{doc.data.category}</span>
 
-    <header class="mt-8 pb-8 border-b border-line">
-      <div class="flex flex-wrap items-center gap-3">
-        <span class="marke marke-neutral">{doc.data.category}</span>
-        <span class="font-mono text-xs text-ink-faint">{doc.data.readingTime} Minuten Lesezeit · Stand: {standAnzeige}</span>
-      </div>
-      <h1 class="mt-5 display display-l text-ink">{doc.data.title}</h1>
-      <p class="mt-5 text-lg text-ink-soft leading-relaxed">{doc.data.kurz}</p>
-    </header>
+    <Content />
 
-    {gliederung.length > 2 && (
-      <nav aria-label="Inhalt" class="kein-druck mt-10 border border-line bg-canvas-deep px-6 py-5">
-        <p class="marginalie">Inhalt</p>
-        <ol class="mt-3 space-y-1.5">
-          {gliederung.map((h, i) => (
-            <li class="flex gap-3 text-sm">
-              <span class="font-mono text-xs text-ink-faint shrink-0 mt-0.5">{String(i + 1).padStart(2, '0')}</span>
-              <a href={`#${h.slug}`} class="text-ink-soft hover:text-accent transition-colors">{h.text}</a>
-            </li>
-          ))}
-        </ol>
-      </nav>
-    )}
+    <Fragment slot="disclaimer">
+      <p class="kein-druck mt-12 border-l-2 border-line pl-4 text-xs text-ink-faint leading-relaxed">
+        Dieser Beitrag ist ein Informationsangebot und keine Rechtsberatung. Für die Beurteilung Ihres Einzelfalls
+        wenden Sie sich an Ihre eigene Rechtsberatung. Stand der dargestellten Rechtslage: {standAnzeige}.
+      </p>
+    </Fragment>
 
-    <div class="article-body mt-10">
-      <Content />
-    </div>
-
-    <ArtikelUpsell />
-
-    {verwandt.length > 0 && (
-      <section class="kein-druck mt-14">
-        <p class="marginalie">Weiterlesen</p>
-        <div class="mt-4 divide-y divide-line border-t border-b border-line">
-          {verwandt.map((a) => (
-            <a href={`/ratgeber/${a.id}`} class="group flex items-start justify-between gap-4 py-5 hover:bg-canvas-deep -mx-4 px-4 transition-colors">
-              <div>
-                <p class="font-display font-bold text-sm text-ink group-hover:text-accent transition-colors" style="font-variation-settings: 'wdth' 90;">{a.data.title}</p>
-                <p class="mt-1.5 text-sm text-ink-soft leading-relaxed">{a.data.kurz}</p>
-              </div>
-              <span class="shrink-0 text-accent text-xl leading-none mt-0.5">→</span>
-            </a>
-          ))}
-        </div>
-      </section>
-    )}
-
-    <p class="kein-druck mt-12 border-l-2 border-line pl-4 text-xs text-ink-faint leading-relaxed">
-      Dieser Beitrag ist ein Informationsangebot und keine Rechtsberatung. Für die Beurteilung Ihres Einzelfalls
-      wenden Sie sich an Ihre eigene Rechtsberatung. Stand der dargestellten Rechtslage: {standAnzeige}.
-    </p>
-  </article>
+    <ArtikelUpsell slot="cta" />
+  </ArticleLayout>
 </Site>

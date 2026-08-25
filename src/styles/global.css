@@ -486,7 +486,11 @@
   .kette,
   .kette-strich,
   #df-cookie-banner,
-  #df-sticky-cta { display: none !important; }
+  #df-sticky-cta,
+  /* ArticleLayout's own furniture — same treatment as the site's .kein-druck. */
+  .df-crumbs,
+  .df-article__toc,
+  .df-article__related { display: none !important; }
 
   html, body {
     background: #fff !important;
