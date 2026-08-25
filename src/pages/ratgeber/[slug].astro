@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Site from '../../layouts/Site.astro';
 import ArtikelUpsell from '../../components/ArtikelUpsell.astro';
 import { site } from '../../config/site';
+import { formatDeDatum } from '../../lib/format';
 
 export async function getStaticPaths() {
   const artikel = await getCollection('ratgeber');
@@ -15,21 +16,22 @@ const { Content, headings } = await render(doc);
 /** Nur H2 ins Inhaltsverzeichnis — H3/H4 machen es bei 1.500 Wörtern unlesbar. */
 const gliederung = headings.filter((h) => h.depth === 2);
 
-const verwandt = doc.data.verwandt
+const verwandt = doc.data.related
   .map((slug) => alle.find((a) => a.id === slug))
   .filter((a) => a !== undefined);
 
 const url = new URL(`/ratgeber/${doc.id}`, Astro.site ?? Astro.url).href;
+const standAnzeige = formatDeDatum(doc.data.updated);
 
 const schema = [
   {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: doc.data.title,
-    description: doc.data.beschreibung,
+    description: doc.data.description,
     inLanguage: 'de-DE',
-    dateModified: doc.data.stand,
-    articleSection: doc.data.kategorie,
+    dateModified: doc.data.updated,
+    articleSection: doc.data.category,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     author: { '@type': 'Organization', name: site.legalName, url: site.url },
     publisher: {
@@ -53,8 +55,8 @@ const schema = [
 
 <Site
   title={doc.data.metaTitle}
-  description={doc.data.beschreibung}
-  artikel={{ geaendert: doc.data.stand, kategorie: doc.data.kategorie }}
+  description={doc.data.description}
+  artikel={{ geaendert: doc.data.updated, kategorie: doc.data.category }}
 >
   <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(schema)} />
 
@@ -67,8 +69,8 @@ const schema = [
 
     <header class="mt-8 pb-8 border-b border-line">
       <div class="flex flex-wrap items-center gap-3">
-        <span class="marke marke-neutral">{doc.data.kategorie}</span>
-        <span class="font-mono text-xs text-ink-faint">{doc.data.lesezeit} · Stand: {doc.data.stand}</span>
+        <span class="marke marke-neutral">{doc.data.category}</span>
+        <span class="font-mono text-xs text-ink-faint">{doc.data.readingTime} Minuten Lesezeit · Stand: {standAnzeige}</span>
       </div>
       <h1 class="mt-5 display display-l text-ink">{doc.data.title}</h1>
       <p class="mt-5 text-lg text-ink-soft leading-relaxed">{doc.data.kurz}</p>
@@ -113,7 +115,7 @@ const schema = [
 
     <p class="kein-druck mt-12 border-l-2 border-line pl-4 text-xs text-ink-faint leading-relaxed">
       Dieser Beitrag ist ein Informationsangebot und keine Rechtsberatung. Für die Beurteilung Ihres Einzelfalls
-      wenden Sie sich an Ihre eigene Rechtsberatung. Stand der dargestellten Rechtslage: {doc.data.stand}.
+      wenden Sie sich an Ihre eigene Rechtsberatung. Stand der dargestellten Rechtslage: {standAnzeige}.
     </p>
   </article>
 </Site>

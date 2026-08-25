@@ -3,13 +3,14 @@ import { getCollection } from 'astro:content';
 import Site from '../../layouts/Site.astro';
 import ArtikelUpsell from '../../components/ArtikelUpsell.astro';
 import { site } from '../../config/site';
+import { formatDeDatum } from '../../lib/format';
 
-const artikel = (await getCollection('ratgeber')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
+const artikel = (await getCollection('ratgeber')).sort((a, b) => a.data.order - b.data.order);
 
 /** Gruppiert nach Kategorie, Reihenfolge wie in der Schema-Enum. */
 const kategorien = ['Berufsgruppe', 'Recht & Pflichten', 'Auswahl & Technik'] as const;
 const nachKategorie = kategorien
-  .map((k) => ({ kategorie: k, eintraege: artikel.filter((a) => a.data.kategorie === k) }))
+  .map((k) => ({ kategorie: k, eintraege: artikel.filter((a) => a.data.category === k) }))
   .filter((g) => g.eintraege.length > 0);
 
 const title = 'Ratgeber: KI, DSGVO und § 203 StGB | Nachweis';
@@ -26,7 +27,7 @@ const schema = {
   hasPart: artikel.map((a) => ({
     '@type': 'Article',
     headline: a.data.title,
-    description: a.data.beschreibung,
+    description: a.data.description,
     url: `${site.url}/ratgeber/${a.id}`,
   })),
 };
@@ -61,7 +62,7 @@ const schema = {
                 <div>
                   <p class="font-display font-bold text-ink group-hover:text-accent transition-colors" style="font-variation-settings: 'wdth' 90;">{a.data.title}</p>
                   <p class="mt-1.5 text-sm text-ink-soft leading-relaxed">{a.data.kurz}</p>
-                  <p class="mt-2 font-mono text-xs text-ink-faint">{a.data.lesezeit} · Stand: {a.data.stand}</p>
+                  <p class="mt-2 font-mono text-xs text-ink-faint">{a.data.readingTime} Minuten Lesezeit · Stand: {formatDeDatum(a.data.updated)}</p>
                 </div>
                 <span class="shrink-0 text-accent text-xl leading-none mt-1">→</span>
               </a>

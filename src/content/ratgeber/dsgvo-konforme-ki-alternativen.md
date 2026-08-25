@@ -1,14 +1,14 @@
 ---
 title: 'DSGVO-konforme Alternativen zu ChatGPT: Was EU-Hosting wirklich bedeutet'
 metaTitle: 'DSGVO-konforme ChatGPT-Alternativen — EU-KI im Vergleich | Nachweis'
-beschreibung: 'DSGVO-konforme KI Alternative zu ChatGPT: EU-Hosting ist eine Stufenleiter mit vier Ebenen, kein Ja/Nein-Siegel. Was Sie jedem Anbieter abverlangen sollten.'
+description: 'DSGVO-konforme KI Alternative zu ChatGPT: EU-Hosting ist eine Stufenleiter mit vier Ebenen, kein Ja/Nein-Siegel. Was Sie jedem Anbieter abverlangen sollten.'
 kurz: 'EU-Hosting wird als Ja/Nein-Frage verkauft, ist aber eine Leiter mit vier sehr unterschiedlichen Stufen. Was Sie einem Anbieter konkret abverlangen sollten, bevor Sie ihm vertrauen.'
 keyword: 'DSGVO-konforme KI Alternative ChatGPT'
-kategorie: 'Auswahl & Technik'
-stand: '7. August 2026'
-lesezeit: '11 Minuten Lesezeit'
-reihenfolge: 6
-verwandt: ['avv-ki-anbieter', 'chatgpt-kanzlei-datenschutz', 'ki-arztpraxis-datenschutz']
+category: 'Auswahl & Technik'
+updated: '2026-08-07'
+readingTime: 11
+order: 6
+related: ['avv-ki-anbieter', 'chatgpt-kanzlei-datenschutz', 'ki-arztpraxis-datenschutz']
 ---
 
 Wer erkannt hat, dass ChatGPT für sensible Daten nicht infrage kommt, landet meist auf derselben Suche: „DSGVO-konforme Alternative". Das Problem an dieser Suche ist der Begriff selbst. „EU-Hosting" wird im Marketing fast jedes Anbieters als binäres Merkmal verkauft — entweder ein Häkchen oder keins. Tatsächlich ist es eine Leiter mit mehreren Sprossen, und die Garantien auf den einzelnen Stufen unterscheiden sich fundamental. Wer das nicht auseinanderhält, kauft im Zweifel ein Versprechen statt eine Eigenschaft.

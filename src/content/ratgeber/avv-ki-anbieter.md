@@ -1,14 +1,14 @@
 ---
 title: 'AVV mit KI-Anbietern: Was nach Art. 28 DSGVO drinstehen muss'
 metaTitle: 'AVV für KI-Anbieter — Checkliste nach Art. 28 DSGVO | Nachweis'
-beschreibung: 'AVV KI-Anbieter Art. 28 DSGVO: alle Pflichtangaben, Lücken bei Training, Retention, Subprozessoren und rote Flaggen — die Checkliste vor der Unterschrift.'
+description: 'AVV KI-Anbieter Art. 28 DSGVO: alle Pflichtangaben, Lücken bei Training, Retention, Subprozessoren und rote Flaggen — die Checkliste vor der Unterschrift.'
 kurz: 'Was ein Anbieter-AVV nach Art. 28 DSGVO enthalten muss, welche KI-spezifischen Klauseln in Standard-Verträgen fehlen, und woran Sie einen unbrauchbaren AVV erkennen.'
 keyword: 'AVV KI-Anbieter Art. 28 DSGVO'
-kategorie: 'Recht & Pflichten'
-stand: '7. August 2026'
-lesezeit: '10 Minuten Lesezeit'
-reihenfolge: 4
-verwandt: ['verarbeitungsverzeichnis-ki', 'chatgpt-kanzlei-datenschutz', 'dsgvo-konforme-ki-alternativen']
+category: 'Recht & Pflichten'
+updated: '2026-08-07'
+readingTime: 10
+order: 4
+related: ['verarbeitungsverzeichnis-ki', 'chatgpt-kanzlei-datenschutz', 'dsgvo-konforme-ki-alternativen']
 ---
 
 ## Warum der AVV zuerst geprüft werden muss

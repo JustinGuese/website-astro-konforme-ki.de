@@ -1,14 +1,14 @@
 ---
 title: 'KI im Verarbeitungsverzeichnis: Der Art. 30-Eintrag, Feld für Feld'
 metaTitle: 'Verarbeitungsverzeichnis KI — Art. 30 DSGVO Eintrag & Muster | Nachweis'
-beschreibung: 'Verarbeitungsverzeichnis KI: Jedes Pflichtfeld nach Art. 30 DSGVO für den KI-Einsatz korrekt ausfüllen — Empfänger, Löschfristen, Drittland, mit Muster.'
+description: 'Verarbeitungsverzeichnis KI: Jedes Pflichtfeld nach Art. 30 DSGVO für den KI-Einsatz korrekt ausfüllen — Empfänger, Löschfristen, Drittland, mit Muster.'
 kurz: 'Wie Sie den Einsatz eines KI-Tools Feld für Feld ins Verarbeitungsverzeichnis eintragen — inklusive vollständigem Beispiel-Eintrag zum Nachbauen.'
 keyword: 'Verarbeitungsverzeichnis KI Art. 30 DSGVO'
-kategorie: 'Recht & Pflichten'
-stand: '7. August 2026'
-lesezeit: '10 Minuten Lesezeit'
-reihenfolge: 5
-verwandt: ['avv-ki-anbieter', 'chatgpt-steuerberater', 'dsgvo-konforme-ki-alternativen']
+category: 'Recht & Pflichten'
+updated: '2026-08-07'
+readingTime: 10
+order: 5
+related: ['avv-ki-anbieter', 'chatgpt-steuerberater', 'dsgvo-konforme-ki-alternativen']
 ---
 
 Der Eintrag für ein KI-Tool sieht im Verarbeitungsverzeichnis auf den ersten Blick aus wie jeder andere Art.-30-Eintrag: Verantwortlicher, Zweck, Kategorien, Empfänger, Löschfristen. In der Praxis scheitert er trotzdem häufiger als andere Einträge — weil „wir nutzen KI" auf jedes Pflichtfeld unterschiedlich schwer passt. Dieser Artikel geht die Felder einzeln durch, mit konkreter Beispielformulierung für einen typischen KI-Einsatzfall, und zeigt, wo übliche Vorlagen an der Realität von KI-Verarbeitung vorbeigehen.

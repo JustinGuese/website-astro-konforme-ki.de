@@ -1,14 +1,14 @@
 ---
 title: 'KI in der Arztpraxis: Was mit Patientendaten erlaubt ist'
 metaTitle: 'KI in der Arztpraxis — Datenschutz, § 203 StGB & Art. 9 DSGVO | Nachweis'
-beschreibung: 'KI Arztpraxis Datenschutz: Was Art. 9 DSGVO und § 203 StGB bei Anamnese, Arztbrief & Befund wirklich erlauben — konkrete Checkliste für Praxen.'
+description: 'KI Arztpraxis Datenschutz: Was Art. 9 DSGVO und § 203 StGB bei Anamnese, Arztbrief & Befund wirklich erlauben — konkrete Checkliste für Praxen.'
 kurz: 'Gesundheitsdaten sind doppelt geschützt — durch die DSGVO und durch das Strafrecht. Was das für KI-Einsatz in der Praxis konkret bedeutet.'
 keyword: 'KI Arztpraxis Datenschutz'
-kategorie: 'Berufsgruppe'
-stand: '7. August 2026'
-lesezeit: '10 Minuten Lesezeit'
-reihenfolge: 3
-verwandt: ['chatgpt-kanzlei-datenschutz', 'avv-ki-anbieter', 'dsgvo-konforme-ki-alternativen']
+category: 'Berufsgruppe'
+updated: '2026-08-07'
+readingTime: 10
+order: 3
+related: ['chatgpt-kanzlei-datenschutz', 'avv-ki-anbieter', 'dsgvo-konforme-ki-alternativen']
 ---
 
 Wenn Sie als Arzt oder Ärztin über den Einsatz von KI für Anamnese-Zusammenfassungen, Arztbriefe oder Befundstrukturierung nachdenken, bewegen Sie sich in einem Bereich, der strenger reguliert ist als fast jeder andere Berufsgeheimnisträger-Kontext. Der Grund ist eine doppelte Rechtslage, die bei anderen Berufsgruppen so nicht existiert.

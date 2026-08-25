@@ -1,14 +1,14 @@
 ---
 title: 'ChatGPT in der Kanzlei: Was § 203 StGB Ihnen wirklich verbietet'
 metaTitle: 'ChatGPT in der Kanzlei — erlaubt? § 203 StGB & DSGVO | Nachweis'
-beschreibung: 'ChatGPT Kanzlei Datenschutz: Warum § 203 StGB strenger ist als die DSGVO, was die Reform von 2017 erlaubt und welche Vertragsbausteine wirklich zählen.'
+description: 'ChatGPT Kanzlei Datenschutz: Warum § 203 StGB strenger ist als die DSGVO, was die Reform von 2017 erlaubt und welche Vertragsbausteine wirklich zählen.'
 kurz: 'Nicht die DSGVO ist bei ChatGPT in der Kanzlei das Problem, sondern § 203 StGB. Was das für Schriftsätze, Mandantenkorrespondenz und Recherche bedeutet.'
 keyword: 'ChatGPT Kanzlei Datenschutz'
-kategorie: 'Berufsgruppe'
-stand: '7. August 2026'
-lesezeit: '9 Minuten Lesezeit'
-reihenfolge: 1
-verwandt: ['chatgpt-steuerberater', 'avv-ki-anbieter', 'dsgvo-konforme-ki-alternativen']
+category: 'Berufsgruppe'
+updated: '2026-08-07'
+readingTime: 9
+order: 1
+related: ['chatgpt-steuerberater', 'avv-ki-anbieter', 'dsgvo-konforme-ki-alternativen']
 ---
 
 Viele Kanzleien stellen die falsche Frage. „Dürfen wir ChatGPT nutzen, wenn die DSGVO eingehalten ist?" ist nicht die Frage, die über Zulässigkeit entscheidet. Die schärfere Hürde liegt woanders — im Strafrecht, nicht im Datenschutzrecht. Wer das übersieht, verwechselt eine Ordnungswidrigkeit mit einem Offizialdelikt.

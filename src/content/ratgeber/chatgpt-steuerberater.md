@@ -1,14 +1,14 @@
 ---
 title: 'ChatGPT für Steuerberater: Was mit Mandantendaten erlaubt ist'
 metaTitle: 'ChatGPT für Steuerberater — DSGVO, § 203 StGB & StBerG | Nachweis'
-beschreibung: 'ChatGPT Steuerberater: Wann die Eingabe von Mandantendaten nach § 203 StGB strafbar wird, was der AVV allein nicht abdeckt und was Kanzleien prüfen müssen.'
+description: 'ChatGPT Steuerberater: Wann die Eingabe von Mandantendaten nach § 203 StGB strafbar wird, was der AVV allein nicht abdeckt und was Kanzleien prüfen müssen.'
 kurz: 'ChatGPT für Steuerberater ist nicht per se verboten — aber sobald Mandantendaten hineinfließen, entscheidet § 203 StGB über strafbar oder zulässig.'
 keyword: 'ChatGPT Steuerberater Datenschutz'
-kategorie: 'Berufsgruppe'
-stand: '7. August 2026'
-lesezeit: '9 Minuten Lesezeit'
-reihenfolge: 2
-verwandt: ['chatgpt-kanzlei-datenschutz', 'verarbeitungsverzeichnis-ki', 'dsgvo-konforme-ki-alternativen']
+category: 'Berufsgruppe'
+updated: '2026-08-07'
+readingTime: 9
+order: 2
+related: ['chatgpt-kanzlei-datenschutz', 'verarbeitungsverzeichnis-ki', 'dsgvo-konforme-ki-alternativen']
 ---
 
 Steuerberaterinnen und Steuerberater gehören zu den Berufsgruppen, für die der Gesetzgeber im Umgang mit KI-Tools ausdrücklich keinen Interpretationsspielraum lässt. § 203 StGB nennt den Beruf namentlich. Wer trotzdem Mandantendaten in ChatGPT eingibt, verlässt sich auf eine Rechtsgrundlage, die dafür nicht gemacht ist. Dieser Artikel ordnet ein, wo die Grenze verläuft — konkret, ohne Panikmache und ohne die Nutzung von KI in der Kanzlei pauschal zu verurteilen.
