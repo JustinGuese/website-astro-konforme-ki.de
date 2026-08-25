@@ -11,6 +11,7 @@ import InfografikForm from '../components/InfografikForm.astro';
 import ZugangForm from '../components/ZugangForm.astro';
 import ConversionTracking from '@justinguese/astro-kit/ConversionTracking.astro';
 import FaqBlock from '@justinguese/astro-kit/FaqBlock.astro';
+import CtaBand from '@justinguese/astro-kit/CtaBand.astro';
 import { buildChain } from '../lib/kette';
 import { LEITER } from '../lib/preise';
 import { KONTINGENT, frei } from '../lib/kontingent';
@@ -443,24 +444,16 @@ const faq = [
   </section>
 
   <!-- 12. Abschluss — die Seite endet auf einer Handlung, nicht auf einer Frage. -->
-  <section id="abschluss" class="py-20 sm:py-24 bg-ink-deep text-canvas">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <span class="marke marke-dunkel">Noch {frei} Plätze diesen Monat</span>
-      <h2 class="mt-5 display display-l text-canvas">Ihr Datenschutzbeauftragter wartet auf einen Beleg. Holen Sie ihn sich.</h2>
-      <p class="mt-5 text-canvas/70 leading-relaxed max-w-xl mx-auto">
-        Sidecar über Ihre bestehende KI oder direkt gehostete Inferenz — beides ohne Zahlungsmittel und ohne Verkaufsgespräch.
-      </p>
-      <div class="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3">
-        <a href="/kontakt?interesse=sidecar" class="knopf knopf-accent w-full sm:w-auto" data-cta="abschluss-sidecar">
-          Sidecar einrichten
-          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
-        </a>
-        <a href="/?tarif=compliance#zugang" class="knopf knopf-dunkel w-full sm:w-auto" data-cta="abschluss-zugang">
-          Direkt gehostete Inferenz
-        </a>
-      </div>
-    </div>
-  </section>
+  <CtaBand
+    id="abschluss"
+    title="Ihr Datenschutzbeauftragter wartet auf einen Beleg. Holen Sie ihn sich."
+    body="Sidecar über Ihre bestehende KI oder direkt gehostete Inferenz — beides ohne Zahlungsmittel und ohne Verkaufsgespräch."
+    cta={{ label: 'Sidecar einrichten', href: '/kontakt?interesse=sidecar', track: 'abschluss-sidecar' }}
+    secondary={{ label: 'Direkt gehostete Inferenz', href: '/?tarif=compliance#zugang', track: 'abschluss-zugang' }}
+  >
+    <span slot="eyebrow" class="marke marke-dunkel">Noch {frei} Plätze diesen Monat</span>
+    <svg slot="cta-icon" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
+  </CtaBand>
 
   <ConversionTracking states={[
     { flag: 'zugang_gesendet', revealId: 'zugang-gesendet', event: 'zugang', label: 'Zugang Waitlist' },
