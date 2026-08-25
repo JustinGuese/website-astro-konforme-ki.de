@@ -1,7 +1,7 @@
 ---
 import Site from '../layouts/Site.astro';
 import Kette from '../components/Kette.astro';
-import Hero from '../components/Hero.astro';
+import HeroBlock from '@justinguese/astro-kit/HeroBlock.astro';
 import RekordKarte from '../components/RekordKarte.astro';
 import Playground from '../components/Playground.astro';
 import LeiterTabelle from '../components/LeiterTabelle.astro';
@@ -145,27 +145,22 @@ const faq = [
   <!-- 1. Hero — Sidecar ist das Hauptangebot; gehostete Inferenz ist der Eskalationspfad. -->
   <section id="hero" class="py-14 sm:py-20 border-b border-line">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <Hero
-        marginalie="Für Ihre bestehende KI — Azure OpenAI, Bedrock oder eigene Cloud"
-        primaryCta={{ label: 'Sidecar einrichten', href: '/kontakt?interesse=sidecar' }}
-        secondaryCta={{ label: 'Playground öffnen', href: '/playground' }}
+      <HeroBlock
+        eyebrow="Für Ihre bestehende KI — Azure OpenAI, Bedrock oder eigene Cloud"
+        sub="Nachweis läuft als Sidecar neben Ihrer bestehenden KI — Sie ändern nichts an Ihrer Infrastruktur, wir liefern die exportierbare Prüfspur. Reicht Ihre eigene Cloud für einen Fall nicht aus, hosten wir ihn."
+        cta={{ label: 'Sidecar einrichten', href: '/kontakt?interesse=sidecar', track: 'sidecar' }}
+        bullets={['Kein US-Fallback', 'Kein Training auf Ihren Daten', 'AVV inklusive']}
       >
-        <Fragment slot="titel">Der Betriebsrat blockt. Der DSB blockt. <span class="text-accent">Wir liefern beiden den Nachweis.</span></Fragment>
-        <Fragment slot="subtitel">
-          Nachweis läuft als Sidecar neben Ihrer bestehenden KI — Sie ändern nichts an Ihrer Infrastruktur, wir liefern die exportierbare Prüfspur. Reicht Ihre eigene Cloud für einen Fall nicht aus, hosten wir ihn.
-        </Fragment>
+        <Fragment slot="headline">Der Betriebsrat blockt. Der DSB blockt. <span class="text-accent">Wir liefern beiden den Nachweis.</span></Fragment>
 
-        <div slot="hinweis" class="flex flex-col gap-2 items-start">
+        <div slot="cta-secondary" class="mt-3 flex flex-col gap-2 items-start">
           <Kontingent variante="zeile" />
           <a href="/?tarif=compliance#zugang" class="font-mono text-xs text-ink-faint hover:text-accent underline underline-offset-2" data-cta="hero-hosted-alt">
             Lieber direkt gehostete Inferenz? Zugangsschlüssel sichern →
           </a>
-        </div>
-
-        <div slot="bullets">
-          <span class="marke marke-neutral">Kein US-Fallback</span>
-          <span class="marke marke-neutral">Kein Training auf Ihren Daten</span>
-          <span class="marke marke-neutral">AVV inklusive</span>
+          <a href="/playground" class="font-mono text-xs text-ink-faint hover:text-accent underline underline-offset-2" data-cta="playground-hero">
+            Playground öffnen →
+          </a>
         </div>
 
         <RekordKarte
@@ -180,7 +175,7 @@ const faq = [
           ]}
           fuss="Jede Anfrage hinterlässt eine Prüfspur — nicht nur Ihre Rechnung."
         />
-      </Hero>
+      </HeroBlock>
     </div>
   </section>
 
