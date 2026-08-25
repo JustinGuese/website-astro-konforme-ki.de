@@ -18,8 +18,8 @@ const {
   artikel,
 } = Astro.props;
 
-const ga4Id = import.meta.env.PUBLIC_GA4_ID as string | undefined;
-const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID as string | undefined;
+const ga4Id = (import.meta.env.PUBLIC_GA4_ID as string | undefined) || 'G-S1XYB7MX9M';
+const metaPixelId = (import.meta.env.PUBLIC_META_PIXEL_ID as string | undefined) || '1590666016030768';
 
 /** Kanonische URL ohne Query/Hash — sonst indiziert Google `?tarif=…`-Varianten. */
 const kanonisch = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href.replace(/\/$/, '') || '/';
@@ -232,7 +232,7 @@ const nav: { href: string; label: string; kinder?: { href: string; label: string
             <div class="flex flex-col gap-2 text-blau-soft">
               <a href="/eu-ki-recht" class="hover:text-blau">EU-KI-Recht</a>
               <a href="/unterlagen" class="hover:text-blau">Unterlagen</a>
-              <a href="/kontakt" class="hover:text-blau">Kontakt</a>
+              <a href="/kontakt" class="hover:text-blau" data-contact-cta="footer">Kontakt</a>
             </div>
           </div>
           <div>
@@ -319,14 +319,29 @@ const nav: { href: string; label: string; kinder?: { href: string; label: string
       // wenn nach Einwilligung tatsächlich ein Tracker geladen ist (Consent
       // Mode v2) — vorher existieren gtag/fbq schlicht nicht.
       document.addEventListener('click', (ereignis) => {
-        const ziel = ereignis.target.closest?.('[data-tarif-cta]');
-        if (!ziel) return;
-        const tarif = ziel.getAttribute('data-tarif-cta');
-        if (typeof window.gtag === 'function') {
-          window.gtag('event', 'select_item', { item_list_name: 'angebote', item_id: tarif });
+        const tarifZiel = ereignis.target.closest?.('[data-tarif-cta]');
+        if (tarifZiel) {
+          const tarif = tarifZiel.getAttribute('data-tarif-cta');
+          if (typeof window.gtag === 'function') {
+            window.gtag('event', 'select_item', { item_list_name: 'angebote', item_id: tarif });
+          }
+          if (typeof window.fbq === 'function') {
+            window.fbq('track', 'InitiateCheckout', { content_name: tarif });
+          }
         }
-        if (typeof window.fbq === 'function') {
-          window.fbq('track', 'InitiateCheckout', { content_name: tarif });
+
+        // Jeder Link zur Kontaktseite ist ein Kontaktversuch, auch ohne dass
+        // dort ein Formular abgeschickt wird — separat vom `generate_lead`,
+        // das die Formulare selbst bei tatsächlichem Absenden feuern.
+        const kontaktZiel = ereignis.target.closest?.('[data-contact-cta]');
+        if (kontaktZiel) {
+          const quelle = kontaktZiel.getAttribute('data-contact-cta');
+          if (typeof window.gtag === 'function') {
+            window.gtag('event', 'contact', { method: quelle });
+          }
+          if (typeof window.fbq === 'function') {
+            window.fbq('track', 'Contact', { content_name: quelle });
+          }
         }
       });
     </script>
