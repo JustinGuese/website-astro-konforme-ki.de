@@ -12,6 +12,7 @@ import ZugangForm from '../components/ZugangForm.astro';
 import ConversionTracking from '@justinguese/astro-kit/ConversionTracking.astro';
 import FaqBlock from '@justinguese/astro-kit/FaqBlock.astro';
 import CtaBand from '@justinguese/astro-kit/CtaBand.astro';
+import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
 import { buildChain } from '../lib/kette';
 import { LEITER } from '../lib/preise';
 import { KONTINGENT, frei } from '../lib/kontingent';
@@ -181,8 +182,7 @@ const faq = [
   <!-- 2. Problem — breite Blocker, nicht mehr §203-exklusiv. -->
   <section id="problem" class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">Das Problem</p>
-      <h2 class="display display-l text-ink max-w-3xl">Drei Gründe, warum „einfach ChatGPT nehmen" keine Option ist.</h2>
+      <SectionHeader eyebrow="Das Problem" title={'Drei Gründe, warum „einfach ChatGPT nehmen" keine Option ist.'} size="lg" />
       <div class="mt-10 grid md:grid-cols-3 gap-px bg-line border border-line">
         <div class="bg-surface p-6">
           <p class="font-mono text-xs text-signal font-semibold">Art. 28 DSGVO</p>
@@ -206,18 +206,21 @@ const faq = [
   <!-- 3. Sidecar — das Hauptangebot: Prüfspur über die KI, die Sie schon haben. -->
   <section id="sidecar" class="py-16 sm:py-20 border-b border-line">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">Das Angebot</p>
-      <h2 class="display display-l text-ink max-w-2xl">Ihre KI, unsere Prüfspur.</h2>
-      <p class="mt-4 text-ink-soft max-w-2xl leading-relaxed">
-        Sie müssen Ihre bestehende KI-Lösung nicht ersetzen, um zu starten. Nachweis läuft als Sidecar neben Ihrer aktuellen Inferenz — Azure OpenAI, AWS Bedrock oder eigene Cloud — und übernimmt ausschließlich die Prüfspur. Derselbe Nutzen, ohne Umstellungsrisiko und ohne eigene GPU-Kosten.
-      </p>
+      <SectionHeader
+        eyebrow="Das Angebot"
+        title="Ihre KI, unsere Prüfspur."
+        lead="Sie müssen Ihre bestehende KI-Lösung nicht ersetzen, um zu starten. Nachweis läuft als Sidecar neben Ihrer aktuellen Inferenz — Azure OpenAI, AWS Bedrock oder eigene Cloud — und übernimmt ausschließlich die Prüfspur. Derselbe Nutzen, ohne Umstellungsrisiko und ohne eigene GPU-Kosten."
+        size="lg"
+      />
       <div class="mt-10 border border-line bg-surface p-8 sm:p-10 grid lg:grid-cols-[1.2fr_1fr] gap-8 items-center">
         <div>
-          <p class="marginalie mb-3">Wie es funktioniert</p>
-          <h3 class="display display-m text-ink">Sie ändern nichts an Ihrer Infrastruktur.</h3>
-          <p class="mt-4 text-sm text-ink-soft leading-relaxed max-w-lg">
-            Der Sidecar beobachtet Ihre bestehenden Anfragen und schreibt dieselbe Prüfspur, die Sie im Playground sehen — Modell, Subprozessor, Hash, Zeitstempel. Reicht Ihre eigene Cloud für einen Fall nicht aus, etwa weil kein passendes EU-Modell verfügbar ist oder ein Mandat besonders sensibel ist, hosten wir die Inferenz stattdessen vollständig.
-          </p>
+          <SectionHeader
+            as="h3"
+            eyebrow="Wie es funktioniert"
+            title="Sie ändern nichts an Ihrer Infrastruktur."
+            lead="Der Sidecar beobachtet Ihre bestehenden Anfragen und schreibt dieselbe Prüfspur, die Sie im Playground sehen — Modell, Subprozessor, Hash, Zeitstempel. Reicht Ihre eigene Cloud für einen Fall nicht aus, etwa weil kein passendes EU-Modell verfügbar ist oder ein Mandat besonders sensibel ist, hosten wir die Inferenz stattdessen vollständig."
+            size="md"
+          />
         </div>
         <a href="/kontakt?interesse=sidecar" class="knopf knopf-accent w-full sm:w-fit sm:ml-auto" data-cta="sidecar">Sidecar einrichten</a>
       </div>
@@ -228,10 +231,7 @@ const faq = [
   <section id="playground" class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-end justify-between gap-4 flex-wrap mb-8">
-        <div>
-          <p class="marginalie mb-3">Playground</p>
-          <h2 class="display display-l text-ink">Probieren Sie den Ernstfall aus.</h2>
-        </div>
+        <SectionHeader eyebrow="Playground" title="Probieren Sie den Ernstfall aus." size="lg" />
         <a href="/playground" class="text-sm font-semibold text-accent hover:underline">Playground in voller Größe →</a>
       </div>
       <Playground compact />
@@ -312,17 +312,18 @@ const faq = [
   <section id="unterlagen" class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
-        <p class="marginalie mb-3">Unterlagen</p>
-        <h2 class="display display-l text-ink max-w-2xl mx-auto">Laden Sie herunter, was Ihr Datenschutzbeauftragter braucht — ohne sich anzumelden.</h2>
-        <p class="mt-4 text-ink-soft max-w-xl mx-auto leading-relaxed">
-          AVV, TOM, Subprozessorenliste, §203-Zusatzvereinbarung und ein VVT-Muster. Kein Formular, keine E-Mail-Pflicht.
-        </p>
+        <SectionHeader
+          eyebrow="Unterlagen"
+          title="Laden Sie herunter, was Ihr Datenschutzbeauftragter braucht — ohne sich anzumelden."
+          lead="AVV, TOM, Subprozessorenliste, §203-Zusatzvereinbarung und ein VVT-Muster. Kein Formular, keine E-Mail-Pflicht."
+          size="lg"
+          align="center"
+        />
         <a href="/unterlagen" class="knopf knopf-linie mt-7">Unterlagen ansehen</a>
       </div>
 
       <div class="mt-14">
-        <p class="marginalie mb-3">Fakten statt Zitate</p>
-        <h3 class="display display-m text-ink max-w-2xl">Wir zitieren keine Kunden, die wir noch nicht haben. Das hier stimmt trotzdem.</h3>
+        <SectionHeader as="h3" eyebrow="Fakten statt Zitate" title="Wir zitieren keine Kunden, die wir noch nicht haben. Das hier stimmt trotzdem." size="md" />
         <div class="mt-8">
           <Belege />
         </div>
@@ -372,10 +373,7 @@ const faq = [
   <section id="integrationen" class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-end justify-between gap-4 flex-wrap">
-        <div>
-          <p class="marginalie mb-3">Integrationen</p>
-          <h2 class="display display-l text-ink max-w-xl">Wenn Sie doch gehostete Inferenz wollen: da, wo Sie ohnehin schon arbeiten.</h2>
-        </div>
+        <SectionHeader eyebrow="Integrationen" title="Wenn Sie doch gehostete Inferenz wollen: da, wo Sie ohnehin schon arbeiten." size="lg" />
         <a href="/integrationen" class="text-sm font-semibold text-accent hover:underline">Alle Kanäle ansehen →</a>
       </div>
       <div class="mt-8 flex flex-wrap gap-3">
@@ -394,11 +392,12 @@ const faq = [
   -->
   <section id="angebote" class="py-16 sm:py-24 border-b border-line">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">Angebote</p>
-      <h2 class="display display-l text-ink max-w-2xl">Wenn Sie lieber vollständig gehostete Inferenz wollen.</h2>
-      <p class="mt-4 text-ink-soft max-w-2xl leading-relaxed">
-        Statt eines Sidecars über Ihre bestehende Cloud: drei Stufen, Sie steigen ein, wo Sie stehen. Ein individueller Machbarkeits-Check kostet €1.900–9.000 einmalig — die laufende Prüfspur für €290 im Monat ist der günstigere, sofort startbare Weg dorthin.
-      </p>
+      <SectionHeader
+        eyebrow="Angebote"
+        title="Wenn Sie lieber vollständig gehostete Inferenz wollen."
+        lead="Statt eines Sidecars über Ihre bestehende Cloud: drei Stufen, Sie steigen ein, wo Sie stehen. Ein individueller Machbarkeits-Check kostet €1.900–9.000 einmalig — die laufende Prüfspur für €290 im Monat ist der günstigere, sofort startbare Weg dorthin."
+        size="lg"
+      />
 
       <div class="mt-10">
         <LeiterTabelle stufen={angeboteLeiter} />
@@ -416,9 +415,13 @@ const faq = [
   <!-- 10. Zugang — der Eskalationspfad zur gehosteten Inferenz. -->
   <section id="zugang" class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3 text-center">Zugang</p>
-      <h2 class="display display-l text-ink text-center">Zugangsschlüssel sichern.</h2>
-      <p class="mt-4 text-ink-soft text-center leading-relaxed">Keine Kreditkarte, kein Verkaufsgespräch. Wir vergeben Zugangsschlüssel aktuell manuell.</p>
+      <SectionHeader
+        eyebrow="Zugang"
+        title="Zugangsschlüssel sichern."
+        lead="Keine Kreditkarte, kein Verkaufsgespräch. Wir vergeben Zugangsschlüssel aktuell manuell."
+        size="lg"
+        align="center"
+      />
       <ScarcityBlock
         class="mt-8 kontingent-akzent"
         total={KONTINGENT.plaetze}
@@ -437,8 +440,7 @@ const faq = [
   <!-- 11. FAQ -->
   <section id="faq" class="py-16 sm:py-20 border-b border-line">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">FAQ</p>
-      <h2 class="display display-l text-ink mb-10">Häufige Fragen.</h2>
+      <SectionHeader eyebrow="FAQ" title="Häufige Fragen." size="lg" class="mb-10" />
       <FaqBlock items={faq.map((f) => ({ q: f.frage, a: f.antwort }))} openIndex={-1} />
     </div>
   </section>
