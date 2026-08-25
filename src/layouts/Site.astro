@@ -135,6 +135,30 @@ const nav: { href: string; label: string; kinder?: { href: string; label: string
         window.fbq('track', 'PageView');
       }
 
+      /**
+       * Consent Mode stoppt nur KÜNFTIGES Speichern, löscht aber nichts, was
+       * bereits auf dem Gerät liegt. Ein Widerruf erwartet, dass die
+       * Kennungen tatsächlich verschwinden — also explizit löschen. Das
+       * Löschen eines Cookies erfordert Pfad UND Domain, die wir nicht
+       * kennen, daher wird der aktuelle Host und jede Elterndomain versucht.
+       */
+      function trackerCookiesLoeschen() {
+        const praefixe = ['_ga', '_gid', '_gat', '_gac_', '_fbp', '_fbc'];
+        const teile = window.location.hostname.split('.');
+        const domains = [undefined];
+        for (let i = 0; i < teile.length - 1; i++) domains.push('.' + teile.slice(i).join('.'));
+
+        document.cookie.split('; ').forEach((eintrag) => {
+          const name = eintrag.split('=')[0];
+          if (!praefixe.some((p) => name.startsWith(p))) return;
+          domains.forEach((domain) => {
+            document.cookie =
+              name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' +
+              (domain ? '; domain=' + domain : '');
+          });
+        });
+      }
+
       function anwendenEinwilligung(akzeptiert) {
         gtag('consent', 'update', {
           ad_storage: akzeptiert ? 'granted' : 'denied',
@@ -145,7 +169,9 @@ const nav: { href: string; label: string; kinder?: { href: string; label: string
         if (akzeptiert) {
           ladeGA4();
           ladeMetaPixel();
+          return;
         }
+        trackerCookiesLoeschen();
       }
 
       window.addEventListener('cookie-consent-updated', (e) => anwendenEinwilligung(e.detail.accepted));
@@ -251,6 +277,9 @@ const nav: { href: string; label: string; kinder?: { href: string; label: string
               <a href="/datenschutz" class="hover:text-blau">Datenschutzerklärung</a>
               <a href="/agb" class="hover:text-blau">AGB</a>
               <a href="/rdg-hinweis" class="hover:text-blau">RDG-Hinweis</a>
+              <button type="button" data-consent-reopen class="text-left hover:text-blau cursor-pointer underline-offset-4 hover:underline">
+                Cookie-Einstellungen
+              </button>
             </div>
           </div>
         </div>
