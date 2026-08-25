@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Site from '../../layouts/Site.astro';
 import ArticleGrid from '@justinguese/astro-kit/ArticleGrid.astro';
+import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
 
 const dokumente = (await getCollection('unterlagen')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
 
@@ -12,11 +13,13 @@ const description = 'AVV, TOM, Subprozessorenliste, §203-Zusatzvereinbarung und
 <Site title={title} description={description}>
   <section class="py-14 sm:py-20 border-b border-line">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">Unterlagen</p>
-      <h1 class="display display-l text-ink">Für Ihren Datenschutzbeauftragten — ohne Anmeldung.</h1>
-      <p class="mt-4 text-ink-soft leading-relaxed">
-        Diese fünf Dokumente reichen aus, um eine erste Einschätzung zu treffen, ob Nachweis für Ihre Kanzlei oder Praxis infrage kommt. Kein Formular, keine E-Mail-Pflicht — genau deshalb, weil das der Punkt ist: Ihr DSB soll das prüfen können, bevor irgendjemand mit Ihnen spricht.
-      </p>
+      <SectionHeader
+        as="h1"
+        eyebrow="Unterlagen"
+        title="Für Ihren Datenschutzbeauftragten — ohne Anmeldung."
+        lead="Diese fünf Dokumente reichen aus, um eine erste Einschätzung zu treffen, ob Nachweis für Ihre Kanzlei oder Praxis infrage kommt. Kein Formular, keine E-Mail-Pflicht — genau deshalb, weil das der Punkt ist: Ihr DSB soll das prüfen können, bevor irgendjemand mit Ihnen spricht."
+        size="lg"
+      />
     </div>
   </section>
 

@@ -2,6 +2,7 @@
 import Site from '../layouts/Site.astro';
 import FormBlock from '@justinguese/astro-kit/FormBlock.astro';
 import ConversionTracking from '@justinguese/astro-kit/ConversionTracking.astro';
+import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
 import { site } from '../config/site';
 
 const title = 'Kontakt | Nachweis';
@@ -10,9 +11,14 @@ const description = 'Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Complia
 <Site title={title} description={description}>
   <section class="bg-canvas-deep border-b border-line">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 text-center">
-      <p class="marginalie mb-3">Kontakt</p>
-      <h1 class="display display-l text-ink">Lassen Sie uns reden.</h1>
-      <p id="pre-header" class="mt-4 text-lg text-ink-soft max-w-2xl mx-auto">Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Compliance-Tarif? Schreiben Sie uns — wir antworten in der Regel innerhalb eines Werktages.</p>
+      <SectionHeader
+        as="h1"
+        eyebrow="Kontakt"
+        title="Lassen Sie uns reden."
+        lead="Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Compliance-Tarif? Schreiben Sie uns — wir antworten in der Regel innerhalb eines Werktages."
+        size="lg"
+        align="center"
+      />
     </div>
   </section>
 
@@ -117,7 +123,9 @@ const description = 'Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Complia
       };
 
       if (interesse && copy[interesse]) {
-        const preHeader = document.getElementById('pre-header');
+        // SectionHeader's lead paragraph has no id hook — this page has
+        // exactly one SectionHeader, so the class is unambiguous.
+        const preHeader = document.querySelector('.df-head__lead');
         if (preHeader) preHeader.textContent = copy[interesse];
         const interesseField = document.getElementById('interesse-field');
         if (interesseField) interesseField.value = interesse;

@@ -1,6 +1,7 @@
 ---
 import Site from '../layouts/Site.astro';
 import PricingCards from '@justinguese/astro-kit/PricingCards.astro';
+import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
 import { NUTZUNGSMODELLE, SERVICE_TARIFE, tarifAlsTier } from '../lib/preise';
 
 const title = 'Preise | Nachweis';
@@ -10,26 +11,26 @@ const description = 'Pay-per-Token ab €3,50/Mio., Abo ab €29/Monat, plus Com
 <Site title={title} description={description}>
   <section class="py-14 sm:py-20 border-b border-line">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">Preise</p>
-      <h1 class="display display-l text-ink">Token-basiert oder im Abo — Sie wählen.</h1>
-      <p class="mt-4 text-ink-soft leading-relaxed">
-        Der Aufschlag auf den reinen Token-Preis finanziert die Prüfspur, die Exporte und die Vereinbarungen darüber — nicht nur die Inferenz. Beide Nutzungsmodelle unten gelten für Säule 1 (EU-Anbieter-Autorouting); für Säule 2 oder 3 siehe die Hinweise weiter unten.
-      </p>
+      <SectionHeader
+        as="h1"
+        eyebrow="Preise"
+        title="Token-basiert oder im Abo — Sie wählen."
+        lead="Der Aufschlag auf den reinen Token-Preis finanziert die Prüfspur, die Exporte und die Vereinbarungen darüber — nicht nur die Inferenz. Beide Nutzungsmodelle unten gelten für Säule 1 (EU-Anbieter-Autorouting); für Säule 2 oder 3 siehe die Hinweise weiter unten."
+        size="lg"
+      />
     </div>
   </section>
 
   <section class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">Wie Sie zahlen</p>
-      <h2 class="display display-m text-ink mb-8">Nutzungsmodell.</h2>
+      <SectionHeader eyebrow="Wie Sie zahlen" title="Nutzungsmodell." size="md" class="mb-8" />
       <PricingCards tiers={NUTZUNGSMODELLE.map(tarifAlsTier)} />
     </div>
   </section>
 
   <section class="py-16 sm:py-20 border-b border-line">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">Was Sie zusätzlich bekommen</p>
-      <h2 class="display display-m text-ink mb-8">Compliance-Erweiterung.</h2>
+      <SectionHeader eyebrow="Was Sie zusätzlich bekommen" title="Compliance-Erweiterung." size="md" class="mb-8" />
       <PricingCards tiers={SERVICE_TARIFE.map(tarifAlsTier)} />
     </div>
   </section>

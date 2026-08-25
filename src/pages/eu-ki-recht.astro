@@ -3,6 +3,7 @@ import Site from '../layouts/Site.astro';
 import Zeitstrahl from '../components/Zeitstrahl.astro';
 import InfografikForm from '../components/InfografikForm.astro';
 import ConversionTracking from '@justinguese/astro-kit/ConversionTracking.astro';
+import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
 
 const title = 'Was gilt beim KI-Einsatz? EU-KI-Recht im Überblick | Nachweis';
 const description = 'AI Act, DSGVO und § 203 StGB im Überblick — was jedes Unternehmen beim Einsatz von KI beachten muss, mit zusätzlicher Tiefe für Kanzleien, Steuerberater und Praxen. Stand: 6. August 2026.';
@@ -20,19 +21,20 @@ const zeitstrahl = [
 <Site title={title} description={description}>
   <section class="py-14 sm:py-20 border-b border-line">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">EU-KI-Recht</p>
-      <h1 class="display display-l text-ink">Was beim KI-Einsatz wirklich gilt.</h1>
-      <p class="mt-4 text-ink-soft leading-relaxed">
-        Ein Überblick über AI Act, DSGVO und § 203 StGB — für jedes Unternehmen, das KI einsetzt, mit zusätzlicher Tiefe für Berufsgeheimnisträger. Diese Seite ist Informationsangebot, keine Rechtsberatung; für Ihren Einzelfall wenden Sie sich an Ihre eigene Rechtsberatung.
-      </p>
+      <SectionHeader
+        as="h1"
+        eyebrow="EU-KI-Recht"
+        title="Was beim KI-Einsatz wirklich gilt."
+        lead="Ein Überblick über AI Act, DSGVO und § 203 StGB — für jedes Unternehmen, das KI einsetzt, mit zusätzlicher Tiefe für Berufsgeheimnisträger. Diese Seite ist Informationsangebot, keine Rechtsberatung; für Ihren Einzelfall wenden Sie sich an Ihre eigene Rechtsberatung."
+        size="lg"
+      />
       <p class="mt-3 font-mono text-xs text-ink-faint">Stand: 6. August 2026</p>
     </div>
   </section>
 
   <section class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">Zeitstrahl</p>
-      <h2 class="display display-m text-ink mb-10">Der AI Act, Termin für Termin.</h2>
+      <SectionHeader eyebrow="Zeitstrahl" title="Der AI Act, Termin für Termin." size="md" class="mb-10" />
       <Zeitstrahl eintraege={zeitstrahl} />
       <div class="mt-8 border border-line bg-surface p-5">
         <p class="text-sm font-semibold text-ink">Was das für Ihre Kanzlei / Praxis bedeutet</p>
@@ -135,11 +137,13 @@ const zeitstrahl = [
 
   <section id="infografik" class="py-16 sm:py-20 border-b border-line">
     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <p class="marginalie mb-3">PDF-Checkliste</p>
-      <h2 class="display display-m text-ink">Alles oben, auf einer Seite.</h2>
-      <p class="mt-4 text-ink-soft leading-relaxed">
-        Risikoklassen, Art. 4 & Art. 50, AVV/VVT/TOM, § 203 StGB — als Ein-Seiten-Checkliste zum Ausdrucken oder Aufhängen. Der Download-Button erscheint direkt nach dem Absenden.
-      </p>
+      <SectionHeader
+        eyebrow="PDF-Checkliste"
+        title="Alles oben, auf einer Seite."
+        lead="Risikoklassen, Art. 4 & Art. 50, AVV/VVT/TOM, § 203 StGB — als Ein-Seiten-Checkliste zum Ausdrucken oder Aufhängen. Der Download-Button erscheint direkt nach dem Absenden."
+        size="md"
+        align="center"
+      />
       <div class="mt-7 max-w-md mx-auto text-left">
         <InfografikForm />
       </div>

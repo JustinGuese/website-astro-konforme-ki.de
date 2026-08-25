@@ -2,6 +2,7 @@
 import Site from '../layouts/Site.astro';
 import KanalKarte from '../components/KanalKarte.astro';
 import CodeTabs from '../components/CodeTabs.astro';
+import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
 import { SAEULEN, STANDARD_SAEULE, findSaeule } from '../lib/saeulen';
 
 const saeuleStandard = findSaeule(STANDARD_SAEULE);
@@ -118,11 +119,12 @@ const client = new OpenAI({
        die technische Integrationsseite, nicht in den Homepage-Trichter. -->
   <section id="saeulen" class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">Die drei Säulen</p>
-      <h2 class="display display-m text-ink max-w-2xl">Nicht nur, welcher EU-Anbieter — sondern ob es überhaupt einen gibt.</h2>
-      <p class="mt-4 text-ink-soft max-w-2xl leading-relaxed">
-        Säule 2 und 3 lösen die Subprozessor-Frage nicht durch eine bessere Wahl, sondern indem es keinen externen Subprozessor mehr gibt.
-      </p>
+      <SectionHeader
+        eyebrow="Die drei Säulen"
+        title="Nicht nur, welcher EU-Anbieter — sondern ob es überhaupt einen gibt."
+        lead="Säule 2 und 3 lösen die Subprozessor-Frage nicht durch eine bessere Wahl, sondern indem es keinen externen Subprozessor mehr gibt."
+        size="md"
+      />
 
       <div class="mt-10 border border-accent bg-surface p-7 sm:p-8 max-w-3xl">
         <span class="marke marke-accent w-fit">{saeuleStandard.kurzname} · {saeuleStandard.kosten} · Standard</span>
@@ -156,8 +158,7 @@ const client = new OpenAI({
 
   <section class="py-16 sm:py-20">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">Kanäle</p>
-      <h2 class="display display-m text-ink mb-8">Da, wo Sie ohnehin schon arbeiten.</h2>
+      <SectionHeader eyebrow="Kanäle" title="Da, wo Sie ohnehin schon arbeiten." size="md" class="mb-8" />
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {kanaele.map((kanal) => <KanalKarte {...kanal} />)}
       </div>

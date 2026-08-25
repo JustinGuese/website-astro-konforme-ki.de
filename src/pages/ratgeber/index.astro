@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Site from '../../layouts/Site.astro';
 import ArticleGrid from '@justinguese/astro-kit/ArticleGrid.astro';
+import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
 import ArtikelUpsell from '../../components/ArtikelUpsell.astro';
 import { site } from '../../config/site';
 import { formatDeDatum } from '../../lib/format';
@@ -39,13 +40,13 @@ const schema = {
 
   <section class="py-14 sm:py-20 border-b border-line">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="marginalie mb-3">Ratgeber</p>
-      <h1 class="display display-l text-ink">KI einsetzen, ohne Ihre Berufspflichten zu verletzen.</h1>
-      <p class="mt-5 text-lg text-ink-soft leading-relaxed">
-        Was beim KI-Einsatz tatsächlich gilt — nach Berufsgruppe und nach Pflicht sortiert. Jeder Beitrag beantwortet
-        eine konkrete Frage, die uns Kanzleien, Steuerberatungen und Praxen regelmäßig stellen, und nennt die
-        Rechtsgrundlage dazu.
-      </p>
+      <SectionHeader
+        as="h1"
+        eyebrow="Ratgeber"
+        title="KI einsetzen, ohne Ihre Berufspflichten zu verletzen."
+        lead="Was beim KI-Einsatz tatsächlich gilt — nach Berufsgruppe und nach Pflicht sortiert. Jeder Beitrag beantwortet eine konkrete Frage, die uns Kanzleien, Steuerberatungen und Praxen regelmäßig stellen, und nennt die Rechtsgrundlage dazu."
+        size="lg"
+      />
       <p class="mt-4 text-sm text-ink-faint leading-relaxed">
         Informationsangebot, keine Rechtsberatung — siehe den Hinweis am Ende jedes Beitrags.
       </p>
