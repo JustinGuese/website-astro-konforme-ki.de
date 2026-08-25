@@ -30,7 +30,8 @@ const { quelle = 'eu-ki-recht', id = 'infografik' } = Astro.props;
   name="infografik"
   success={{ flag: 'infografik_gesendet', anchor: id }}
   submitLabel="Checkliste per PDF"
-  class={`${id}-form df-form--inline bg-surface border border-line p-6 sm:p-7 flex flex-col sm:flex-row gap-4 items-stretch`}
+  submitClass="!w-auto !py-3 whitespace-nowrap"
+  class={`${id}-form bg-surface border border-line p-6 sm:p-7 flex flex-col sm:flex-row gap-4 items-stretch`}
 >
   <input type="hidden" name="quelle" value={quelle} />
   <input type="hidden" name="tarif" value="checkliste" />

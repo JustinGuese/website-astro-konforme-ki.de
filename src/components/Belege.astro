@@ -1,14 +1,13 @@
 ---
+/**
+ * ProofBlock's default stat card is a dark, --color-premium-bright-accented
+ * tile — this site reserves premium exclusively for Säule 3, and this section
+ * sits on a light background, so `.belege-hell` below overrides both back to
+ * the site's own light-card/accent-number look. No quotes: see belege.ts for
+ * why (§ 5 UWG).
+ */
+import ProofBlock from '@justinguese/astro-kit/ProofBlock.astro';
 import { SIEGEL } from '../lib/belege';
 ---
 
-<!-- Nachprüfbare Aussagen — Produkteigenschaften statt Kundenzitaten, die wir
-     noch nicht haben. Siehe die Begründung in src/lib/belege.ts. -->
-<dl class="grid grid-cols-2 lg:grid-cols-4 gap-px bg-line border border-line">
-  {SIEGEL.map((k) => (
-    <div class="bg-surface p-7">
-      <dt class="display display-xl text-accent">{k.wert}</dt>
-      <dd class="mt-2 text-sm text-ink-soft leading-relaxed">{k.label}</dd>
-    </div>
-  ))}
-</dl>
+<ProofBlock class="belege-hell" stats={SIEGEL.map((k) => ({ value: k.wert, label: k.label }))} />
