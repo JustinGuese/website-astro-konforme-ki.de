@@ -416,15 +416,19 @@
 /* ProofBlock's default stat card is a dark --color-ink tile with
    --color-premium-bright numbers — this site reserves premium exclusively
    for Säule 3, and Belege sits on a light background. Restores the site's
-   own light-card / accent-number look without touching the kit's markup. */
+   own light-card / accent-number look without touching the kit's markup.
+   !important is load-bearing here, not a shortcut: the kit's own rule is
+   scoped with an attribute selector of equal specificity, and it compiles
+   into a page-specific CSS chunk that Astro loads AFTER this file's shared
+   bundle — a plain override loses that cascade tie silently. */
 .belege-hell .df-proof__stat {
-  background: var(--color-surface);
+  background: var(--color-surface) !important;
 }
 .belege-hell .df-proof__value {
-  color: var(--color-accent);
+  color: var(--color-accent) !important;
 }
 .belege-hell .df-proof__label {
-  color: var(--color-ink-soft);
+  color: var(--color-ink-soft) !important;
 }
 
 /* ---------------------------------------------------------------------------
