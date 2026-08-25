@@ -6,13 +6,13 @@ import RekordKarte from '../components/RekordKarte.astro';
 import Playground from '../components/Playground.astro';
 import LeiterTabelle from '../components/LeiterTabelle.astro';
 import Belege from '../components/Belege.astro';
-import Kontingent from '../components/Kontingent.astro';
+import ScarcityBlock from '@justinguese/astro-kit/ScarcityBlock.astro';
 import InfografikForm from '../components/InfografikForm.astro';
 import ZugangForm from '../components/ZugangForm.astro';
 import ConversionTracking from '@justinguese/astro-kit/ConversionTracking.astro';
 import { buildChain } from '../lib/kette';
 import { LEITER } from '../lib/preise';
-import { frei } from '../lib/kontingent';
+import { KONTINGENT, frei } from '../lib/kontingent';
 import { site } from '../config/site';
 
 /**
@@ -154,7 +154,13 @@ const faq = [
         <Fragment slot="headline">Der Betriebsrat blockt. Der DSB blockt. <span class="text-accent">Wir liefern beiden den Nachweis.</span></Fragment>
 
         <div slot="cta-secondary" class="mt-3 flex flex-col gap-2 items-start">
-          <Kontingent variante="zeile" />
+          <ScarcityBlock
+            class="kontingent-akzent"
+            total={KONTINGENT.plaetze}
+            taken={KONTINGENT.vergeben}
+            layout="badge"
+            badgeText="Noch {left} von {total} Zugangsschlüsseln diesen Monat frei"
+          />
           <a href="/?tarif=compliance#zugang" class="font-mono text-xs text-ink-faint hover:text-accent underline underline-offset-2" data-cta="hero-hosted-alt">
             Lieber direkt gehostete Inferenz? Zugangsschlüssel sichern →
           </a>
@@ -298,7 +304,13 @@ const faq = [
       <!-- Handlungspfad mitten im langen Erklärteil, nicht erst nach dem Scrollen. -->
       <div class="mt-10 flex flex-wrap items-center gap-4">
         <a href="/?tarif=compliance#zugang" class="knopf knopf-accent" data-cta="nachweis-inline">Zugangsschlüssel sichern</a>
-        <Kontingent variante="zeile" />
+        <ScarcityBlock
+          class="kontingent-akzent"
+          total={KONTINGENT.plaetze}
+          taken={KONTINGENT.vergeben}
+          layout="badge"
+          badgeText="Noch {left} von {total} Zugangsschlüsseln diesen Monat frei"
+        />
       </div>
     </div>
   </section>
@@ -415,7 +427,15 @@ const faq = [
       <p class="marginalie mb-3 text-center">Zugang</p>
       <h2 class="display display-l text-ink text-center">Zugangsschlüssel sichern.</h2>
       <p class="mt-4 text-ink-soft text-center leading-relaxed">Keine Kreditkarte, kein Verkaufsgespräch. Wir vergeben Zugangsschlüssel aktuell manuell.</p>
-      <Kontingent class="mt-8" />
+      <ScarcityBlock
+        class="mt-8 kontingent-akzent"
+        total={KONTINGENT.plaetze}
+        taken={KONTINGENT.vergeben}
+        layout="band"
+        badgeText="Noch {left} von {total} Zugangsschlüsseln diesen Monat frei"
+        bandTitle="Zugangsschlüssel frei diesen Monat"
+        bandBody={`Wir vergeben Zugangsschlüssel manuell und begleiten jeden Start persönlich — deshalb pro Monat begrenzt. ${KONTINGENT.vergeben} von ${KONTINGENT.plaetze} bereits vergeben.`}
+      />
       <div class="mt-4">
         <ZugangForm />
       </div>

@@ -1,7 +1,7 @@
 ---
 import Site from '../layouts/Site.astro';
-import PreisTabelle from '../components/PreisTabelle.astro';
-import { NUTZUNGSMODELLE, SERVICE_TARIFE } from '../lib/preise';
+import PricingCards from '@justinguese/astro-kit/PricingCards.astro';
+import { NUTZUNGSMODELLE, SERVICE_TARIFE, tarifAlsTier } from '../lib/preise';
 
 const title = 'Preise | Nachweis';
 const description = 'Pay-per-Token ab €3,50/Mio., Abo ab €29/Monat, plus Compliance-Erweiterung (€290/Monat) und Onboarding (€1.900–9.000).';
@@ -22,7 +22,7 @@ const description = 'Pay-per-Token ab €3,50/Mio., Abo ab €29/Monat, plus Com
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <p class="marginalie mb-3">Wie Sie zahlen</p>
       <h2 class="display display-m text-ink mb-8">Nutzungsmodell.</h2>
-      <PreisTabelle tarife={NUTZUNGSMODELLE} />
+      <PricingCards tiers={NUTZUNGSMODELLE.map(tarifAlsTier)} />
     </div>
   </section>
 
@@ -30,7 +30,7 @@ const description = 'Pay-per-Token ab €3,50/Mio., Abo ab €29/Monat, plus Com
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <p class="marginalie mb-3">Was Sie zusätzlich bekommen</p>
       <h2 class="display display-m text-ink mb-8">Compliance-Erweiterung.</h2>
-      <PreisTabelle tarife={SERVICE_TARIFE} />
+      <PricingCards tiers={SERVICE_TARIFE.map(tarifAlsTier)} />
     </div>
   </section>
 

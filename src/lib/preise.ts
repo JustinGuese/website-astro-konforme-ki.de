@@ -1,3 +1,5 @@
+import type { Tier } from '@justinguese/astro-kit/lib/pricing';
+
 export interface Tarif {
   /**
    * Stabiler Bezeichner, der als `?tarif=` an das Zugangsformular übergeben
@@ -198,3 +200,23 @@ export const SERVICE_TARIFE: Tarif[] = [
     cta: { label: 'Machbarkeits-Check anfragen', href: '/kontakt?interesse=onboarding' },
   },
 ];
+
+/**
+ * Adapter für `@justinguese/astro-kit`'s `PricingCards`, das seine eigene
+ * `Tier`-Form erwartet. Die `Tarif[]`-Daten selbst bleiben unverändert (mit
+ * deutschen Feldnamen), weil `ZugangForm.astro` `LEITER`, `ANKER` und
+ * `NUTZUNGSMODELLE` gemeinsam über dieselben Feldnamen durchläuft — eine
+ * Umbenennung hier würde das dortige generische Mapping zerbrechen.
+ */
+export function tarifAlsTier(tarif: Tarif): Tier {
+  return {
+    id: tarif.tarifId,
+    name: tarif.name,
+    price: tarif.preis,
+    priceNote: tarif.einheit,
+    tagline: tarif.beschreibung,
+    cta: tarif.cta,
+    highlight: tarif.hervorgehoben,
+    features: tarif.leistungen,
+  };
+}

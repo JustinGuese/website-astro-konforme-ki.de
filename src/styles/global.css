@@ -404,6 +404,16 @@
 .knopf-dunkel:hover { border-color: var(--color-accent-bright); color: var(--color-accent-bright); }
 
 /* ---------------------------------------------------------------------------
+   ScarcityBlock verwendet standardmäßig --color-signal für seine Akzentfarbe.
+   Auf dieser Seite ist Signal/Sperr ausschließlich „fail closed" — Knappheit
+   ist keine Blockade und darf dieselbe Farbe nicht mitbenutzen, sonst verliert
+   Signal seine Bedeutung als Warnfarbe. Lokal auf Akzent umgebogen, ohne die
+   globale Bedeutung von --color-signal anzutasten. */
+.kontingent-akzent {
+  --color-signal: var(--color-accent);
+}
+
+/* ---------------------------------------------------------------------------
    Langtext (Impressum / Datenschutz / AGB / Unterlagen) — Basisstruktur kommt
    aus @justinguese/astro-kit/styles/prose.css. Hier stehen nur die
    Abweichungen, die bewusst NICHT von dort übernommen werden.

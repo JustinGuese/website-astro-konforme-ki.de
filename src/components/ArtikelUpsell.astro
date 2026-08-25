@@ -1,6 +1,7 @@
 ---
+import ScarcityBlock from '@justinguese/astro-kit/ScarcityBlock.astro';
 import { LEITER } from '../lib/preise';
-import { KONTINGENT, frei } from '../lib/kontingent';
+import { KONTINGENT } from '../lib/kontingent';
 
 interface Props {
   /** Überschrift, die an das Artikelthema anschließt. */
@@ -45,9 +46,13 @@ const stufen = LEITER.slice(0, 2);
         Zugangsschlüssel sichern
         <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
       </a>
-      <p class="font-mono text-xs text-ink-soft">
-        Noch <strong class="font-semibold text-ink">{frei} von {KONTINGENT.plaetze}</strong> Zugangsschlüsseln diesen Monat frei
-      </p>
+      <ScarcityBlock
+        class="kontingent-akzent"
+        total={KONTINGENT.plaetze}
+        taken={KONTINGENT.vergeben}
+        layout="badge"
+        badgeText="Noch {left} von {total} Zugangsschlüsseln diesen Monat frei"
+      />
     </div>
 
     <p class="mt-5 pt-5 border-t border-line text-xs text-ink-faint leading-relaxed">

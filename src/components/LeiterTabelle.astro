@@ -1,4 +1,12 @@
 ---
+/**
+ * Bleibt lokal statt auf `@justinguese/astro-kit`'s `PricingCards` zu wechseln
+ * (im Gegensatz zu `PreisTabelle.astro`, die nach `PricingCards` migriert
+ * wurde). Der Kit-`Tier`-Typ hat kein Feld für `eignung` (Zielgruppensatz pro
+ * Stufe) oder `nummer` (Ledger-Nummerierung), und die Preisanker-Sektion
+ * (`ANKER`) ist mit der Leiter zu einer Einheit verschmolzen — beides wäre
+ * ohne echten Informationsverlust nicht abbildbar.
+ */
 import { LEITER, ANKER } from '../lib/preise';
 import type { Stufe } from '../lib/preise';
 
