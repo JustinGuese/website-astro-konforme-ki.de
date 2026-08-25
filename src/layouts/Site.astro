@@ -1,6 +1,13 @@
 ---
 import '../styles/global.css';
-import CookieBanner from '../components/CookieBanner.astro';
+import SeoHead from '@justinguese/astro-kit/SeoHead.astro';
+import Consent from '@justinguese/astro-kit/Consent.astro';
+import CookieBanner from '@justinguese/astro-kit/CookieBanner.astro';
+import StickyCta from '@justinguese/astro-kit/StickyCta.astro';
+import Attribution from '@justinguese/astro-kit/Attribution.astro';
+import FunnelTracking from '@justinguese/astro-kit/FunnelTracking.astro';
+import { organizationSchema } from '@justinguese/astro-kit/lib/seo';
+import { site } from '../config/site';
 import { KONTINGENT, frei } from '../lib/kontingent';
 
 interface Props {
@@ -17,12 +24,6 @@ const {
   noindex = false,
   artikel,
 } = Astro.props;
-
-const ga4Id = (import.meta.env.PUBLIC_GA4_ID as string | undefined) || 'G-S1XYB7MX9M';
-const metaPixelId = (import.meta.env.PUBLIC_META_PIXEL_ID as string | undefined) || '1590666016030768';
-
-/** Kanonische URL ohne Query/Hash — sonst indiziert Google `?tarif=…`-Varianten. */
-const kanonisch = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href.replace(/\/$/, '') || '/';
 
 /** Ratgeber ist ein Aufklappmenü; alle anderen Einträge sind einfache Links. */
 const nav: { href: string; label: string; kinder?: { href: string; label: string; kurz: string }[] }[] = [
@@ -63,122 +64,34 @@ const nav: { href: string; label: string; kinder?: { href: string; label: string
       rel="stylesheet"
     />
 
-    <!-- Primary Meta Tags -->
-    <title>{title}</title>
-    <meta name="title" content={title} />
-    <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex,nofollow" />}
-
-    <link rel="canonical" href={kanonisch} />
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content={artikel ? 'article' : 'website'} />
-    <meta property="og:url" content={kanonisch} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:locale" content="de_DE" />
-    <meta property="og:site_name" content="Nachweis" />
-    <meta property="og:image" content={new URL('/og-image.svg', Astro.url)} />
-    {artikel?.veroeffentlicht && <meta property="article:published_time" content={artikel.veroeffentlicht} />}
-    {artikel?.geaendert && <meta property="article:modified_time" content={artikel.geaendert} />}
-    {artikel?.kategorie && <meta property="article:section" content={artikel.kategorie} />}
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={Astro.url} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL('/og-image.svg', Astro.url)} />
+    <SeoHead
+      title={title}
+      description={description}
+      siteName={site.name}
+      locale={site.locale}
+      ogType={artikel ? 'article' : 'website'}
+      image="/og-image.svg"
+      noindex={noindex}
+      article={{
+        publishedTime: artikel?.veroeffentlicht,
+        modifiedTime: artikel?.geaendert,
+        section: artikel?.kategorie,
+      }}
+      schemas={[organizationSchema({
+        name: site.name,
+        legalName: site.legalName,
+        url: `${site.url}/`,
+        description: site.description,
+        address: site.address,
+        areaServed: site.areaServed,
+        logo: `${site.url}/og-image.svg`,
+      })]}
+    />
 
     <slot name="head" />
 
-    <!--
-      Consent Mode v2 — muss vor jedem gtag-Aufruf stehen und beginnt
-      abgelehnt. Ein Compliance-Produkt, das ungefragt trackt, ist nicht
-      glaubwürdig. CookieBanner.astro löst 'cookie-consent-updated' aus;
-      dieses Skript hört darauf und lädt GA4/Meta Pixel erst danach.
-    -->
-    <script is:inline define:vars={{ ga4Id, metaPixelId }}>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { window.dataLayer.push(arguments); }
-      window.gtag = gtag;
-      gtag('consent', 'default', {
-        ad_storage: 'denied',
-        ad_user_data: 'denied',
-        ad_personalization: 'denied',
-        analytics_storage: 'denied',
-      });
-
-      function ladeGA4() {
-        if (!ga4Id || window.__ga4Geladen) return;
-        window.__ga4Geladen = true;
-        const s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ga4Id;
-        document.head.appendChild(s);
-        gtag('js', new Date());
-        gtag('config', ga4Id, { anonymize_ip: true });
-      }
-
-      function ladeMetaPixel() {
-        if (!metaPixelId || window.__pixelGeladen) return;
-        window.__pixelGeladen = true;
-        !function (f, b, e, v, n, t, s) {
-          if (f.fbq) return; n = f.fbq = function () {
-            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-          };
-          if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-          n.queue = []; t = b.createElement(e); t.async = !0; t.src = v;
-          s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
-        }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-        window.fbq('init', metaPixelId);
-        window.fbq('track', 'PageView');
-      }
-
-      /**
-       * Consent Mode stoppt nur KÜNFTIGES Speichern, löscht aber nichts, was
-       * bereits auf dem Gerät liegt. Ein Widerruf erwartet, dass die
-       * Kennungen tatsächlich verschwinden — also explizit löschen. Das
-       * Löschen eines Cookies erfordert Pfad UND Domain, die wir nicht
-       * kennen, daher wird der aktuelle Host und jede Elterndomain versucht.
-       */
-      function trackerCookiesLoeschen() {
-        const praefixe = ['_ga', '_gid', '_gat', '_gac_', '_fbp', '_fbc'];
-        const teile = window.location.hostname.split('.');
-        const domains = [undefined];
-        for (let i = 0; i < teile.length - 1; i++) domains.push('.' + teile.slice(i).join('.'));
-
-        document.cookie.split('; ').forEach((eintrag) => {
-          const name = eintrag.split('=')[0];
-          if (!praefixe.some((p) => name.startsWith(p))) return;
-          domains.forEach((domain) => {
-            document.cookie =
-              name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' +
-              (domain ? '; domain=' + domain : '');
-          });
-        });
-      }
-
-      function anwendenEinwilligung(akzeptiert) {
-        gtag('consent', 'update', {
-          ad_storage: akzeptiert ? 'granted' : 'denied',
-          ad_user_data: akzeptiert ? 'granted' : 'denied',
-          ad_personalization: akzeptiert ? 'granted' : 'denied',
-          analytics_storage: akzeptiert ? 'granted' : 'denied',
-        });
-        if (akzeptiert) {
-          ladeGA4();
-          ladeMetaPixel();
-          return;
-        }
-        trackerCookiesLoeschen();
-      }
-
-      window.addEventListener('cookie-consent-updated', (e) => anwendenEinwilligung(e.detail.accepted));
-
-      const bestehendeEinwilligung = localStorage.getItem('cookie-consent');
-      if (bestehendeEinwilligung === 'true') anwendenEinwilligung(true);
-    </script>
+    <!-- Muss vor allem stehen, das gtag berührt. -->
+    <Consent ga4Id={site.ga4Id} metaPixelId={site.metaPixelId} />
   </head>
   <body class="bg-canvas text-ink font-sans antialiased flex flex-col min-h-screen">
     <div class="kette-strich" id="kette-strich"></div>
@@ -224,7 +137,7 @@ const nav: { href: string; label: string; kinder?: { href: string; label: string
           )))}
         </div>
 
-        <a href="/?tarif=compliance#zugang" class="knopf knopf-accent !py-2 !px-3 sm:!px-4 !text-sm shrink-0" data-tarif-cta="header">
+        <a href="/?tarif=compliance#zugang" class="knopf knopf-accent !py-2 !px-3 sm:!px-4 !text-sm shrink-0" data-cta="header">
           <!-- Auf sehr schmalen Geräten würde die Langform Kopfzeile und Seite
                horizontal aufschieben; unten steht ohnehin die Sticky-Leiste. -->
           <span class="sm:hidden">Zugang</span>
@@ -286,27 +199,30 @@ const nav: { href: string; label: string; kinder?: { href: string; label: string
         <p class="mt-10 font-mono text-xs text-ink-faint">&copy; {new Date().getFullYear()} DataFortress.cloud GmbH — Gewerbestraße 13, 82064 Straßlach-Dingharting</p>
       </div>
     </footer>
-    <CookieBanner />
 
-    <div
-      id="sticky-cta"
-      class="lg:hidden fixed inset-x-0 bottom-0 z-40 translate-y-full opacity-0 transition-all duration-300 pointer-events-none kein-druck"
-      aria-hidden="true"
-    >
-      <div class="bg-surface/95 backdrop-blur border-t border-line shadow-[0_-4px_20px_rgba(23,36,63,0.10)] px-4 py-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)]">
-        <p class="mb-2 font-mono text-[0.68rem] text-ink-faint text-center">
-          Noch {frei} von {KONTINGENT.plaetze} Zugangsschlüsseln diesen Monat frei
-        </p>
-        <a href="/?tarif=compliance#zugang" class="knopf knopf-accent w-full active:scale-[0.98]" data-tarif-cta="sticky">
-          Zugangsschlüssel sichern
-          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
-        </a>
-      </div>
-    </div>
+    <CookieBanner
+      privacyHref={site.privacyHref}
+      strings={{
+        message: 'Wir verwenden Cookies für Reichweitenmessung und Werbeanzeigen erst nach Ihrer Zustimmung. Details in unserer',
+        privacyLinkLabel: 'Datenschutzerklärung',
+        acceptLabel: 'Alle akzeptieren',
+        declineLabel: 'Alle ablehnen',
+        regionLabel: 'Cookie-Einwilligung',
+      }}
+    />
+
+    <StickyCta
+      href="/?tarif=compliance#zugang"
+      cta="sticky"
+      strings={{ note: `Noch ${frei} von ${KONTINGENT.plaetze} Zugangsschlüsseln diesen Monat frei`, ctaLabel: 'Zugangsschlüssel sichern' }}
+      hideNear={['zugang', 'angebote']}
+    />
+
+    <Attribution storageKey="nw_attribution" />
+    <FunnelTracking />
 
     <script is:inline>
       (() => {
-        const bar = document.getElementById('sticky-cta');
         const strich = document.getElementById('kette-strich');
 
         const updateStrich = () => {
@@ -317,19 +233,6 @@ const nav: { href: string; label: string; kinder?: { href: string; label: string
         };
         window.addEventListener('scroll', updateStrich, { passive: true });
         updateStrich();
-
-        if (!bar) return;
-        const show = () => {
-          bar.classList.remove('translate-y-full', 'opacity-0', 'pointer-events-none');
-          bar.setAttribute('aria-hidden', 'false');
-        };
-        const hide = () => {
-          bar.classList.add('translate-y-full', 'opacity-0', 'pointer-events-none');
-          bar.setAttribute('aria-hidden', 'true');
-        };
-        window.addEventListener('scroll', () => {
-          if (window.scrollY > 400) show(); else hide();
-        }, { passive: true });
       })();
 
       // Aufklappmenü schließen, sobald daneben oder Escape geklickt wird —
@@ -342,36 +245,6 @@ const nav: { href: string; label: string; kinder?: { href: string; label: string
       document.addEventListener('keydown', (ereignis) => {
         if (ereignis.key !== 'Escape') return;
         document.querySelectorAll('details.menue[open]').forEach((menue) => menue.removeAttribute('open'));
-      });
-
-      // Jeder Angebots-CTA meldet, welche Stufe angeklickt wurde. Feuert nur,
-      // wenn nach Einwilligung tatsächlich ein Tracker geladen ist (Consent
-      // Mode v2) — vorher existieren gtag/fbq schlicht nicht.
-      document.addEventListener('click', (ereignis) => {
-        const tarifZiel = ereignis.target.closest?.('[data-tarif-cta]');
-        if (tarifZiel) {
-          const tarif = tarifZiel.getAttribute('data-tarif-cta');
-          if (typeof window.gtag === 'function') {
-            window.gtag('event', 'select_item', { item_list_name: 'angebote', item_id: tarif });
-          }
-          if (typeof window.fbq === 'function') {
-            window.fbq('track', 'InitiateCheckout', { content_name: tarif });
-          }
-        }
-
-        // Jeder Link zur Kontaktseite ist ein Kontaktversuch, auch ohne dass
-        // dort ein Formular abgeschickt wird — separat vom `generate_lead`,
-        // das die Formulare selbst bei tatsächlichem Absenden feuern.
-        const kontaktZiel = ereignis.target.closest?.('[data-contact-cta]');
-        if (kontaktZiel) {
-          const quelle = kontaktZiel.getAttribute('data-contact-cta');
-          if (typeof window.gtag === 'function') {
-            window.gtag('event', 'contact', { method: quelle });
-          }
-          if (typeof window.fbq === 'function') {
-            window.fbq('track', 'Contact', { content_name: quelle });
-          }
-        }
       });
     </script>
   </body>

@@ -59,7 +59,7 @@ const { stufen = LEITER } = Astro.props;
       <a
         href={stufe.cta.href}
         class:list={['knopf mt-6 w-full', stufe.hervorgehoben ? 'knopf-dunkel !border-accent-bright !text-accent-bright' : 'knopf-linie']}
-        data-tarif-cta={stufe.tarifId}
+        data-cta={stufe.tarifId}
       >
         {stufe.cta.label}
       </a>
@@ -95,7 +95,7 @@ const { stufen = LEITER } = Astro.props;
       ))}
     </ul>
   </div>
-  <a href={ANKER.cta.href} class="knopf knopf-accent w-full lg:w-fit lg:ml-auto" data-tarif-cta={ANKER.tarifId}>
+  <a href={ANKER.cta.href} class="knopf knopf-accent w-full lg:w-fit lg:ml-auto" data-cta={ANKER.tarifId}>
     {ANKER.cta.label}
   </a>
 </div>

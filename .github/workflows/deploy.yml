@@ -32,11 +32,6 @@ jobs:
         node-version: 22
         package-manager: npm # The package manager used to install dependencies and build your site. (optional)
       env:
-        PUBLIC_FORMSPREE_ZUGANG_ID: ${{ secrets.PUBLIC_FORMSPREE_ZUGANG_ID }}
-        PUBLIC_FORMSPREE_KONTAKT_ID: ${{ secrets.PUBLIC_FORMSPREE_KONTAKT_ID }}
-        PUBLIC_FORMSPREE_INFOGRAFIK_ID: ${{ secrets.PUBLIC_FORMSPREE_INFOGRAFIK_ID }}
-        PUBLIC_GA4_ID: ${{ secrets.PUBLIC_GA4_ID }}
-        PUBLIC_META_PIXEL_ID: ${{ secrets.PUBLIC_META_PIXEL_ID }}
         PUBLIC_GATEWAY_URL: ${{ secrets.PUBLIC_GATEWAY_URL }}
 
   deploy:

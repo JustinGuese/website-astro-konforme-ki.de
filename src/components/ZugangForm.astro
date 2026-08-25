@@ -1,7 +1,8 @@
 ---
+import TrackingFields from '@justinguese/astro-kit/TrackingFields.astro';
+import { formspreeAction } from '@justinguese/astro-kit/lib/site';
+import { site } from '../config/site';
 import { LEITER, ANKER, NUTZUNGSMODELLE } from '../lib/preise';
-
-const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ZUGANG_ID || 'maewgpzk';
 
 /**
  * Klartext-Namen für jede `tarifId`, damit in der Formspree-Einsendung nicht
@@ -20,13 +21,13 @@ const tarifNamen = Object.fromEntries(
 
 <form
   id="zugang-form"
-  action={`https://formspree.io/f/${formspreeId}`}
+  action={formspreeAction(site.formspreeId!)}
   method="POST"
   class="bg-surface border border-line p-6 sm:p-8 space-y-5"
 >
   <input type="hidden" name="form" value="zugang" />
   <input type="hidden" name="_next" id="zugang-next" value="/?zugang_gesendet=1#zugang" />
-  <input type="text" name="_gotcha" style="display:none" />
+  <TrackingFields variant="zugang" />
 
   <!--
     Tarif-Attribution: wird aus `?tarif=` befüllt (siehe zugangHref() in
@@ -118,20 +119,11 @@ const tarifNamen = Object.fromEntries(
     const params = new URLSearchParams(window.location.search);
 
     // --- Erfolgszustand nach dem Formspree-Redirect -------------------------
+    // Zeigt Erfolg/versteckt Formular; Analytics und URL-Aufräumen übernimmt
+    // ConversionTracking auf der Seite (derselbe Flag-Name).
     if (params.get('zugang_gesendet') === '1') {
       document.getElementById('zugang-gesendet')?.classList.remove('hidden');
       document.getElementById('zugang-form')?.classList.add('hidden');
-      const tarif = params.get('tarif') || 'unbestimmt';
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', 'generate_lead', { form_name: 'zugang', item_id: tarif });
-      }
-      if (typeof window.fbq === 'function') {
-        window.fbq('track', 'Lead', { content_name: 'Zugang Waitlist', content_category: tarif });
-      }
-      params.delete('zugang_gesendet');
-      params.delete('tarif');
-      const qs = params.toString();
-      window.history.replaceState({}, '', window.location.pathname + (qs ? '?' + qs : '') + window.location.hash);
       return;
     }
 

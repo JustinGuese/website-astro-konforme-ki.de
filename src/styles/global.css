@@ -461,8 +461,8 @@
   footer,
   .kette,
   .kette-strich,
-  #cookie-banner,
-  #sticky-cta { display: none !important; }
+  #df-cookie-banner,
+  #df-sticky-cta { display: none !important; }
 
   html, body {
     background: #fff !important;

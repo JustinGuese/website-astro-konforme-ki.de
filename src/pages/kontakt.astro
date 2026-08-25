@@ -1,7 +1,10 @@
 ---
 import Site from '../layouts/Site.astro';
+import TrackingFields from '@justinguese/astro-kit/TrackingFields.astro';
+import ConversionTracking from '@justinguese/astro-kit/ConversionTracking.astro';
+import { formspreeAction } from '@justinguese/astro-kit/lib/site';
+import { site } from '../config/site';
 
-const formspreeId = import.meta.env.PUBLIC_FORMSPREE_KONTAKT_ID || 'maewgpzk';
 const landingPage = Astro.url.pathname;
 
 const title = 'Kontakt | Nachweis';
@@ -25,15 +28,14 @@ const description = 'Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Complia
 
       <form
         id="kontakt-form"
-        action={`https://formspree.io/f/${formspreeId}`}
+        action={formspreeAction(site.formspreeId!)}
         method="POST"
         class="bg-surface border border-line p-6 sm:p-8 space-y-5"
       >
         <input type="hidden" name="form" value="kontakt" />
         <input type="hidden" id="interesse-field" name="interesse" value="allgemein" />
-        <input type="hidden" name="landing_page" value={landingPage} />
-        <input type="hidden" id="next-field" name="_next" value={`${landingPage}?sent=1`} />
-        <input type="text" name="_gotcha" style="display:none" />
+        <input type="hidden" id="next-field" name="_next" value={`${landingPage}?kontakt_gesendet=1`} />
+        <TrackingFields variant="allgemein" />
 
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
@@ -130,26 +132,16 @@ const description = 'Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Complia
         if (nextField) nextField.value = nextField.value + `&interesse=${interesse}`;
       }
 
-      if (params.get('sent') === '1') {
+      // Zeigt Erfolg/versteckt Formular; Analytics und URL-Aufräumen
+      // übernimmt ConversionTracking unten (derselbe Flag-Name).
+      if (params.get('kontakt_gesendet') === '1') {
         document.getElementById('sent-banner')?.classList.remove('hidden');
         document.getElementById('kontakt-form')?.classList.add('hidden');
-        if (typeof window.fbq === 'function') {
-          window.fbq('track', 'Lead', {
-            content_name: 'Contact Form Submission',
-            content_category: 'Contact'
-          });
-        }
-        if (typeof window.gtag === 'function') {
-          window.gtag('event', 'generate_lead', {
-            form_name: 'kontakt',
-            content_category: 'Contact'
-          });
-        }
-        params.delete('sent');
-        const qs = params.toString();
-        const newUrl = window.location.pathname + (qs ? '?' + qs : '') + window.location.hash;
-        window.history.replaceState({}, '', newUrl);
       }
     })();
   </script>
+
+  <ConversionTracking states={[
+    { flag: 'kontakt_gesendet', revealId: 'sent-banner', event: 'kontakt', label: 'Contact Form Submission' },
+  ]} />
 </Site>

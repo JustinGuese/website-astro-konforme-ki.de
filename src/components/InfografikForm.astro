@@ -1,4 +1,8 @@
 ---
+import TrackingFields from '@justinguese/astro-kit/TrackingFields.astro';
+import { formspreeAction } from '@justinguese/astro-kit/lib/site';
+import { site } from '../config/site';
+
 interface Props {
   /**
    * Wohin Formspree nach dem Absenden zurückspringt. Muss auf die Seite
@@ -17,8 +21,6 @@ const {
   quelle = 'eu-ki-recht',
   id = 'infografik',
 } = Astro.props;
-
-const formspreeId = import.meta.env.PUBLIC_FORMSPREE_INFOGRAFIK_ID || 'maewgpzk';
 ---
 
 <div id={`${id}-gesendet`} class="hidden border border-accent bg-accent-pale text-ink p-6 text-sm">
@@ -28,7 +30,6 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_INFOGRAFIK_ID || 'maewgpzk'
     href="/downloads/eu-ki-recht-checkliste.pdf"
     download
     class="knopf knopf-accent mt-4"
-    data-infografik-download
   >
     PDF herunterladen
   </a>
@@ -36,7 +37,7 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_INFOGRAFIK_ID || 'maewgpzk'
 
 <form
   id={`${id}-form`}
-  action={`https://formspree.io/f/${formspreeId}`}
+  action={formspreeAction(site.formspreeId!)}
   method="POST"
   class="bg-surface border border-line p-6 sm:p-7 flex flex-col sm:flex-row gap-4 items-stretch"
 >
@@ -44,7 +45,7 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_INFOGRAFIK_ID || 'maewgpzk'
   <input type="hidden" name="quelle" value={quelle} />
   <input type="hidden" name="tarif" value="checkliste" />
   <input type="hidden" name="_next" value={next} />
-  <input type="text" name="_gotcha" style="display:none" />
+  <TrackingFields variant={id} />
 
   <label for={`${id}-email`} class="sr-only">E-Mail</label>
   <input
@@ -60,8 +61,10 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_INFOGRAFIK_ID || 'maewgpzk'
   Keine Weiterleitung an Dritte. Mit dem Absenden stimmen Sie unserer <a href="/datenschutz" class="underline hover:text-ink">Datenschutzerklärung</a> zu.
 </p>
 
-<script is:inline define:vars={{ id, quelle }}>
+<script is:inline define:vars={{ id }}>
   (() => {
+    // Zeigt Erfolg/versteckt Formular an; Analytics und URL-Aufräumen
+    // übernimmt ConversionTracking auf der Seite (derselbe Flag-Name).
     const params = new URLSearchParams(window.location.search);
     if (params.get('infografik_gesendet') !== '1') return;
 
@@ -73,14 +76,5 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_INFOGRAFIK_ID || 'maewgpzk'
 
     erfolg.classList.remove('hidden');
     formular.classList.add('hidden');
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', 'generate_lead', { form_name: 'infografik', item_id: 'checkliste', quelle: quelle });
-    }
-    if (typeof window.fbq === 'function') {
-      window.fbq('track', 'Lead', { content_name: 'EU-KI-Recht Checkliste', content_category: quelle });
-    }
-    params.delete('infografik_gesendet');
-    const qs = params.toString();
-    window.history.replaceState({}, '', window.location.pathname + (qs ? '?' + qs : '') + window.location.hash);
   })();
 </script>

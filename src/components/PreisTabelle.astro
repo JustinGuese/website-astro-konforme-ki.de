@@ -35,7 +35,7 @@ const { tarife } = Astro.props;
       <a
         href={tarif.cta.href}
         class:list={['knopf mt-7 w-full', tarif.hervorgehoben ? 'knopf-dunkel !border-accent-bright !text-accent-bright' : 'knopf-linie']}
-        data-tarif-cta={tarif.tarifId}
+        data-cta={tarif.tarifId}
       >
         {tarif.cta.label}
       </a>

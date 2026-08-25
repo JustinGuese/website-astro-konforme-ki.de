@@ -9,6 +9,7 @@ Disallow: /eu-ki-recht/pdf-quelle
 Disallow: /*?tarif=
 Disallow: /*?zugang_gesendet=
 Disallow: /*?infografik_gesendet=
+Disallow: /*?kontakt_gesendet=
 Disallow: /*?interesse=
 
 Sitemap: https://konforme-ki.de/sitemap-index.xml

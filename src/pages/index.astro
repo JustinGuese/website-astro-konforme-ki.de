@@ -9,6 +9,7 @@ import Belege from '../components/Belege.astro';
 import Kontingent from '../components/Kontingent.astro';
 import InfografikForm from '../components/InfografikForm.astro';
 import ZugangForm from '../components/ZugangForm.astro';
+import ConversionTracking from '@justinguese/astro-kit/ConversionTracking.astro';
 import { buildChain } from '../lib/kette';
 import { LEITER } from '../lib/preise';
 import { frei } from '../lib/kontingent';
@@ -122,26 +123,11 @@ const faq = [
   <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify([
     {
       '@context': 'https://schema.org',
-      '@type': 'Organization',
-      '@id': `${site.url}/#organisation`,
-      name: site.name,
-      legalName: site.legalName,
-      url: site.url,
-      logo: `${site.url}/og-image.svg`,
-      address: {
-        '@type': 'PostalAddress',
-        ...site.address,
-      },
-      areaServed: 'DE',
-    },
-    {
-      '@context': 'https://schema.org',
       '@type': 'WebSite',
-      '@id': `${site.url}/#website`,
       url: site.url,
       name: site.name,
       inLanguage: 'de-DE',
-      publisher: { '@id': `${site.url}/#organisation` },
+      publisher: { '@type': 'Organization', name: site.name },
     },
     {
       '@context': 'https://schema.org',
@@ -171,7 +157,7 @@ const faq = [
 
         <div slot="hinweis" class="flex flex-col gap-2 items-start">
           <Kontingent variante="zeile" />
-          <a href="/?tarif=compliance#zugang" class="font-mono text-xs text-ink-faint hover:text-accent underline underline-offset-2" data-tarif-cta="hero-hosted-alt">
+          <a href="/?tarif=compliance#zugang" class="font-mono text-xs text-ink-faint hover:text-accent underline underline-offset-2" data-cta="hero-hosted-alt">
             Lieber direkt gehostete Inferenz? Zugangsschlüssel sichern →
           </a>
         </div>
@@ -239,7 +225,7 @@ const faq = [
             Der Sidecar beobachtet Ihre bestehenden Anfragen und schreibt dieselbe Prüfspur, die Sie im Playground sehen — Modell, Subprozessor, Hash, Zeitstempel. Reicht Ihre eigene Cloud für einen Fall nicht aus, etwa weil kein passendes EU-Modell verfügbar ist oder ein Mandat besonders sensibel ist, hosten wir die Inferenz stattdessen vollständig.
           </p>
         </div>
-        <a href="/kontakt?interesse=sidecar" class="knopf knopf-accent w-full sm:w-fit sm:ml-auto" data-tarif-cta="sidecar">Sidecar einrichten</a>
+        <a href="/kontakt?interesse=sidecar" class="knopf knopf-accent w-full sm:w-fit sm:ml-auto" data-cta="sidecar">Sidecar einrichten</a>
       </div>
     </div>
   </section>
@@ -316,7 +302,7 @@ const faq = [
 
       <!-- Handlungspfad mitten im langen Erklärteil, nicht erst nach dem Scrollen. -->
       <div class="mt-10 flex flex-wrap items-center gap-4">
-        <a href="/?tarif=compliance#zugang" class="knopf knopf-accent" data-tarif-cta="nachweis-inline">Zugangsschlüssel sichern</a>
+        <a href="/?tarif=compliance#zugang" class="knopf knopf-accent" data-cta="nachweis-inline">Zugangsschlüssel sichern</a>
         <Kontingent variante="zeile" />
       </div>
     </div>
@@ -469,14 +455,19 @@ const faq = [
         Sidecar über Ihre bestehende KI oder direkt gehostete Inferenz — beides ohne Zahlungsmittel und ohne Verkaufsgespräch.
       </p>
       <div class="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3">
-        <a href="/kontakt?interesse=sidecar" class="knopf knopf-accent w-full sm:w-auto" data-tarif-cta="abschluss-sidecar">
+        <a href="/kontakt?interesse=sidecar" class="knopf knopf-accent w-full sm:w-auto" data-cta="abschluss-sidecar">
           Sidecar einrichten
           <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
         </a>
-        <a href="/?tarif=compliance#zugang" class="knopf knopf-dunkel w-full sm:w-auto" data-tarif-cta="abschluss-zugang">
+        <a href="/?tarif=compliance#zugang" class="knopf knopf-dunkel w-full sm:w-auto" data-cta="abschluss-zugang">
           Direkt gehostete Inferenz
         </a>
       </div>
     </div>
   </section>
+
+  <ConversionTracking states={[
+    { flag: 'zugang_gesendet', revealId: 'zugang-gesendet', event: 'zugang', label: 'Zugang Waitlist' },
+    { flag: 'infografik_gesendet', revealId: 'checkliste-gesendet', event: 'infografik', label: 'EU-KI-Recht Checkliste' },
+  ]} />
 </Site>

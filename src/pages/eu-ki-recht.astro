@@ -2,6 +2,7 @@
 import Site from '../layouts/Site.astro';
 import Zeitstrahl from '../components/Zeitstrahl.astro';
 import InfografikForm from '../components/InfografikForm.astro';
+import ConversionTracking from '@justinguese/astro-kit/ConversionTracking.astro';
 
 const title = 'Was gilt beim KI-Einsatz? EU-KI-Recht im Überblick | Nachweis';
 const description = 'AI Act, DSGVO und § 203 StGB im Überblick — was jedes Unternehmen beim Einsatz von KI beachten muss, mit zusätzlicher Tiefe für Kanzleien, Steuerberater und Praxen. Stand: 6. August 2026.';
@@ -151,4 +152,8 @@ const zeitstrahl = [
       <a href="/unterlagen" class="knopf knopf-accent mt-5">Unterlagen ansehen</a>
     </div>
   </section>
+
+  <ConversionTracking states={[
+    { flag: 'infografik_gesendet', revealId: 'infografik-gesendet', event: 'infografik', label: 'EU-KI-Recht Checkliste' },
+  ]} />
 </Site>
