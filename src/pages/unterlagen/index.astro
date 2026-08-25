@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Site from '../../layouts/Site.astro';
+import ArticleGrid from '@justinguese/astro-kit/ArticleGrid.astro';
 
 const dokumente = (await getCollection('unterlagen')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
 
@@ -20,19 +21,17 @@ const description = 'AVV, TOM, Subprozessorenliste, §203-Zusatzvereinbarung und
   </section>
 
   <section class="py-12 sm:py-16">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="divide-y divide-line border-t border-b border-line">
-        {dokumente.map((doc) => (
-          <a href={`/unterlagen/${doc.id}`} class="group flex items-start justify-between gap-4 py-6 hover:bg-canvas-deep -mx-4 px-4 transition-colors">
-            <div>
-              <p class="font-display font-bold text-ink group-hover:text-accent transition-colors" style="font-variation-settings: 'wdth' 90;">{doc.data.title}</p>
-              <p class="mt-1.5 text-sm text-ink-soft leading-relaxed max-w-xl">{doc.data.kurz}</p>
-              <p class="mt-2 font-mono text-xs text-ink-faint">{doc.data.version} · Stand: {doc.data.stand}</p>
-            </div>
-            <span class="shrink-0 text-accent text-xl leading-none mt-1">→</span>
-          </a>
-        ))}
-      </div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ArticleGrid
+        columns={3}
+        items={dokumente.map((doc) => ({
+          href: `/unterlagen/${doc.id}`,
+          title: doc.data.title,
+          description: doc.data.kurz,
+          meta: `${doc.data.version} · Stand: ${doc.data.stand}`,
+          cta: 'Ansehen',
+        }))}
+      />
     </div>
   </section>
 </Site>
