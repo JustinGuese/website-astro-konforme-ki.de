@@ -81,7 +81,7 @@ const faq = [
   },
   {
     frage: 'Welche Modelle stehen zur Verfügung?',
-    antwort: 'Im Standardfall laufen Ihre Anfragen auf eigener Infrastruktur der DataFortress.cloud GmbH in Frankfurt — ohne externen Subprozessor. Wer stattdessen das günstigere EU-Anbieter-Autorouting wählt (Säule 1), erhält ausschließlich Modelle, die über Scaleway, IONOS AI Model Hub, Mistral AI oder OVHcloud AI Endpoints in der EU gehostet werden. Die genaue Modellliste ist Teil Ihres Onboardings.',
+    antwort: 'Im Standardfall laufen Ihre Anfragen auf eigener Infrastruktur der DataFortress.cloud GmbH in Nürnberg — ohne externen Subprozessor. Wer stattdessen das günstigere EU-Anbieter-Autorouting wählt (Säule 1), erhält ausschließlich Modelle, die über Scaleway, IONOS AI Model Hub, Mistral AI oder OVHcloud AI Endpoints in der EU gehostet werden. Die genaue Modellliste ist Teil Ihres Onboardings.',
   },
   {
     frage: 'Was passiert, wenn kein EU-Modell verfügbar ist?',
@@ -168,7 +168,7 @@ const faq = [
           felder={[
             { schluessel: 'modell', wert: 'nachweis-llm-70b' },
             { schluessel: 'subprozessor', wert: 'Keiner — DataFortress.cloud GmbH', ton: 'ok' },
-            { schluessel: 'rechenzentrum', wert: 'Frankfurt, DE · eigenes RZ' },
+            { schluessel: 'rechenzentrum', wert: 'Nürnberg, DE · eigenes RZ' },
             { schluessel: 'retention', wert: 'kein Training · 0 Tage' },
             { schluessel: 'tokens_in / out', wert: '412 / 96' },
             { schluessel: 'hash', wert: '7be1c4a9f3d820e6…' },
@@ -263,7 +263,7 @@ const faq = [
             </div>
             <div class="flex gap-3">
               <dt class="font-mono text-ink-faint w-32 shrink-0">ablageort</dt>
-              <dd class="text-ink-soft">Prüfspur liegt immer auf eigener DataFortress-Infrastruktur in Frankfurt — ob Sidecar über Ihre Cloud oder vollständig gehostet</dd>
+              <dd class="text-ink-soft">Prüfspur liegt immer auf eigener DataFortress-Infrastruktur in Nürnberg — ob Sidecar über Ihre Cloud oder vollständig gehostet</dd>
             </div>
           </dl>
         </div>
@@ -273,7 +273,7 @@ const faq = [
             { schluessel: 'anfrage_id', wert: 'req_5d94e120' },
             { schluessel: 'modell', wert: 'nachweis-llm-70b' },
             { schluessel: 'subprozessor', wert: 'Keiner — DataFortress.cloud GmbH', ton: 'ok' },
-            { schluessel: 'rechenzentrum', wert: 'Frankfurt, DE · eigenes RZ' },
+            { schluessel: 'rechenzentrum', wert: 'Nürnberg, DE · eigenes RZ' },
             { schluessel: 'retention', wert: 'kein Training · 0 Tage' },
             { schluessel: 'tokens_in / out', wert: '890 / 143' },
             { schluessel: 'hash', wert: 'c91a3e6f204b8d71…' },
@@ -297,6 +297,7 @@ const faq = [
       <!-- Handlungspfad mitten im langen Erklärteil, nicht erst nach dem Scrollen. -->
       <div class="mt-10 flex flex-wrap items-center gap-4">
         <a href="/?tarif=compliance#zugang" class="knopf knopf-accent" data-cta="nachweis-inline">Zugangsschlüssel sichern</a>
+        <a href="/eu-inferenz" class="knopf knopf-linie" data-cta="nachweis-eu-inferenz">EU-Inferenz ansehen</a>
         <ScarcityBlock
           class="kontingent-akzent"
           total={KONTINGENT.plaetze}

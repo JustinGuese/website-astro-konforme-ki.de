@@ -10,12 +10,13 @@ reihenfolge: 3
 
 ## Aktuell eingesetzte Subprozessoren
 
-| Subprozessor | Sitz / Rechenzentrum     | Zweck           | AVV       |
-| ------------ | ------------------------ | --------------- | --------- |
-| Scaleway SAS | Paris, Amsterdam (FR/NL) | Modell-Inferenz | vorhanden |
-| IONOS SE     | Berlin, Frankfurt (DE)   | Modell-Inferenz | vorhanden |
-| Mistral AI   | Paris (FR)               | Modell-Inferenz | vorhanden |
-| OVHcloud     | Gravelines (FR)          | Modell-Inferenz | vorhanden |
+| Subprozessor      | Sitz / Rechenzentrum     | Zweck                                                    | AVV       |
+| ------------------ | ------------------------ | --------------------------------------------------------- | --------- |
+| Scaleway SAS       | Paris, Amsterdam (FR/NL) | Modell-Inferenz (Säule 1)                                  | vorhanden |
+| IONOS SE           | Berlin, Frankfurt (DE)   | Modell-Inferenz (Säule 1)                                  | vorhanden |
+| Mistral AI         | Paris (FR)               | Modell-Inferenz (Säule 1)                                  | vorhanden |
+| OVHcloud           | Gravelines (FR)          | Modell-Inferenz (Säule 1)                                  | vorhanden |
+| Hetzner Online GmbH | Nürnberg (DE)            | Hosting eigener Server (Säule 2/3, ISO 27001-zertifiziert, keine Verarbeitung durch Hetzner selbst) | vorhanden |
 
 Kein in dieser Liste geführter Subprozessor verarbeitet Daten außerhalb der EU/des EWR. Es findet **kein Fallback** auf Subprozessoren außerhalb dieser Liste statt — ist kein gelisteter Subprozessor verfügbar, schlägt die betroffene Anfrage fehl, statt umgeleitet zu werden.
 
@@ -27,8 +28,9 @@ Kein in dieser Liste geführter Subprozessor verarbeitet Daten außerhalb der EU
 
 ## Änderungshistorie
 
-| Datum          | Änderung                             |
-| -------------- | ------------------------------------ |
-| 6. August 2026 | Erste Veröffentlichung dieser Liste. |
+| Datum           | Änderung                                                         |
+| --------------- | ------------------------------------------------------------------ |
+| 6. August 2026  | Erste Veröffentlichung dieser Liste.                                |
+| 25. August 2026 | Hetzner Online GmbH (Nürnberg) für Säule 2/3 ergänzt.               |
 
 Fragen zu dieser Liste: [info@konforme-ki.de](mailto:info@konforme-ki.de)

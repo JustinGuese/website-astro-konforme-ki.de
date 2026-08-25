@@ -1,0 +1,195 @@
+---
+import { getCollection } from 'astro:content';
+import Site from '../layouts/Site.astro';
+import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
+import CompareBlock from '@justinguese/astro-kit/CompareBlock.astro';
+import ArticleGrid from '@justinguese/astro-kit/ArticleGrid.astro';
+import CtaBand from '@justinguese/astro-kit/CtaBand.astro';
+import CodeTabs from '../components/CodeTabs.astro';
+import { INFERENZ_TARIFE, INFERENZ_VERGLEICH_SPALTEN, INFERENZ_VERGLEICH_ZEILEN, inferenzHref } from '../lib/euInferenz';
+
+const title = 'EU-Inferenz — Qwen3.8-27B, gehostet in Deutschland | konforme-ki.de';
+const description = 'Gehostete Qwen3.8-27B-Inferenz (FP8), betrieben von der DataFortress.cloud GmbH in Nürnberg. OpenAI-kompatible API, kein US-Fallback, keine Prompt-Speicherung, kein Training auf Kundendaten.';
+
+const dokumente = (await getCollection('unterlagen')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
+const nachweise = [
+  ...dokumente.map((doc) => ({
+    href: `/unterlagen/${doc.id}`,
+    title: doc.data.title,
+    description: doc.data.kurz,
+    meta: `${doc.data.version} · Stand: ${doc.data.stand}`,
+    cta: 'Ansehen',
+  })),
+  {
+    href: '/impressum',
+    title: 'Impressum',
+    description: 'Anbieterkennzeichnung nach § 5 DDG.',
+    meta: 'DataFortress.cloud GmbH',
+    cta: 'Ansehen',
+  },
+  {
+    href: '/datenschutz',
+    title: 'Datenschutzerklärung',
+    description: 'Wie wir personenbezogene Daten auf dieser Website und im Rahmen der Inferenz verarbeiten.',
+    meta: 'DataFortress.cloud GmbH',
+    cta: 'Ansehen',
+  },
+];
+
+const curl = `curl https://api.konforme-ki.de/v1/chat/completions \\
+  -H "Authorization: Bearer $NACHWEIS_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"model": "qwen3.8-27b", "messages": [{"role": "user", "content": "..."}]}'`;
+---
+
+<Site title={title} description={description}>
+  <section class="py-14 sm:py-20 border-b border-line">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader
+        as="h1"
+        eyebrow="EU-Inferenz"
+        title="Qwen3.8-27B (FP8), gehostet in Nürnberg. Betrieben von der DataFortress.cloud GmbH."
+        lead="Keine Speicherung Ihrer Prompts oder Antworten. Kein Training auf Ihren Daten. Kein Fallback außerhalb der EU — ist der Endpunkt nicht erreichbar, bekommen Sie einen HTTP 503, keine stille Umleitung in ein anderes Rechtssystem. Das Modell steht unter Apache-2.0-Lizenz: kein Vendor-Lock-in, keine überraschenden Nutzungsbedingungen im Nachhinein."
+        size="lg"
+      />
+
+      <!-- Handlungspfad direkt unter dem Aufmacher: der Test-Tarif kostet
+           nichts und verlangt kein Zahlungsmittel — das ist das Angebot, das
+           hier oben stehen muss, nicht erst hinter sechs Sektionen. -->
+      <div class="mt-8 flex flex-wrap items-center gap-4">
+        <a href="/kontakt?interesse=eu-inferenz-test" class="knopf knopf-accent" data-cta="eu-inferenz-hero-test">Kostenlos testen</a>
+        <a href="#nachweise" class="knopf knopf-linie" data-cta="eu-inferenz-hero-nachweise">Unterlagen für Ihren DSB</a>
+        <span class="font-mono text-xs text-ink-faint">5 Mio. Token/Monat · kein Zahlungsmittel nötig</span>
+      </div>
+
+      <div class="mt-10">
+        <CompareBlock
+          caption="Vergleich: Betreiber-Sitz und DSGVO-relevante Eigenschaften gegenüber den Standard-API-Angeboten von OpenAI, Anthropic, Google und Azure OpenAI"
+          rowHeader="Anbieter"
+          columns={INFERENZ_VERGLEICH_SPALTEN}
+          rows={INFERENZ_VERGLEICH_ZEILEN}
+          footnote="Bezogen auf die öffentlichen Standard-API-Angebote der jeweiligen Anbieter, Stand 25. August 2026 — abweichende Enterprise-/Regionalprogramme im Einzelfall nicht berücksichtigt."
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
+      <h2>Was Sie bekommen</h2>
+      <ul>
+        <li>Qwen3.8-27B (FP8) unter Apache-2.0-Lizenz — kein Vendor-Lock-in, keine überraschenden Nutzungsbedingungen im Nachhinein.</li>
+        <li>OpenAI-kompatible API — die Umstellung ist ein Austausch der Basis-URL, kein Rewrite Ihrer Integration.</li>
+        <li>Kontextfenster: 131.072 Token, wie tatsächlich ausgeliefert — nicht die 262k/1M, die das Modellblatt für die Architektur nennt.</li>
+        <li>Quantisierung offen benannt: FP8, nahezu verlustfrei gegenüber BF16.</li>
+        <li>Tool Calling, Structured Outputs, JSON Mode, Vision (Bild und Video).</li>
+        <li>Deutsch und 200+ weitere Sprachen — relevant, weil Ihre Anwender zuerst auf Deutsch testen.</li>
+        <li>Multi-Tenant auf eigener Hardware, nie geteilt mit einem fremden Anbieter — eine reservierte, dedizierte GPU ist im Tarif „Dediziert" optional buchbar.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="nachweise" class="py-16 sm:py-20 border-b border-line">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader
+        eyebrow="Compliance-Nachweise"
+        title="Jedes Dokument vorab — ohne E-Mail-Pflicht."
+        lead="Die Unterlagen, die Ihr Datenschutzbeauftragter ohnehin anfordern würde, stehen hier zum Download. Kein Formular, keine Anmeldung — Ihr DSB soll das prüfen können, bevor irgendjemand mit Ihnen spricht."
+        size="md"
+        class="mb-8"
+      />
+      <ArticleGrid columns={3} items={nachweise} />
+      <p class="mt-6 text-sm text-ink-soft">
+        Aufbewahrung und Löschung sind in den <a href="/unterlagen/tom" class="text-accent hover:underline">TOM, Abschnitt 5</a> geregelt: 0 Tage für Prompt-Inhalte, kein Training auf Kundendaten. Der Subprozessor für die eigene Hardware ist in der <a href="/unterlagen/subprozessoren" class="text-accent hover:underline">Subprozessorenliste</a> namentlich benannt.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
+      <h2>Was wir nicht tun</h2>
+      <ul>
+        <li>Keine Speicherung von Prompts oder Antworten — gespeichert werden ausschließlich Token-Anzahl, Zeitstempel und Anfrage-ID.</li>
+        <li>Kein Training auf Kundendaten.</li>
+        <li>Kein US-Fallback — ist der Endpunkt nicht erreichbar, erhalten Sie einen HTTP 503, keine stille Umleitung.</li>
+        <li>Keine Drittanbieter-Analytics oder Error-Tracker mit Zugriff auf Anfrageinhalte.</li>
+        <li>Keine Weitergabe an Subunternehmer außerhalb der EU/des EWR.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-line">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
+      <h2>Regulatorischer Kontext</h2>
+      <p>Für Berufsgeheimnisträger (Kanzleien, Praxen, Notariate) ist die relevante Rechtsgrundlage § 203 Abs. 3 StGB: die Weitergabe an sorgfältig ausgewählte, wirksam zur Verschwiegenheit verpflichtete „mitwirkende Personen" ist zulässig. Eine individuelle §203-Zusatzvereinbarung gehört zum Compliance-Tarif dazu — Details im <a href="/eu-ki-recht">EU-KI-Recht-Überblick</a>.</p>
+      <p>Die Protokollierungspflichten aus Art. 12 AI Act lassen sich über den <a href="/">Nachweis-Sidecar</a> abdecken, unabhängig davon, ob Sie die EU-Inferenz oder Ihre bestehende KI-Lösung einsetzen.</p>
+      <p>Ihre genaue Rolle in der KI-Wertschöpfungskette nach AI Act (Anbieter oder Betreiber) hängt von Ihrem konkreten Einsatzfall ab. Das prüfen wir im Onboarding gemeinsam mit Ihnen — eine pauschale Einordnung an dieser Stelle wäre nicht seriös.</p>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader eyebrow="Preis" title="Enthaltenes Kontingent, dann Überschreitung — nie Kappung ohne Vorwarnung." size="md" class="mb-8" />
+
+      <div class="border border-line bg-surface overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead>
+            <tr class="border-b border-line">
+              <th class="px-4 py-3 font-mono text-xs uppercase tracking-wider text-ink-faint">Tarif</th>
+              <th class="px-4 py-3 font-mono text-xs uppercase tracking-wider text-ink-faint">Preis</th>
+              <th class="px-4 py-3 font-mono text-xs uppercase tracking-wider text-ink-faint">Enthalten</th>
+              <th class="px-4 py-3 font-mono text-xs uppercase tracking-wider text-ink-faint">Überschreitung</th>
+              <th class="px-4 py-3"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {INFERENZ_TARIFE.map((tarif) => (
+              <tr class:list={['border-b border-line last:border-b-0', tarif.hervorgehoben && 'bg-canvas-deep']}>
+                <td class="px-4 py-4 font-semibold text-ink">{tarif.name}</td>
+                <td class="px-4 py-4 text-ink"><span class="font-semibold">{tarif.preis}</span> <span class="text-ink-faint text-xs">{tarif.einheit}</span></td>
+                <td class="px-4 py-4 text-ink-soft">{tarif.enthalten}</td>
+                <td class="px-4 py-4 text-ink-soft">{tarif.ueberschreitung}</td>
+                <td class="px-4 py-4 text-right">
+                  <a
+                    href={inferenzHref(tarif.tarifId)}
+                    class:list={['knopf !py-2 !px-3.5 !text-xs whitespace-nowrap', tarif.hervorgehoben ? 'knopf-accent' : 'knopf-linie']}
+                    data-cta={`eu-inferenz-${tarif.tarifId}`}
+                  >{tarif.ctaLabel}</a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-4 font-mono text-xs text-ink-faint">Preise zzgl. gesetzlicher USt. · monatlich kündbar · Abrechnung monatlich. Der Test-Tarif drosselt bei Erreichen des Kontingents statt automatisch abzurechnen.</p>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-line">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader eyebrow="Für Entwickler" title="Drop-in — Basis-URL austauschen, fertig." size="md" class="mb-6" />
+      <CodeTabs tabs={[{ label: 'curl', code: curl }]} />
+      <p class="mt-4 text-sm text-ink-soft">API-Zugang wird nach Freigabe im Onboarding ausgegeben — derzeit kein Self-Service-Signup. Rate-Limits sind tarifabhängig und werden beim Onboarding festgelegt.</p>
+      <p class="mt-2 text-sm text-ink-soft">Ohne eigenen API-Schlüssel: sehen Sie sich den <a href="/playground" class="text-accent hover:underline">Playground</a> an — aufgezeichnete Antworten, aber derselbe Nachweis-Rekord neben jeder Anfrage.</p>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
+      <h2>Stand heute</h2>
+      <p>Das hier ist der aktuelle Ausbaustand, kein Zielbild. Was fehlt, fehlt, weil es noch nicht gebraucht wurde — nicht, weil es nicht ginge.</p>
+      <ul>
+        <li>Aktuell eine Region, eine GPU. Multi-AZ-Redundanz ist keine technische Hürde, sondern eine Frage der Auslastung — die zweite Instanz kommt, sobald die erste sie rechtfertigt.</li>
+        <li>Aktuell ein Modell, Qwen3.8-27B — kein Frontier-Modell: bei komplexen, mehrstufigen Agenten- oder Coding-Aufgaben liegt es hinter großen proprietären Modellen zurück. Für Zusammenfassung, Extraktion, Klassifikation und Strukturierung von Fachtexten reicht es schon heute; größere oder zusätzliche Modelle sind eine Frage der Nachfrage, nicht der Machbarkeit.</li>
+        <li>Onboarding heute noch manuell, monatliches Volumen gedeckelt. Self-Service-Signup und höhere Kontingente folgen mit wachsender Auslastung.</li>
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Prüfen, ob EU-Inferenz für Sie infrage kommt."
+    body="Kein Zahlungsmittel für den Test-Tarif nötig — und für Compliance oder eine dedizierte GPU klärt ein kurzes Gespräch mehr als jede Seite."
+    cta={{ label: 'Kostenlos testen', href: '/kontakt?interesse=eu-inferenz-test', track: 'eu-inferenz-abschluss' }}
+    secondary={{ label: 'Unterlagen ansehen', href: '/unterlagen', track: 'eu-inferenz-unterlagen' }}
+  />
+</Site>

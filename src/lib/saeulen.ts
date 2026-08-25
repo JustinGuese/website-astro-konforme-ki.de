@@ -37,11 +37,11 @@ export const SAEULEN: Saeule[] = [
     kurzname: 'Säule 2',
     name: 'DataFortress.cloud GmbH, geteilte Server',
     beschreibung:
-      'Ihre Anfrage verlässt EU-Anbieter vollständig und läuft ausschließlich auf eigener Infrastruktur der DataFortress.cloud GmbH in Frankfurt — geteilt mit anderen Nachweis-Kunden, aber ohne jeden Drittanbieter.',
+      'Ihre Anfrage verlässt EU-Anbieter vollständig und läuft ausschließlich auf eigener Infrastruktur der DataFortress.cloud GmbH in Nürnberg — geteilt mit anderen Nachweis-Kunden, aber ohne jeden Drittanbieter.',
     kosten: '€€',
     eignung: 'Wenn Sie keinen externen Subprozessor mehr wollen, aber keine dedizierte Hardware brauchen.',
     subprozessor: 'Keiner — DataFortress.cloud GmbH direkt',
-    rechenzentrum: 'Frankfurt, DE (eigenes Rechenzentrum, geteilt)',
+    rechenzentrum: 'Nürnberg, DE (eigenes Rechenzentrum, geteilt)',
     akzent: 'accent',
   },
   {

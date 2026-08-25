@@ -28,6 +28,7 @@ const {
 /** Ratgeber ist ein Aufklappmenü; alle anderen Einträge sind einfache Links. */
 const nav: { href: string; label: string; kinder?: { href: string; label: string; kurz: string }[] }[] = [
   { href: '/playground', label: 'Playground' },
+  { href: '/eu-inferenz', label: 'EU-Inferenz' },
   {
     href: '/ratgeber',
     label: 'Ratgeber',
@@ -46,7 +47,9 @@ const nav: { href: string; label: string; kinder?: { href: string; label: string
  * EU-KI-Recht, Integrationen und Preise bewusst nicht in der Kopfzeile:
  * die auf jeder Sektion sichtbare Navigation soll nicht mit dem einen CTA
  * konkurrieren, den der Seitenkörper konsequent wiederholt. Alle drei
- * bleiben erreichbar — inline auf der Startseite und im Footer.
+ * bleiben erreichbar — inline auf der Startseite und im Footer. EU-Inferenz
+ * ist die eine bewusste Ausnahme — der Eskalationspfad soll auch von jeder
+ * Unterseite aus in einem Klick erreichbar sein, nicht nur von der Startseite.
  */
 ---
 
@@ -164,6 +167,7 @@ const nav: { href: string; label: string; kinder?: { href: string; label: string
               <a href="/playground" class="hover:text-ink">Playground</a>
               <a href="/integrationen" class="hover:text-ink">Integrationen</a>
               <a href="/preise" class="hover:text-ink">Preise</a>
+              <a href="/eu-inferenz" class="hover:text-ink">EU-Inferenz</a>
             </div>
           </div>
           <div>

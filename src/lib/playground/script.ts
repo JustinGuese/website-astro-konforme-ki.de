@@ -11,7 +11,7 @@ import type { PlaygroundTurn } from './types';
  * echtes System dieser Art sein.
  *
  * Säule 1 = EU-Anbieter-Autorouting (Scaleway/IONOS/Mistral/OVHcloud).
- * Säule 2 = DataFortress.cloud GmbH, geteilte Server, Frankfurt.
+ * Säule 2 = DataFortress.cloud GmbH, geteilte Server, Nürnberg.
  * Säule 3 = DataFortress.cloud GmbH, dediziert in Ihrem Rechenzentrum.
  * Für die drei "normalen" Anfragen ändert sich nur der Rekord — die Antwort
  * bleibt inhaltlich gleich. Für "us-modell" ändert sich auch die Antwort:
@@ -48,7 +48,7 @@ export const PLAYGROUND_SCRIPT: PlaygroundTurn[] = [
           anfrage_id: 'req_8f2a1c93',
           modell: 'nachweis-llm-70b (DataFortress-Hosting)',
           subprozessor: 'Keiner — DataFortress.cloud GmbH direkt',
-          rechenzentrum: 'Frankfurt, DE (eigenes RZ, geteilt)',
+          rechenzentrum: 'Nürnberg, DE (eigenes RZ, geteilt)',
           retention: 'Kein Training · 0 Tage Speicherung',
           tokens_in: 412,
           tokens_out: 96,
@@ -105,7 +105,7 @@ export const PLAYGROUND_SCRIPT: PlaygroundTurn[] = [
           anfrage_id: 'req_5d94e120',
           modell: 'nachweis-llm-70b (DataFortress-Hosting)',
           subprozessor: 'Keiner — DataFortress.cloud GmbH direkt',
-          rechenzentrum: 'Frankfurt, DE (eigenes RZ, geteilt)',
+          rechenzentrum: 'Nürnberg, DE (eigenes RZ, geteilt)',
           retention: 'Kein Training · 0 Tage Speicherung',
           tokens_in: 890,
           tokens_out: 143,
@@ -162,7 +162,7 @@ export const PLAYGROUND_SCRIPT: PlaygroundTurn[] = [
           anfrage_id: 'req_2b70f814',
           modell: 'nachweis-llm-70b (DataFortress-Hosting)',
           subprozessor: 'Keiner — DataFortress.cloud GmbH direkt',
-          rechenzentrum: 'Frankfurt, DE (eigenes RZ, geteilt)',
+          rechenzentrum: 'Nürnberg, DE (eigenes RZ, geteilt)',
           retention: 'Kein Training · 0 Tage Speicherung',
           tokens_in: 276,
           tokens_out: 88,
@@ -220,7 +220,7 @@ export const PLAYGROUND_SCRIPT: PlaygroundTurn[] = [
           anfrage_id: 'req_9c31a207',
           modell: 'nachweis-llm-70b (DataFortress-Hosting)',
           subprozessor: 'Keiner — kein Drittanbieter-Routing möglich',
-          rechenzentrum: 'Frankfurt, DE (eigenes RZ, geteilt)',
+          rechenzentrum: 'Nürnberg, DE (eigenes RZ, geteilt)',
           retention: 'Kein Training · 0 Tage Speicherung',
           tokens_in: 22,
           tokens_out: 44,
