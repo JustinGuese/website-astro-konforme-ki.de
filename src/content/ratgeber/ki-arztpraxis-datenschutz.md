@@ -1,6 +1,6 @@
 ---
 title: 'KI in der Arztpraxis: Was mit Patientendaten erlaubt ist'
-metaTitle: 'KI in der Arztpraxis — Datenschutz, § 203 StGB & Art. 9 DSGVO | Nachweis'
+metaTitle: 'KI in der Arztpraxis — Datenschutz, § 203 StGB & Art. 9 DSGVO | konforme-ki.de'
 description: 'KI Arztpraxis Datenschutz: Was Art. 9 DSGVO und § 203 StGB bei Anamnese, Arztbrief & Befund wirklich erlauben — konkrete Checkliste für Praxen.'
 kurz: 'Gesundheitsdaten sind doppelt geschützt — durch die DSGVO und durch das Strafrecht. Was das für KI-Einsatz in der Praxis konkret bedeutet.'
 keyword: 'KI Arztpraxis Datenschutz'
@@ -91,7 +91,7 @@ Für einen datenschutz- und strafrechtlich vertretbaren KI-Einsatz in der Praxis
 - Eine **§ 203-Zusatzvereinbarung**, die die Einbindung als „mitwirkende Person" nach § 203 Abs. 3 StGB trägt.
 - Eine dokumentierte, **sorgfältige Auswahl** des Anbieters (technische und organisatorische Maßnahmen, Subprozessorenliste).
 - Ein **Eintrag im Verarbeitungsverzeichnis** nach Art. 30 DSGVO für den konkreten KI-Einsatz.
-- Verarbeitung ausschließlich bei **EU-Anbietern** — bei Nachweis etwa Scaleway, IONOS AI Model Hub, Mistral AI oder OVHcloud AI Endpoints — statt bei Anbietern mit unklarem Drittlandbezug.
+- Verarbeitung ausschließlich bei **EU-Anbietern** — bei konforme-ki.de etwa Scaleway, IONOS AI Model Hub, Mistral AI oder OVHcloud AI Endpoints — statt bei Anbietern mit unklarem Drittlandbezug.
 - Eine geprüfte **Anonymisierungs- oder Pseudonymisierungsroutine** für Fälle, in denen das technisch möglich ist.
 - Klare interne Regeln gegen private Accounts für Patientendaten.
 

@@ -1,15 +1,16 @@
 ---
 import Site from '../layouts/Site.astro';
 import KanalKarte from '../components/KanalKarte.astro';
-import CodeTabs from '../components/CodeTabs.astro';
+import WerkzeugTabs from '../components/WerkzeugTabs.astro';
 import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
 import { SAEULEN, STANDARD_SAEULE, findSaeule } from '../lib/saeulen';
+import { WERKZEUGE } from '../lib/werkzeuge';
 
 const saeuleStandard = findSaeule(STANDARD_SAEULE);
 const saeulenAndere = SAEULEN.filter((s) => s.id !== STANDARD_SAEULE);
 
-const title = 'Integrationen | Nachweis';
-const description = 'Nachweis als OpenAI-kompatibler Endpunkt — ein base_url-Wechsel genügt. Kanäle: Teams, Slack, WhatsApp, E-Mail, Webhook, SDK.';
+const title = 'Integrationen | konforme-ki.de';
+const description = 'konforme-ki.de als OpenAI-kompatibler Endpunkt — ein base_url-Wechsel genügt. Kanäle: Teams, Slack, WhatsApp, E-Mail, Webhook, SDK.';
 
 const kanaele = [
   {
@@ -26,69 +27,42 @@ const kanaele = [
   },
   {
     name: 'Microsoft Teams',
-    status: 'in-vorbereitung' as const,
+    status: 'verfuegbar' as const,
     beschreibung: 'Ein Bot in Ihrem Teams-Mandanten, jede Konversation mit vollständiger Prüfspur.',
     rekordBeispiel: 'kanal=teams, mandant_id=…',
   },
   {
     name: 'Slack',
-    status: 'in-vorbereitung' as const,
+    status: 'verfuegbar' as const,
     beschreibung: 'App für Ihren Workspace, protokolliert pro Kanal und Nutzer.',
     rekordBeispiel: 'kanal=slack, workspace_id=…',
   },
   {
     name: 'WhatsApp Business',
-    status: 'in-vorbereitung' as const,
+    status: 'verfuegbar' as const,
     beschreibung: 'Für Praxen und Kanzleien mit WhatsApp-Mandantenkontakt.',
     rekordBeispiel: 'kanal=whatsapp, nummer_hash=…',
   },
   {
     name: 'E-Mail (IMAP / Microsoft 365)',
-    status: 'in-vorbereitung' as const,
+    status: 'verfuegbar' as const,
     beschreibung: 'Verarbeitung eingehender E-Mails direkt aus Ihrem Postfach.',
     rekordBeispiel: 'kanal=email, postfach=…',
   },
   {
     name: 'Outlook Add-in',
-    status: 'auf-anfrage' as const,
-    beschreibung: 'Nachweis direkt im Outlook-Client, ohne Postfachzugriff von außen.',
+    status: 'verfuegbar' as const,
+    beschreibung: 'Die Prüfspur direkt im Outlook-Client, ohne Postfachzugriff von außen.',
     rekordBeispiel: 'kanal=outlook-addin, nutzer_id=…',
   },
   {
     name: 'DATEV-Export',
-    status: 'auf-anfrage' as const,
+    status: 'verfuegbar' as const,
     beschreibung: 'Nachweis-Protokolle im DATEV-kompatiblen Format für Steuerberatungskanzleien.',
     rekordBeispiel: 'kanal=datev, mandant_nr=…',
   },
 ];
 
-const codeTabs = [
-  {
-    label: 'Python',
-    code: `from openai import OpenAI
-
-client = OpenAI(
-    base_url="https://gateway.konforme-ki.de/v1",
-    api_key="ihr_schluessel",
-)`,
-  },
-  {
-    label: 'curl',
-    code: `curl https://gateway.konforme-ki.de/v1/chat/completions \\
-  -H "Authorization: Bearer ihr_schluessel" \\
-  -H "Content-Type: application/json" \\
-  -d '{"model":"mistral-large-2411","messages":[...]}'`,
-  },
-  {
-    label: 'TypeScript',
-    code: `import OpenAI from "openai";
-
-const client = new OpenAI({
-  baseURL: "https://gateway.konforme-ki.de/v1",
-  apiKey: "ihr_schluessel",
-});`,
-  },
-];
 ---
 
 <Site title={title} description={description}>
@@ -97,20 +71,16 @@ const client = new OpenAI({
       <p class="marginalie mb-3">Integrationen</p>
       <h1 class="display display-l text-ink max-w-2xl">Der Wechsel ist eine Zeile Code.</h1>
       <p class="mt-4 text-ink-soft max-w-2xl leading-relaxed">
-        Nachweis ist ein OpenAI-kompatibler Endpunkt. Alles, was heute gegen OpenAI oder Azure OpenAI spricht, spricht mit einer geänderten <code class="font-mono text-sm bg-canvas-deep px-1.5 py-0.5">base_url</code> stattdessen mit EU-Modellen — inklusive Prüfspur.
+        konforme-ki.de ist ein OpenAI-kompatibler Endpunkt. Alles, was heute gegen OpenAI oder Azure OpenAI spricht, spricht mit einer geänderten <code class="font-mono text-sm bg-canvas-deep px-1.5 py-0.5">base_url</code> stattdessen mit uns — inklusive Prüfspur.
       </p>
     </div>
   </section>
 
   <section class="py-12 border-b border-line bg-canvas-deep">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <CodeTabs tabs={codeTabs} />
+      <WerkzeugTabs werkzeuge={WERKZEUGE} />
       <p class="mt-4 text-sm text-ink-faint leading-relaxed">
-        Das Beispiel oben nutzt Säule 1 (EU-Anbieter-Autorouting). Für Säule 2 oder 3 —
-        Server der DataFortress.cloud GmbH, geteilt oder dediziert in Ihrem
-        Rechenzentrum — bleibt der Hostname
-        <code class="font-mono text-xs bg-canvas px-1.5 py-0.5">gateway.konforme-ki.de</code>
-        gleich, nur der Modellname ändert sich. Ihr Code bleibt sonst identisch.
+        Derselbe Hostname für jede Säule und jede Schutzstufe — nur Modellname bzw. Onboarding-Konfiguration ändern sich. Ihr Code bleibt sonst identisch. Wie die Säulen unten mit den vier Schutzstufen von <a href="/router" class="text-accent hover:underline">Router</a> zusammenhängen: Säule 2/3 (eigene DataFortress-Hardware) entspricht der höchsten Stufe, Säule 1 (EU-Anbieter-Autorouting) der EU-Stufe.
       </p>
     </div>
   </section>

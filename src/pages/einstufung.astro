@@ -1,0 +1,41 @@
+---
+import Site from '../layouts/Site.astro';
+import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
+import ConversionTracking from '@justinguese/astro-kit/ConversionTracking.astro';
+import Einstufung from '../components/Einstufung.astro';
+
+const title = 'Einstufung — welches Produkt und welche Schutzstufe passt? | konforme-ki.de';
+const description = 'Vier Fragen, rund 60 Sekunden: welches der drei Produkte passt und welche Schutzstufe empfohlen wird — mit der passenden Unterlagenliste für Ihren Datenschutzbeauftragten.';
+---
+
+<Site title={title} description={description}>
+  <section class="py-14 sm:py-20 border-b border-line bg-canvas-deep">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader
+        as="h1"
+        eyebrow="Einstufung"
+        title="Welches Produkt, welche Schutzstufe — vier Fragen."
+        lead="Rund 60 Sekunden, sofort eine Empfehlung: welches der drei Produkte passt und welche der vier Schutzstufen infrage kommt — inklusive der Unterlagen, die dann in Ihre Akte gehören. Das Ergebnis erscheint direkt auf dieser Seite, ohne Anmeldung."
+        size="lg"
+      />
+    </div>
+  </section>
+
+  <section class="py-14 sm:py-20 border-b border-line">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Einstufung />
+    </div>
+  </section>
+
+  <section class="py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
+      <p class="text-sm text-ink-faint">
+        Das Ergebnis ist eine Produktempfehlung, keine Rechtsauskunft — wir prüfen keine Sach- oder Rechtslage im Einzelfall. Details dazu im <a href="/rdg-hinweis">RDG-Hinweis</a>. Für eine rechtliche Bewertung Ihres Einzelfalls wenden Sie sich an Ihre eigene Rechtsberatung.
+      </p>
+    </div>
+  </section>
+
+  <ConversionTracking states={[
+    { flag: 'einstufung_gesendet', revealId: 'einstufung-gesendet', event: 'einstufung', label: 'Einstufung Ergebnis' },
+  ]} />
+</Site>

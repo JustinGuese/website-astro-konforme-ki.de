@@ -1,6 +1,6 @@
 ---
 title: 'ChatGPT für Steuerberater: Was mit Mandantendaten erlaubt ist'
-metaTitle: 'ChatGPT für Steuerberater — DSGVO, § 203 StGB & StBerG | Nachweis'
+metaTitle: 'ChatGPT für Steuerberater — DSGVO, § 203 StGB & StBerG | konforme-ki.de'
 description: 'ChatGPT Steuerberater: Wann die Eingabe von Mandantendaten nach § 203 StGB strafbar wird, was der AVV allein nicht abdeckt und was Kanzleien prüfen müssen.'
 kurz: 'ChatGPT für Steuerberater ist nicht per se verboten — aber sobald Mandantendaten hineinfließen, entscheidet § 203 StGB über strafbar oder zulässig.'
 keyword: 'ChatGPT Steuerberater Datenschutz'

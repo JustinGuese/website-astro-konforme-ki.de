@@ -1,0 +1,215 @@
+---
+/**
+ * Das Einstufungs-Quiz. Serverseitig gerendertes Formular + ein gebündeltes
+ * `<script>`-Modul, das die reine `empfehleStufe()`-Funktion importiert und
+ * clientseitig auswertet — kein Seitenreload, keine Server-Berechnung nötig
+ * (die Seite ist statisch, es gibt keinen Request-Zeitpunkt-Server). Ohne
+ * JavaScript bleibt das `<noscript>`-Fallback: direkte Links zu allen drei
+ * Produkten, damit niemand vor einer leeren Seite steht.
+ *
+ * Die E-Mail-Erfassung steht UNTER dem vollständig sichtbaren Ergebnis, nicht
+ * davor. Das Ergebnis ist damit weiterhin ungated — dieselbe Haltung wie bei
+ * den Unterlagen, die ohne Formular herunterladbar sind. Vorher endete das
+ * Quiz auf einem Link nach /kontakt, also einem Seitenwechsel genau im Moment
+ * der höchsten Kaufabsicht.
+ *
+ * Warum das Formular serverseitig gerendert und nur eingeblendet wird: das
+ * Ergebnis wird über `panel.innerHTML` gebaut, und `FormBlock` ist eine
+ * Astro-Komponente — sie lässt sich nicht in einen Template-String rendern.
+ * Also steht sie fertig im DOM, versteckt, und bekommt beim Absenden nur ihre
+ * versteckten Felder gefüllt.
+ */
+import FormBlock from '@justinguese/astro-kit/FormBlock.astro';
+import { FRAGEN } from '../lib/einstufung';
+import { PRODUKTE } from '../lib/produkte';
+import { site } from '../config/site';
+---
+
+<div data-einstufung>
+  <form data-einstufung-form class="space-y-8">
+    {FRAGEN.map((frage) => (
+      <fieldset class="border border-line bg-surface p-5 sm:p-6">
+        <legend class="font-display font-bold text-ink px-1" style="font-variation-settings: 'wdth' 90;">{frage.frage}</legend>
+        {frage.hinweis && <p class="mt-1.5 text-xs text-ink-faint">{frage.hinweis}</p>}
+        <div class="mt-4 flex flex-col gap-2.5">
+          {frage.optionen.map((option) => (
+            <label class="flex items-start gap-2.5 text-sm text-ink-soft cursor-pointer">
+              <input
+                type="radio"
+                name={frage.id}
+                value={String(option.wert)}
+                required
+                class="mt-0.5 accent-[var(--color-accent)]"
+              />
+              <span>{option.label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+    ))}
+
+    <button type="submit" class="knopf knopf-accent w-full sm:w-fit" data-cta="einstufung-absenden">Empfehlung anzeigen</button>
+  </form>
+
+  <noscript>
+    <div class="mt-8 border border-line bg-canvas-deep p-6">
+      <p class="text-sm text-ink-soft">Ohne JavaScript lässt sich die Empfehlung nicht berechnen — sehen Sie sich direkt alle drei Produkte an:</p>
+      <div class="mt-4 flex flex-wrap gap-3">
+        {PRODUKTE.map((p) => (
+          <a href={p.href} class="knopf knopf-linie">{p.name}</a>
+        ))}
+      </div>
+    </div>
+  </noscript>
+
+  <div data-einstufung-ergebnis class="hidden mt-10 border border-accent bg-accent-pale p-6 sm:p-8"></div>
+
+  <div id="einstufung-gesendet" class="hidden mt-6 border border-accent bg-accent-pale text-ink p-6 text-sm">
+    <span class="marke marke-accent mb-3">Angekommen</span>
+    <p class="mt-2">Danke! Wir schicken Ihnen die Empfehlung samt Unterlagenliste per E-Mail — in der Regel binnen 24 Stunden.</p>
+    <a href="/unterlagen" class="knopf knopf-linie mt-4">Unterlagen schon jetzt ansehen</a>
+  </div>
+
+  <div data-einstufung-mail class="hidden mt-6">
+    <p class="marginalie mb-2">Ergebnis festhalten</p>
+    <p class="mb-4 text-sm text-ink-soft leading-relaxed max-w-xl">
+      Wir senden Ihnen diese Empfehlung mit der passenden Unterlagenliste zu — zum Weiterleiten an Ihren Datenschutzbeauftragten. Kein Verkaufsgespräch, keine Registrierung.
+    </p>
+
+    <FormBlock
+      formspreeId={site.formspreeId!}
+      variant="einstufung"
+      name="einstufung"
+      success={{ flag: 'einstufung_gesendet', anchor: 'einstufung-gesendet' }}
+      submitLabel="Ergebnis zusenden"
+      submitClass="!w-auto !py-3 whitespace-nowrap"
+      class="einstufung-form bg-surface border border-line p-6 sm:p-7 flex flex-col sm:flex-row gap-4 items-stretch"
+    >
+      {/*
+        Werden beim Absenden aus dem Quiz-Ergebnis gefüllt. Ohne sie käme im
+        Formspree-Postfach nur eine Adresse an, ohne die Empfehlung, auf die
+        sie sich bezieht.
+      */}
+      <input type="hidden" name="produkt" value="" data-einstufung-feld="produkt" />
+      <input type="hidden" name="stufe" value="" data-einstufung-feld="stufe" />
+      <input type="hidden" name="unterlagen" value="" data-einstufung-feld="unterlagen" />
+      <input type="hidden" name="tarif" value="einstufung" />
+
+      <label for="einstufung-email" class="sr-only">E-Mail</label>
+      <input
+        id="einstufung-email" name="email" type="email" required autocomplete="email"
+        class="flex-1 border border-line bg-canvas px-4 py-3 text-base text-ink placeholder-ink-faint focus:outline-none focus:border-accent"
+        placeholder="sie@unternehmen.de"
+      />
+    </FormBlock>
+    <p class="mt-3 font-mono text-xs text-ink-faint">
+      Keine Weiterleitung an Dritte. Mit dem Absenden stimmen Sie unserer <a href="/datenschutz" class="underline hover:text-ink">Datenschutzerklärung</a> zu.
+    </p>
+  </div>
+</div>
+
+<script>
+  import { empfehleStufe, type EinstufungAntworten } from '../lib/einstufung';
+  import { findProdukt } from '../lib/produkte';
+  import { findStufe } from '../lib/stufen';
+
+  const UNTERLAGEN_NAMEN: Record<string, string> = {
+    avv: 'AVV (Art. 28 DSGVO)',
+    tom: 'TOM (Art. 32 DSGVO)',
+    subprozessoren: 'Subprozessorenliste',
+    '203-zusatzvereinbarung': '§203-Zusatzvereinbarung',
+    'vvt-muster': 'VVT-Muster (Art. 30 DSGVO)',
+  };
+
+  function renderErgebnis(root: HTMLElement, ergebnis: ReturnType<typeof empfehleStufe>) {
+    const produkt = findProdukt(ergebnis.produkt);
+    const stufe = findStufe(ergebnis.stufe);
+    const panel = root.querySelector<HTMLElement>('[data-einstufung-ergebnis]');
+    if (!panel) return;
+
+    panel.innerHTML = `
+      <span class="marke marke-accent">Empfehlung</span>
+      <p class="mt-3 font-display font-bold text-ink text-xl" style="font-variation-settings: 'wdth' 90;">${produkt.name} — Stufe ${stufe.nummer}: ${stufe.name}</p>
+      <ul class="mt-3 space-y-1.5 text-sm text-ink">
+        ${ergebnis.begruendung.map((b) => `<li>${b}</li>`).join('')}
+      </ul>
+      <p class="mt-5 marginalie">Diese Unterlagen gehören dann in Ihre Akte</p>
+      <ul class="mt-2.5 flex flex-wrap gap-2">
+        ${ergebnis.unterlagen
+          .map(
+            (id) =>
+              `<li><a href="/unterlagen/${id}" class="knopf knopf-linie !py-1.5 !px-3 !text-xs">${UNTERLAGEN_NAMEN[id] ?? id}</a></li>`
+          )
+          .join('')}
+      </ul>
+      ${
+        !stufe.aktuellErreichbar
+          ? `<div class="mt-5 border border-signal bg-signal-pale px-4 py-3">
+               <p class="marke marke-signal mb-1.5">Aktuell kein Anbieter</p>
+               <p class="text-sm text-ink leading-relaxed">Diese Stufe hat im Moment keinen zulässigen Anbieter (Aufbewahrungsfrist ungeklärt) — sie liefert nicht, bis das behoben ist. Nehmen Sie direkt Kontakt auf, statt sich auf einen Zugangsschlüssel zu verlassen.</p>
+             </div>`
+          : ''
+      }
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="${produkt.href}" class="knopf knopf-accent" data-cta="einstufung-ergebnis-produkt">${produkt.name} ansehen</a>
+        <a href="/kontakt?interesse=einstufung-${produkt.produktId}" class="knopf knopf-linie" data-cta="einstufung-ergebnis-kontakt">${stufe.aktuellErreichbar ? 'Lieber persönlich sprechen' : 'Direkt Kontakt aufnehmen'}</a>
+      </div>
+      <p class="mt-5 font-mono text-xs text-ink-faint">Das ist eine Produktempfehlung, keine Rechtsauskunft — siehe <a href="/rdg-hinweis" class="underline">RDG-Hinweis</a>.</p>
+    `;
+    panel.classList.remove('hidden');
+
+    // Die Empfehlung ins Formular spiegeln, damit die Einsendung sie trägt.
+    const werte: Record<string, string> = {
+      produkt: produkt.name,
+      stufe: `Stufe ${stufe.nummer}: ${stufe.name}`,
+      unterlagen: ergebnis.unterlagen.map((id) => UNTERLAGEN_NAMEN[id] ?? id).join(', '),
+    };
+    root.querySelectorAll<HTMLInputElement>('[data-einstufung-feld]').forEach((feld) => {
+      feld.value = werte[feld.dataset.einstufungFeld ?? ''] ?? '';
+    });
+    root.querySelector<HTMLElement>('[data-einstufung-mail]')?.classList.remove('hidden');
+
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function initEinstufung() {
+    document.querySelectorAll<HTMLElement>('[data-einstufung]').forEach((root) => {
+      if (root.dataset.init) return;
+      root.dataset.init = 'true';
+
+      const form = root.querySelector<HTMLFormElement>('[data-einstufung-form]');
+      if (!form) return;
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const data = new FormData(form);
+        const antworten: EinstufungAntworten = {
+          berufsgeheimnistraeger: data.get('berufsgeheimnistraeger') === 'true',
+          bestehendeInfrastruktur: data.get('bestehendeInfrastruktur') === 'true',
+          personenbezogeneDaten: data.get('personenbezogeneDaten') === 'true',
+          modellpraeferenz: data.get('modellpraeferenz') as EinstufungAntworten['modellpraeferenz'],
+        };
+        renderErgebnis(root, empfehleStufe(antworten));
+      });
+    });
+  }
+
+  initEinstufung();
+  document.addEventListener('astro:after-swap', initEinstufung);
+</script>
+
+<script is:inline>
+  (() => {
+    // Zeigt Erfolg/versteckt Quiz und Formular; Analytics und URL-Aufräumen
+    // übernimmt ConversionTracking auf der Seite (derselbe Flag-Name).
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('einstufung_gesendet') !== '1') return;
+
+    const erfolg = document.getElementById('einstufung-gesendet');
+    const mail = document.querySelector('[data-einstufung-mail]');
+    if (!erfolg) return;
+
+    erfolg.classList.remove('hidden');
+    if (mail) mail.classList.add('hidden');
+  })();
+</script>

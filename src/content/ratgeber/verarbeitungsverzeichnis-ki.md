@@ -1,6 +1,6 @@
 ---
 title: 'KI im Verarbeitungsverzeichnis: Der Art. 30-Eintrag, Feld für Feld'
-metaTitle: 'Verarbeitungsverzeichnis KI — Art. 30 DSGVO Eintrag & Muster | Nachweis'
+metaTitle: 'Verarbeitungsverzeichnis KI — Art. 30 DSGVO Eintrag & Muster | konforme-ki.de'
 description: 'Verarbeitungsverzeichnis KI: Jedes Pflichtfeld nach Art. 30 DSGVO für den KI-Einsatz korrekt ausfüllen — Empfänger, Löschfristen, Drittland, mit Muster.'
 kurz: 'Wie Sie den Einsatz eines KI-Tools Feld für Feld ins Verarbeitungsverzeichnis eintragen — inklusive vollständigem Beispiel-Eintrag zum Nachbauen.'
 keyword: 'Verarbeitungsverzeichnis KI Art. 30 DSGVO'
@@ -29,7 +29,7 @@ Der Zweck bleibt derselbe, ob Sie einen Text von Hand zusammenfassen, einer Assi
 
 ## Die Pflichtfelder im Einzelnen
 
-Art. 30 Abs. 1 DSGVO listet die Mindestangaben abschließend auf. Die folgenden Abschnitte gehen jedes Feld einzeln durch, mit Beispielformulierung für einen typischen KI-Einsatzfall — angelehnt an die Feldstruktur, die auch das [VVT-Muster](/unterlagen/vvt-muster) von Nachweis verwendet.
+Art. 30 Abs. 1 DSGVO listet die Mindestangaben abschließend auf. Die folgenden Abschnitte gehen jedes Feld einzeln durch, mit Beispielformulierung für einen typischen KI-Einsatzfall — angelehnt an die Feldstruktur, die auch das [VVT-Muster](/unterlagen/vvt-muster) von konforme-ki.de verwendet.
 
 ### Name und Kontaktdaten des Verantwortlichen
 

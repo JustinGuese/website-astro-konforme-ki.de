@@ -1,6 +1,6 @@
 ---
 title: 'DSGVO-konforme Alternativen zu ChatGPT: Was EU-Hosting wirklich bedeutet'
-metaTitle: 'DSGVO-konforme ChatGPT-Alternativen — EU-KI im Vergleich | Nachweis'
+metaTitle: 'DSGVO-konforme ChatGPT-Alternativen — EU-KI im Vergleich | konforme-ki.de'
 description: 'DSGVO-konforme KI Alternative zu ChatGPT: EU-Hosting ist eine Stufenleiter mit vier Ebenen, kein Ja/Nein-Siegel. Was Sie jedem Anbieter abverlangen sollten.'
 kurz: 'EU-Hosting wird als Ja/Nein-Frage verkauft, ist aber eine Leiter mit vier sehr unterschiedlichen Stufen. Was Sie einem Anbieter konkret abverlangen sollten, bevor Sie ihm vertrauen.'
 keyword: 'DSGVO-konforme KI Alternative ChatGPT'
@@ -107,4 +107,4 @@ Ein unverbindlicher Praxistest lohnt sich in jedem Fall, bevor Sie sich auf eine
 
 ## Jede Zusicherung ist eine Behauptung, bis Sie sie prüfen können
 
-Jedes Kriterium in diesem Artikel — die Stufe der Leiter, der Subprozessor, das Fail-closed-Verhalten, der Ausschluss von Training auf Ihren Daten — ist zunächst nichts weiter als eine Zusicherung des Anbieters. Nachweis, wie der Name andeutet, versteht diese Zusicherungen als etwas, das pro Anfrage belegbar sein muss, nicht nur einmal im Vertrag behauptet. Ob Sie sich für Nachweis oder einen anderen Anbieter entscheiden: Verlangen Sie, dass jede der oben genannten Fragen nicht nur beantwortet, sondern nachprüfbar beantwortet wird — mit einer [Unterlagen-Liste](/unterlagen), die Sie tatsächlich lesen können, statt mit einem Siegel, das Sie glauben müssen.
+Jedes Kriterium in diesem Artikel — die Stufe der Leiter, der Subprozessor, das Fail-closed-Verhalten, der Ausschluss von Training auf Ihren Daten — ist zunächst nichts weiter als eine Zusicherung des Anbieters. konforme-ki.de versteht diese Zusicherungen als etwas, das pro Anfrage belegbar sein muss, nicht nur einmal im Vertrag behauptet. Ob Sie sich für konforme-ki.de oder einen anderen Anbieter entscheiden: Verlangen Sie, dass jede der oben genannten Fragen nicht nur beantwortet, sondern nachprüfbar beantwortet wird — mit einer [Unterlagen-Liste](/unterlagen), die Sie tatsächlich lesen können, statt mit einem Siegel, das Sie glauben müssen.

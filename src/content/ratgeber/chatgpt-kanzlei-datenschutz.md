@@ -1,6 +1,6 @@
 ---
 title: 'ChatGPT in der Kanzlei: Was § 203 StGB Ihnen wirklich verbietet'
-metaTitle: 'ChatGPT in der Kanzlei — erlaubt? § 203 StGB & DSGVO | Nachweis'
+metaTitle: 'ChatGPT in der Kanzlei — erlaubt? § 203 StGB & DSGVO | konforme-ki.de'
 description: 'ChatGPT Kanzlei Datenschutz: Warum § 203 StGB strenger ist als die DSGVO, was die Reform von 2017 erlaubt und welche Vertragsbausteine wirklich zählen.'
 kurz: 'Nicht die DSGVO ist bei ChatGPT in der Kanzlei das Problem, sondern § 203 StGB. Was das für Schriftsätze, Mandantenkorrespondenz und Recherche bedeutet.'
 keyword: 'ChatGPT Kanzlei Datenschutz'

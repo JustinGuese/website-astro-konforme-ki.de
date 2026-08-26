@@ -5,7 +5,7 @@ import ConversionTracking from '@justinguese/astro-kit/ConversionTracking.astro'
 import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
 import { site } from '../config/site';
 
-const title = 'Kontakt | Nachweis';
+const title = 'Kontakt | konforme-ki.de';
 const description = 'Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Compliance-Tarif? Schreiben Sie uns.';
 ---
 <Site title={title} description={description}>
@@ -118,11 +118,15 @@ const description = 'Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Complia
 
       const copy = {
         onboarding: 'Sie interessieren sich für den §203-/DSGVO-Machbarkeits-Check (€1.900–9.000) — senden Sie uns kurz Ihre Kontaktdaten, wir vereinbaren ein Erstgespräch.',
-        sidecar: 'Sie möchten Nachweis als Sidecar neben Ihrer bestehenden KI-Lösung einsetzen — senden Sie uns kurz Ihre Kontaktdaten, wir klären die Details.',
+        sidecar: 'Sie möchten den Sidecar neben Ihrer bestehenden KI-Lösung einsetzen — senden Sie uns kurz Ihre Kontaktdaten, wir klären die Details.',
+        router: 'Sie interessieren sich für den Router — einen Endpunkt mit wählbarer Schutzstufe — senden Sie uns kurz Ihre Kontaktdaten.',
         compliance: 'Sie interessieren sich für den Compliance-Tarif (€290/Monat) — senden Sie uns kurz Ihre Kontaktdaten.',
-        'eu-inferenz-test': 'Sie interessieren sich für den kostenlosen Test-Zugang zur EU-Inferenz (Qwen3.8-27B, 5 Mio. Token/Monat) — senden Sie uns kurz Ihre Kontaktdaten.',
-        'eu-inferenz-compliance': 'Sie interessieren sich für den EU-Inferenz-Tarif Compliance (€290/Monat, 25 Mio. Token inklusive) — senden Sie uns kurz Ihre Kontaktdaten.',
-        'eu-inferenz-dediziert': 'Sie interessieren sich für eine dedizierte GPU für EU-Inferenz (ab €2.900/Monat) — senden Sie uns kurz Ihre Kontaktdaten, wir vereinbaren ein Erstgespräch.',
+        'einstufung-deutschland-inferenz': 'Das Einstufungs-Quiz empfiehlt Ihnen Deutschland-Inferenz — senden Sie uns kurz Ihre Kontaktdaten, wir senden Ihnen das Ergebnis inklusive Unterlagenliste zu.',
+        'einstufung-router': 'Das Einstufungs-Quiz empfiehlt Ihnen den Router — senden Sie uns kurz Ihre Kontaktdaten, wir senden Ihnen das Ergebnis inklusive Unterlagenliste zu.',
+        'einstufung-sidecar': 'Das Einstufungs-Quiz empfiehlt Ihnen den Sidecar — senden Sie uns kurz Ihre Kontaktdaten, wir senden Ihnen das Ergebnis inklusive Unterlagenliste zu.',
+        'de-inferenz-test': 'Sie interessieren sich für den kostenlosen Test-Zugang zur Deutschland-Inferenz (Qwen3.8-27B, 5 Mio. Token/Monat) — senden Sie uns kurz Ihre Kontaktdaten.',
+        'de-inferenz-compliance': 'Sie interessieren sich für den Deutschland-Inferenz-Tarif Compliance (€290/Monat, 25 Mio. Token inklusive) — senden Sie uns kurz Ihre Kontaktdaten.',
+        'de-inferenz-dediziert': 'Sie interessieren sich für eine dedizierte GPU für Deutschland-Inferenz (ab €2.900/Monat) — senden Sie uns kurz Ihre Kontaktdaten, wir vereinbaren ein Erstgespräch.',
       };
 
       if (interesse && copy[interesse]) {

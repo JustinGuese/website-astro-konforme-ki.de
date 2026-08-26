@@ -1,0 +1,105 @@
+---
+import Site from '../layouts/Site.astro';
+import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
+import CtaBand from '@justinguese/astro-kit/CtaBand.astro';
+import CodeTabs from '../components/CodeTabs.astro';
+
+const title = 'Sidecar — Compliance-Schicht neben Ihrer bestehenden Infrastruktur | konforme-ki.de';
+const description = 'Per Helm in Ihrem eigenen Kubernetes-Cluster installiert — proxied Anfragen an den Anbieter, den Sie bereits nutzen, meldet Audit-Daten an unser Dashboard. Keine Migration.';
+
+const helmInstall = `helm repo add nachweis https://charts.konforme-ki.de
+helm install nachweis-sidecar nachweis/sidecar \\
+  --set tenant.key=$NACHWEIS_TENANT_KEY \\
+  --set upstream.baseUrl=https://<ihr-bestehender-anbieter> \\
+  --set upstream.apiKey=$IHR_BESTEHENDER_SCHLUESSEL`;
+
+const nachAppliziert = `# Ihre Anwendung zeigt danach auf den Sidecar statt direkt auf den Anbieter —
+# innerhalb des Clusters, kein öffentlicher Endpunkt nötig:
+base_url = "http://nachweis-sidecar.default.svc.cluster.local/v1"`;
+
+const enforcementModi = [
+  { modus: 'observe', beschreibung: 'Zeichnet auf, greift nicht ein — für die Einführungsphase.' },
+  { modus: 'warn', beschreibung: 'Meldet Verstöße gegen Ihre Stufe, blockiert noch nicht.' },
+  { modus: 'enforce', beschreibung: 'Fail-closed: eine Anfrage außerhalb Ihrer Stufe schlägt fehl, statt durchzulaufen.' },
+];
+---
+
+<Site title={title} description={description}>
+  <section class="py-14 sm:py-20 border-b border-line">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader
+        as="h1"
+        eyebrow="Sidecar"
+        title="Läuft neben Ihrer bestehenden Infrastruktur. Nicht statt ihr."
+        lead="Per Helm in Ihrem eigenen Kubernetes-Cluster installiert, neben dem, was Sie schon betreiben. Der Sidecar proxied Ihre Anfragen an den Anbieter, den Sie bereits nutzen — Azure OpenAI, AWS Bedrock, ein eigenes Modell — und meldet Audit- und Compliance-Daten an unser Backend. Keine Migration, kein Wechsel Ihres Anbieters."
+        size="lg"
+      />
+      <div class="mt-8 flex flex-wrap items-center gap-4">
+        <a href="/kontakt?interesse=sidecar" class="knopf knopf-accent" data-cta="sidecar-hero-einrichten">Sidecar einrichten</a>
+        <a href="#einordnung" class="knopf knopf-linie" data-cta="sidecar-hero-einordnung">Was er nicht ist</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
+      <h2>Wie es funktioniert</h2>
+      <ul>
+        <li>Sie installieren den Sidecar per Helm-Chart in Ihrem eigenen Kubernetes-Cluster — neben Ihrer bestehenden Infrastruktur, nicht als Ersatz dafür.</li>
+        <li>Er proxied ausgehende Anfragen an den Anbieter, den Sie bereits nutzen — Ihre bestehende Vertragsbeziehung mit Azure, AWS oder wem auch immer bleibt unverändert bestehen.</li>
+        <li>Jede Anfrage wird vor dem Verlassen des Clusters gegen Ihre vereinbarte Schutzstufe geprüft — nicht erst im Nachhinein protokolliert.</li>
+        <li>Der tatsächlich antwortende Anbieter wird verifiziert und mit Ihrer Stufe abgeglichen; weicht er ab, wird das als Verstoß aufgezeichnet.</li>
+        <li>Audit- und Compliance-Metadaten werden an unser Backend und Dashboard gemeldet. Inhalte werden Ende-zu-Ende-verschlüsselt gespeichert, mit einem eigenen Schlüssel pro Kunde — löschen Sie den Schlüssel, sind die Inhalte unwiederbringlich unlesbar, während die Metadaten-Kette weiter prüfbar bleibt.</li>
+        <li>Die Metadaten-Kette selbst ist hash-verkettet und mit einem eigenständigen, dependency-freien Skript unabhängig nachprüfbar — kein „vertrauen Sie uns".</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-line">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader eyebrow="Rollout" title="Drei Modi, damit die Einführung nicht sofort blockiert." size="md" class="mb-8" />
+      <div class="grid sm:grid-cols-3 gap-px bg-line border border-line">
+        {enforcementModi.map((m, i) => (
+          <div class:list={['bg-surface p-6', i === enforcementModi.length - 1 && 'border-t-[3px] border-accent']}>
+            <span class="marke marke-neutral font-mono">{m.modus}</span>
+            <p class="mt-3 text-sm text-ink-soft leading-relaxed">{m.beschreibung}</p>
+          </div>
+        ))}
+      </div>
+      <p class="mt-4 text-sm text-ink-faint">Empfohlener Weg: mit „observe" starten, um zu sehen, welche Anfragen betroffen wären, dann über „warn" nach „enforce" wechseln.</p>
+    </div>
+  </section>
+
+  <section id="einordnung" class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
+      <h2>Was der Sidecar nicht ist</h2>
+      <ul>
+        <li>Keine Inhaltserkennung — der Sidecar schwärzt oder erkennt keine personenbezogenen Daten in Prompts. Er erzwingt, wohin eine Anfrage gehen darf, und protokolliert, wohin sie tatsächlich ging.</li>
+        <li>Kein Ersatz für Stufe 1. Die höchste Schutzstufe — eigene deutsche Hardware, kein Gateway — kann der Sidecar strukturell nicht liefern, weil er eine bestehende Cloud vorschaltet statt sie zu ersetzen. Dafür gibt es <a href="/deutschland-inferenz">Deutschland-Inferenz</a>.</li>
+        <li>Keine Lösung für DSGVO Kapitel V allein. Eine geprüfte Null-Speicherung beantwortet Art. 28/32, nicht automatisch den Drittlandtransfer — bei Drittlandbezug prüfen Sie zusätzlich SCC/TIA.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-line">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader eyebrow="Für Entwickler" title="Helm-Chart installieren, base_url intern umbiegen." size="md" class="mb-6" />
+      <CodeTabs tabs={[{ label: 'Helm', code: helmInstall }, { label: 'Danach', code: nachAppliziert }]} />
+      <p class="mt-4 text-sm text-ink-soft">Kein öffentlicher Endpunkt nötig — der Sidecar läuft als Service in Ihrem eigenen Cluster. Ihre Anwendung ändert nur die base_url auf den internen Service-Namen, der Rest Ihres Codes bleibt identisch.</p>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
+      <h2>Preis</h2>
+      <p>Der bestehende Compliance-Tarif (€290/Monat) deckt die laufende Prüfspur ab. Für höhere Volumina, mehrere Umgebungen oder eine dedizierte Rollout-Begleitung klären wir die genauen Konditionen im Gespräch — es gibt hier noch keinen öffentlichen Staffelpreis.</p>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Ihre Cloud bleibt. Der Nachweis kommt dazu."
+    body="Kein Zahlungsmittel für ein Erstgespräch nötig — wir klären gemeinsam, welche Schutzstufe zu Ihrer bestehenden Infrastruktur passt."
+    cta={{ label: 'Sidecar einrichten', href: '/kontakt?interesse=sidecar', track: 'sidecar-abschluss' }}
+    secondary={{ label: 'Erst die Stufe klären', href: '/einstufung', track: 'sidecar-einstufung' }}
+  />
+</Site>

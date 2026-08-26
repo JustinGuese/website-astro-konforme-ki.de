@@ -4,13 +4,13 @@
 
   <rect x="80" y="72" width="56" height="56" fill="#17243f"/>
   <text x="108" y="110" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="800" fill="#f1f3f7" text-anchor="middle">N</text>
-  <text x="152" y="110" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="800" fill="#17243f">nachweis<tspan fill="#1e6b58">.de</tspan></text>
+  <text x="152" y="110" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="800" fill="#17243f">konforme-ki<tspan fill="#1e6b58">.de</tspan></text>
 
   <text x="80" y="248" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="900" fill="#17243f">§ 203 StGB verbietet</text>
   <text x="80" y="316" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="900" fill="#17243f">Ihnen ChatGPT.</text>
   <text x="80" y="384" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="900" fill="#1e6b58">Nicht die KI.</text>
 
-  <text x="80" y="450" font-family="'Courier New', monospace" font-size="21" fill="#46536e">EU-Inferenz mit exportierbarer Prüfspur</text>
+  <text x="80" y="450" font-family="'Courier New', monospace" font-size="21" fill="#46536e">In Deutschland gehostet · kein Logging, kein Training</text>
 
   <!-- Rekord-Karte -->
   <g transform="translate(760,150)">
@@ -21,10 +21,10 @@
     <line x1="0" y1="52" x2="360" y2="52" stroke="#26334f" stroke-width="1"/>
 
     <text x="22" y="86" font-family="'Courier New', monospace" font-size="14" fill="#7c88a0">modell</text>
-    <text x="22" y="106" font-family="'Courier New', monospace" font-size="15" fill="#dbe2ef">mistral-large-2411</text>
+    <text x="22" y="106" font-family="'Courier New', monospace" font-size="15" fill="#dbe2ef">nachweis-llm-70b</text>
 
     <text x="22" y="140" font-family="'Courier New', monospace" font-size="14" fill="#7c88a0">subprozessor</text>
-    <text x="22" y="160" font-family="'Courier New', monospace" font-size="15" fill="#37a98c">Mistral AI (Paris, FR)</text>
+    <text x="22" y="160" font-family="'Courier New', monospace" font-size="15" fill="#37a98c">Keiner — DataFortress GmbH</text>
 
     <text x="22" y="194" font-family="'Courier New', monospace" font-size="14" fill="#7c88a0">retention</text>
     <text x="22" y="214" font-family="'Courier New', monospace" font-size="15" fill="#dbe2ef">kein Training · 0 Tage</text>
@@ -36,5 +36,5 @@
   <rect x="80" y="500" width="300" height="60" fill="#1e6b58"/>
   <text x="230" y="538" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#ffffff" text-anchor="middle">Playground öffnen</text>
 
-  <text x="80" y="592" font-family="'Courier New', monospace" font-size="17" fill="#6b778f">#0001 · sha256:7be1c4a9… · nachweis.de</text>
+  <text x="80" y="592" font-family="'Courier New', monospace" font-size="17" fill="#6b778f">#0001 · sha256:7be1c4a9… · konforme-ki.de</text>
 </svg>

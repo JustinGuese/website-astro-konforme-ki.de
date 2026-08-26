@@ -104,7 +104,7 @@ export const ANKER: Tarif = {
   preis: '€1.900–9.000',
   einheit: 'einmalig',
   beschreibung:
-    'Wir prüfen Ihre bestehenden Systeme, integrieren Nachweis in Ihren primären Kanal und begleiten Sie persönlich bis zur schriftlichen Freigabe durch Ihren Datenschutzbeauftragten.',
+    'Wir prüfen Ihre bestehenden Systeme, integrieren den Endpunkt in Ihren primären Kanal und begleiten Sie persönlich bis zur schriftlichen Freigabe durch Ihren Datenschutzbeauftragten.',
   leistungen: [
     'Prüfung Ihrer bestehenden Systeme',
     'Integration in Ihren primären Kanal',
@@ -137,7 +137,7 @@ export const NUTZUNGSMODELLE: Tarif[] = [
   },
   {
     tarifId: 'chat',
-    name: 'Nachweis Chat',
+    name: 'Chat',
     preis: '€29',
     einheit: '/ Monat',
     beschreibung: 'Web-Oberfläche wie ChatGPT/Claude — für den Einstieg in Kanzlei oder Praxis.',
@@ -152,7 +152,7 @@ export const NUTZUNGSMODELLE: Tarif[] = [
   },
   {
     tarifId: 'pro',
-    name: 'Nachweis Pro',
+    name: 'Pro',
     preis: '€99',
     einheit: '/ Monat',
     beschreibung: 'API- und CLI-Zugriff für Entwickler-Teams — Claude-Code-artiger Agenten-Workflow.',

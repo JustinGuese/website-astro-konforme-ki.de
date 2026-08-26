@@ -1,0 +1,136 @@
+---
+import Site from '../layouts/Site.astro';
+import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
+import CtaBand from '@justinguese/astro-kit/CtaBand.astro';
+import WerkzeugTabs from '../components/WerkzeugTabs.astro';
+import { STUFEN } from '../lib/stufen';
+import { WERKZEUGE } from '../lib/werkzeuge';
+
+const title = 'Router — ein Endpunkt, vier Schutzstufen | konforme-ki.de';
+const description = 'Ein OpenAI-kompatibler Endpunkt, die Schutzstufe wählen Sie. Fail-closed: nie unterhalb der gewählten Stufe. base_url wechseln, fertig.';
+
+const routerStufen = STUFEN.filter((s) => s.key !== 'de-only');
+
+const anbieterZahlen = [
+  { kategorie: 'Erreichbare Anbieter insgesamt', anzahl: '103' },
+  { kategorie: 'Davon in den USA ansässig', anzahl: '54' },
+  { kategorie: 'Jurisdiktion an der maßgeblichen Quelle unbekannt', anzahl: '29' },
+  { kategorie: 'China / Singapur', anzahl: '12' },
+  { kategorie: 'Ohne veröffentlichte Datenschutzerklärung', anzahl: '12' },
+  { kategorie: 'EWR-ansässig', anzahl: '4' },
+  { kategorie: 'Mit tatsächlich geklärten Aufbewahrungsfristen', anzahl: '2' },
+];
+---
+
+<Site title={title} description={description}>
+  <section class="py-14 sm:py-20 border-b border-line">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader
+        as="h1"
+        eyebrow="Router"
+        title="Ein Endpunkt, vier Schutzstufen. Sie wählen, wie weit die Anfrage reisen darf."
+        lead="Die Schutzstufe wird beim Onboarding festgelegt und gilt als harte Vorab-Regel, bevor eine Anfrage überhaupt das Haus verlässt — nicht als nachträgliche Prüfung. Fail-closed: ist kein Anbieter Ihrer Stufe verfügbar, schlägt die Anfrage fehl. Sie wird nie auf eine niedrigere Stufe heruntergestuft."
+        size="lg"
+      />
+      <div class="mt-8 flex flex-wrap items-center gap-4">
+        <a href="/einstufung" class="knopf knopf-accent" data-cta="router-hero-einstufung">Passende Stufe finden</a>
+        <a href="#stufen" class="knopf knopf-linie" data-cta="router-hero-stufen">Die vier Stufen ansehen</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader
+        eyebrow="Warum ein Gateway allein das nicht beantwortet"
+        title="„Wir nutzen einen Gateway-Verbund” ist kein Subprozessorenverzeichnis."
+        lead="Ein reiner Gateway wählt den Subprozessor pro Anfrage zur Laufzeit — aus über hundert Anbietern. Wer tatsächlich geantwortet hat, steht nicht standardmäßig in der Antwort. Ein Subprozessorenverzeichnis, das Sie nicht führen können, ist keins."
+        size="md"
+        class="mb-8"
+      />
+      <div class="border border-line bg-surface overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead>
+            <tr class="border-b border-line">
+              <th class="px-4 py-3 font-mono text-xs uppercase tracking-wider text-ink-faint">Von den erreichbaren Anbietern</th>
+              <th class="px-4 py-3 font-mono text-xs uppercase tracking-wider text-ink-faint text-right">Anzahl</th>
+            </tr>
+          </thead>
+          <tbody>
+            {anbieterZahlen.map((z, i) => (
+              <tr class:list={['border-b border-line last:border-b-0', i === 0 && 'bg-canvas-deep']}>
+                <td class="px-4 py-3 text-ink-soft">{z.kategorie}</td>
+                <td class="px-4 py-3 text-right font-mono font-semibold text-ink">{z.anzahl}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-4 text-sm text-ink-faint">Deshalb bekommt jede Anfrage vorab eine harte Zuordnung zu Ihrer gewählten Schutzstufe, statt sich im Nachhinein zu zeigen, wer geantwortet hat.</p>
+    </div>
+  </section>
+
+  <section id="stufen" class="py-16 sm:py-20 border-b border-line">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader
+        eyebrow="Die drei Stufen im Router"
+        title="Stufe 1 gibt es nur auf eigener Hardware — hier die drei, die ein Gateway tatsächlich liefern kann."
+        lead="Jede Stufe kompiliert in eine harte Vorab-Regel UND in den Anhangstext Ihres AVV — Vertrag und Laufzeitverhalten können nicht auseinanderlaufen. Jede Stufe zeigt auch, was sie nicht leistet."
+        size="lg"
+      />
+      <div class="mt-10 grid md:grid-cols-3 gap-px bg-line border border-line">
+        {routerStufen.map((stufe) => (
+          <div class="bg-surface p-6 flex flex-col">
+            <div class="flex items-center justify-between gap-2">
+              <span class="marginalie">Stufe {stufe.nummer}</span>
+              {!stufe.aktuellErreichbar && <span class="marke marke-signal !text-[10px]">Aktuell kein Anbieter</span>}
+            </div>
+            <p class="mt-2 font-display font-bold text-ink text-lg" style="font-variation-settings: 'wdth' 90;">{stufe.name}</p>
+            <p class="mt-2 text-sm text-ink-soft leading-relaxed">{stufe.fuerWen}</p>
+            <dl class="mt-4 space-y-2 text-xs font-mono text-ink-faint border-t border-line pt-4">
+              <div><dt class="inline">egress: </dt><dd class="inline text-ink-soft">{stufe.egress}</dd></div>
+              <div><dt class="inline">modelle: </dt><dd class="inline text-ink-soft">{stufe.modellauswahl}</dd></div>
+            </dl>
+            <p class="mt-4 text-sm text-ink font-medium">{stufe.zusage}</p>
+            <ul class="mt-4 space-y-1.5 flex-1">
+              {stufe.caveats.map((c) => (
+                <li class="text-xs text-ink-faint leading-relaxed">— {c}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
+      <h2>Kein Vendor-Lock-in</h2>
+      <p>Ihre Werkzeuge zeigen auf eine base_url — nicht auf einen bestimmten Anbieter. Wird ein Modell für Sie gesperrt, ändert ein Anbieter seine Bedingungen, oder passt ein Anbieter nicht mehr in Ihre Schutzstufe, wechseln wir die Zuordnung hinter dem Endpunkt. Claude Code, Cursor oder Ihre eigene Integration merken davon nichts — es ändert sich nichts an Ihrer base_url, nur wer dahinter antwortet.</p>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-line">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader eyebrow="Für Entwickler" title="Der Wechsel ist eine Zeile Code." size="md" class="mb-6" />
+      <WerkzeugTabs werkzeuge={WERKZEUGE} />
+      <p class="mt-4 text-sm text-ink-soft">Dieselbe base_url funktioniert für jede Stufe — nur das Onboarding legt fest, welche Stufe für Ihren Schlüssel gilt.</p>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
+      <h2>Was jede Anfrage hinterlässt</h2>
+      <p>Unabhängig von der Stufe schreibt jede Anfrage denselben geprüften Nachweis-Rekord: Modell, tatsächlicher Subprozessor, Hash, Zeitstempel, verkettet mit der vorherigen Anfrage. Exportierbar als Art. 30 VVT-Eintrag, signiertes PDF oder CSV — unabhängig mit einem eigenständigen, dependency-freien Skript nachprüfbar, statt eine Zusicherung glauben zu müssen.</p>
+      <h2>Preis</h2>
+      <p>Tokens werden zum Einkaufspreis durchgereicht — der Umsatz kommt aus der Compliance-Schicht, nie aus einer Marge auf Inferenz. Die genaue Aufschlagshöhe hängt von der gewählten Stufe und dem Volumen ab und wird im Onboarding festgelegt.</p>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Vier Fragen, dann wissen Sie, welche Stufe passt."
+    body="Der Fragebogen empfiehlt Produkt und Stufe direkt auf der Seite, ohne Anmeldung."
+    cta={{ label: 'Passende Stufe finden', href: '/einstufung', track: 'router-abschluss' }}
+    secondary={{ label: 'Kontakt aufnehmen', href: '/kontakt?interesse=router', track: 'router-kontakt' }}
+  />
+</Site>

@@ -1,0 +1,131 @@
+---
+/**
+ * Das Dreieck im Hero: oben schmal = höchste Schutzstufe, höchster Aufwand
+ * (Deutschland-Inferenz) — unten breit = bestehende Infrastruktur, volle Modellauswahl,
+ * geringster Aufwand (Sidecar).
+ *
+ * Der Inhalt jeder Stufe steht in einem gleich breiten Innenblock, damit die
+ * Karten trotz unterschiedlicher Außenbreite identisch gesetzt sind — sonst
+ * bricht die unterste Karte ihren Text in eine Zeile und die oberste in drei,
+ * und das Raster wirkt zufällig statt gestaffelt.
+ *
+ * Die Achsbeschriftung steht ÜBER und UNTER dem Stapel, nicht links und rechts:
+ * die Breitenstaffelung läuft von oben nach unten, eine links/rechts gesetzte
+ * Beschriftung behauptet eine waagerechte Achse, die es nicht gibt.
+ *
+ * Die Staffelung beginnt bei `sm:`, nicht erst bei `lg:`. Vorher waren auf
+ * Telefonen alle drei Karten gleich breit und die Beschriftung ausgeblendet —
+ * dort blieb von der Metapher nichts übrig, und das ist der Großteil des
+ * Traffics.
+ *
+ * Die Karte ist ein <div>, kein <a>: sie enthält mit dem Produkt-CTA einen
+ * eigenen Link, und ein <a> im <a> ist ungültiges HTML. Die ganze Fläche bleibt
+ * über den ausgedehnten Titel-Link (`.dreieck-flaeche`) klickbar; der CTA
+ * darüber liegt per z-index vorn.
+ */
+import { PRODUKTE } from '../lib/produkte';
+
+const breiten: Record<string, string> = {
+  'deutschland-inferenz': 'sm:w-[86%] lg:w-[62%]',
+  router: 'sm:w-[93%] lg:w-[81%]',
+  sidecar: 'w-full',
+};
+
+const rahmen: Record<string, string> = {
+  premium: 'border-premium',
+  accent: 'border-accent',
+  neutral: 'border-line',
+};
+
+const eyebrowFarbe: Record<string, string> = {
+  premium: 'text-premium',
+  accent: 'text-accent',
+  neutral: 'text-ink-faint',
+};
+
+const punktFarbe: Record<string, string> = {
+  premium: 'bg-premium',
+  accent: 'bg-accent',
+  neutral: 'bg-ink-faint',
+};
+---
+
+<div>
+  <p class="font-mono text-[11px] uppercase tracking-[.16em] text-ink-faint mb-3 text-center">
+    ↑ Höchste Schutzstufe · höchster Aufwand
+  </p>
+
+  <div class="flex flex-col items-center gap-3">
+    {PRODUKTE.map((produkt) => (
+      <div
+        class:list={[
+          'dreieck-karte group relative block w-full border-2 bg-surface transition-shadow hover:shadow-[var(--shadow-karte-hoch)]',
+          breiten[produkt.produktId],
+          rahmen[produkt.akzent],
+        ]}
+      >
+        <div class="p-6 sm:p-7 grid sm:grid-cols-[1fr_auto] gap-x-8 gap-y-4 items-start">
+          <div class="min-w-0">
+            <div class="flex items-center gap-2.5">
+              <span class="font-mono text-[11px] text-ink-faint">{produkt.nummer}</span>
+              <span class:list={['font-mono text-[11px] uppercase tracking-[.16em]', eyebrowFarbe[produkt.akzent]]}>
+                {produkt.eyebrow}
+              </span>
+            </div>
+
+            <p class="mt-2 font-display font-bold text-ink text-xl sm:text-2xl" style="font-variation-settings: 'wdth' 90;">
+              <a href={produkt.href} class="dreieck-flaeche" data-cta={`dreieck-${produkt.produktId}`}>
+                {produkt.name}
+              </a>
+            </p>
+
+            <p class="mt-2 text-sm text-ink-soft leading-relaxed max-w-xl">{produkt.einzeiler}</p>
+
+            <ul class="mt-4 flex flex-wrap gap-x-5 gap-y-1.5">
+              {produkt.punkte.map((punkt) => (
+                <li class="flex items-center gap-2 text-xs text-ink-soft">
+                  <span class:list={['h-1 w-1 shrink-0', punktFarbe[produkt.akzent]]}></span>
+                  {punkt}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="sm:text-right sm:border-l sm:border-line sm:pl-8 shrink-0">
+            <p class="font-mono text-sm font-semibold text-ink whitespace-nowrap">{produkt.kosten}</p>
+            <p class="mt-1 text-xs text-ink-faint leading-snug sm:max-w-[13rem]">{produkt.kostenZusatz}</p>
+            <p class="mt-2.5 text-xs text-ink-faint leading-snug sm:max-w-[13rem]">{produkt.zielgruppe}</p>
+            <a
+              href={produkt.cta.href}
+              class="knopf knopf-linie relative z-10 mt-4 !py-2 !px-3.5 !text-sm whitespace-nowrap"
+              data-cta={`dreieck-cta-${produkt.produktId}`}
+            >
+              {produkt.cta.label}
+            </a>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <p class="font-mono text-[11px] uppercase tracking-[.16em] text-ink-faint mt-3 text-center">
+    ↓ Volle Modellauswahl · geringster Aufwand
+  </p>
+</div>
+
+<style>
+  /* Ausgedehnter Link: die ganze Karte bleibt anklickbar, ohne <a> im <a>. */
+  .dreieck-karte:focus-within {
+    box-shadow: var(--shadow-karte-hoch);
+  }
+  .dreieck-flaeche::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .dreieck-karte:hover .dreieck-flaeche,
+  .dreieck-flaeche:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>

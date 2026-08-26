@@ -7,12 +7,22 @@ import { defineConfig } from 'astro/config';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://konforme-ki.de',
+
+  // `/eu-inferenz` wurde zu `/deutschland-inferenz` umbenannt, war aber bereits
+  // in Navigation und Sitemap ausgeliefert. Deploy läuft auf GitHub Pages —
+  // dort gibt es keine Server-Weiterleitungen, also erzeugt Astro im statischen
+  // Build die Meta-Refresh-Seite mitsamt Canonical. Aus der Sitemap ausgeschlossen,
+  // damit die Weiterleitungsseite nicht neben ihrem Ziel indexiert wird.
+  redirects: {
+    '/eu-inferenz': '/deutschland-inferenz',
+  },
+
   integrations: [
     sitemap(
       sitemapConfig({
         priorities: { '/': 1.0, '/ratgeber/': 0.9 },
         legalPaths: ['/impressum', '/datenschutz', '/agb', '/rdg-hinweis'],
-        exclude: ['/pdf-quelle'],
+        exclude: ['/pdf-quelle', '/eu-inferenz'],
       }),
     ),
   ],

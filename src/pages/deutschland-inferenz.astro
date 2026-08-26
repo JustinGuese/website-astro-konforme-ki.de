@@ -6,9 +6,9 @@ import CompareBlock from '@justinguese/astro-kit/CompareBlock.astro';
 import ArticleGrid from '@justinguese/astro-kit/ArticleGrid.astro';
 import CtaBand from '@justinguese/astro-kit/CtaBand.astro';
 import CodeTabs from '../components/CodeTabs.astro';
-import { INFERENZ_TARIFE, INFERENZ_VERGLEICH_SPALTEN, INFERENZ_VERGLEICH_ZEILEN, inferenzHref } from '../lib/euInferenz';
+import { INFERENZ_TARIFE, INFERENZ_VERGLEICH_SPALTEN, INFERENZ_VERGLEICH_ZEILEN, inferenzHref } from '../lib/deutschlandInferenz';
 
-const title = 'EU-Inferenz — Qwen3.8-27B, gehostet in Deutschland | konforme-ki.de';
+const title = 'Deutschland-Inferenz — Qwen3.8-27B, gehostet in Deutschland | konforme-ki.de';
 const description = 'Gehostete Qwen3.8-27B-Inferenz (FP8), betrieben von der DataFortress.cloud GmbH in Nürnberg. OpenAI-kompatible API, kein US-Fallback, keine Prompt-Speicherung, kein Training auf Kundendaten.';
 
 const dokumente = (await getCollection('unterlagen')).sort((a, b) => a.data.reihenfolge - b.data.reihenfolge);
@@ -47,7 +47,7 @@ const curl = `curl https://api.konforme-ki.de/v1/chat/completions \\
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <SectionHeader
         as="h1"
-        eyebrow="EU-Inferenz"
+        eyebrow="In Deutschland gehostet · kein Logging, kein Training"
         title="Qwen3.8-27B (FP8), gehostet in Nürnberg. Betrieben von der DataFortress.cloud GmbH."
         lead="Keine Speicherung Ihrer Prompts oder Antworten. Kein Training auf Ihren Daten. Kein Fallback außerhalb der EU — ist der Endpunkt nicht erreichbar, bekommen Sie einen HTTP 503, keine stille Umleitung in ein anderes Rechtssystem. Das Modell steht unter Apache-2.0-Lizenz: kein Vendor-Lock-in, keine überraschenden Nutzungsbedingungen im Nachhinein."
         size="lg"
@@ -57,8 +57,8 @@ const curl = `curl https://api.konforme-ki.de/v1/chat/completions \\
            nichts und verlangt kein Zahlungsmittel — das ist das Angebot, das
            hier oben stehen muss, nicht erst hinter sechs Sektionen. -->
       <div class="mt-8 flex flex-wrap items-center gap-4">
-        <a href="/kontakt?interesse=eu-inferenz-test" class="knopf knopf-accent" data-cta="eu-inferenz-hero-test">Kostenlos testen</a>
-        <a href="#nachweise" class="knopf knopf-linie" data-cta="eu-inferenz-hero-nachweise">Unterlagen für Ihren DSB</a>
+        <a href="/kontakt?interesse=de-inferenz-test" class="knopf knopf-accent" data-cta="de-inferenz-hero-test">Kostenlos testen</a>
+        <a href="#nachweise" class="knopf knopf-linie" data-cta="de-inferenz-hero-nachweise">Unterlagen für Ihren DSB</a>
         <span class="font-mono text-xs text-ink-faint">5 Mio. Token/Monat · kein Zahlungsmittel nötig</span>
       </div>
 
@@ -122,7 +122,7 @@ const curl = `curl https://api.konforme-ki.de/v1/chat/completions \\
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
       <h2>Regulatorischer Kontext</h2>
       <p>Für Berufsgeheimnisträger (Kanzleien, Praxen, Notariate) ist die relevante Rechtsgrundlage § 203 Abs. 3 StGB: die Weitergabe an sorgfältig ausgewählte, wirksam zur Verschwiegenheit verpflichtete „mitwirkende Personen" ist zulässig. Eine individuelle §203-Zusatzvereinbarung gehört zum Compliance-Tarif dazu — Details im <a href="/eu-ki-recht">EU-KI-Recht-Überblick</a>.</p>
-      <p>Die Protokollierungspflichten aus Art. 12 AI Act lassen sich über den <a href="/">Nachweis-Sidecar</a> abdecken, unabhängig davon, ob Sie die EU-Inferenz oder Ihre bestehende KI-Lösung einsetzen.</p>
+      <p>Die Protokollierungspflichten aus Art. 12 AI Act lassen sich über den <a href="/sidecar">Sidecar</a> abdecken, unabhängig davon, ob Sie die Deutschland-Inferenz oder Ihre bestehende KI-Lösung einsetzen.</p>
       <p>Ihre genaue Rolle in der KI-Wertschöpfungskette nach AI Act (Anbieter oder Betreiber) hängt von Ihrem konkreten Einsatzfall ab. Das prüfen wir im Onboarding gemeinsam mit Ihnen — eine pauschale Einordnung an dieser Stelle wäre nicht seriös.</p>
     </div>
   </section>
@@ -153,7 +153,7 @@ const curl = `curl https://api.konforme-ki.de/v1/chat/completions \\
                   <a
                     href={inferenzHref(tarif.tarifId)}
                     class:list={['knopf !py-2 !px-3.5 !text-xs whitespace-nowrap', tarif.hervorgehoben ? 'knopf-accent' : 'knopf-linie']}
-                    data-cta={`eu-inferenz-${tarif.tarifId}`}
+                    data-cta={`de-inferenz-${tarif.tarifId}`}
                   >{tarif.ctaLabel}</a>
                 </td>
               </tr>
@@ -187,9 +187,9 @@ const curl = `curl https://api.konforme-ki.de/v1/chat/completions \\
   </section>
 
   <CtaBand
-    title="Prüfen, ob EU-Inferenz für Sie infrage kommt."
+    title="Prüfen, ob Deutschland-Inferenz für Sie infrage kommt."
     body="Kein Zahlungsmittel für den Test-Tarif nötig — und für Compliance oder eine dedizierte GPU klärt ein kurzes Gespräch mehr als jede Seite."
-    cta={{ label: 'Kostenlos testen', href: '/kontakt?interesse=eu-inferenz-test', track: 'eu-inferenz-abschluss' }}
-    secondary={{ label: 'Unterlagen ansehen', href: '/unterlagen', track: 'eu-inferenz-unterlagen' }}
+    cta={{ label: 'Kostenlos testen', href: '/kontakt?interesse=de-inferenz-test', track: 'de-inferenz-abschluss' }}
+    secondary={{ label: 'Unterlagen ansehen', href: '/unterlagen', track: 'de-inferenz-unterlagen' }}
   />
 </Site>

@@ -1,6 +1,6 @@
 ---
 title: 'AVV mit KI-Anbietern: Was nach Art. 28 DSGVO drinstehen muss'
-metaTitle: 'AVV für KI-Anbieter — Checkliste nach Art. 28 DSGVO | Nachweis'
+metaTitle: 'AVV für KI-Anbieter — Checkliste nach Art. 28 DSGVO | konforme-ki.de'
 description: 'AVV KI-Anbieter Art. 28 DSGVO: alle Pflichtangaben, Lücken bei Training, Retention, Subprozessoren und rote Flaggen — die Checkliste vor der Unterschrift.'
 kurz: 'Was ein Anbieter-AVV nach Art. 28 DSGVO enthalten muss, welche KI-spezifischen Klauseln in Standard-Verträgen fehlen, und woran Sie einen unbrauchbaren AVV erkennen.'
 keyword: 'AVV KI-Anbieter Art. 28 DSGVO'
@@ -40,7 +40,7 @@ Die folgende Tabelle listet die einzelnen Pflichtelemente und was in einem KI-Ko
 | Unterstützung bei Betroffenenrechten (lit. e) | Der Anbieter muss technisch überhaupt in der Lage sein, z. B. eine Löschung pro betroffener Person umzusetzen. |
 | Unterstützung nach Art. 32–36 (lit. f) | Meldung von Datenschutzverletzungen, Mitwirkung bei DSFA. |
 | Löschung/Rückgabe nach Vertragsende (lit. g) | Konkrete Frist und konkretes Verfahren, nicht „nach angemessener Zeit". |
-| Nachweis- und Auditrechte (lit. h) | Der Verantwortliche muss die Einhaltung tatsächlich prüfen können — dazu unten mehr. |
+| konforme-ki.de- und Auditrechte (lit. h) | Der Verantwortliche muss die Einhaltung tatsächlich prüfen können — dazu unten mehr. |
 
 Unser eigenes [AVV-Muster](/unterlagen/avv) ist nach genau diesem Schema aufgebaut — Sie können es als Referenz danebenlegen, wenn Sie den Vertrag eines anderen Anbieters prüfen.
 

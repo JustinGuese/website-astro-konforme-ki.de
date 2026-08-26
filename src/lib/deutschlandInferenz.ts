@@ -1,7 +1,7 @@
 import type { CompareColumn, CompareRow } from '@justinguese/astro-kit/lib/compare';
 
 /**
- * Daten für /eu-inferenz — die gehostete Qwen3.8-27B-Inferenz, betrieben von
+ * Daten für /deutschland-inferenz — die gehostete Qwen3.8-27B-Inferenz, betrieben von
  * der DataFortress.cloud GmbH auf eigener Hardware in Nürnberg. Getrennt von
  * `preise.ts`, weil die Spalten hier (Enthalten/Überschreitung) nicht in die
  * `Tarif`/`PricingCards`-Form passen und ein Umbiegen dort mehr verschleiert
@@ -24,7 +24,7 @@ export interface InferenzTarif {
   hervorgehoben?: boolean;
 }
 
-export const inferenzHref = (tarifId: string) => `/kontakt?interesse=eu-inferenz-${tarifId}`;
+export const inferenzHref = (tarifId: string) => `/kontakt?interesse=de-inferenz-${tarifId}`;
 
 export const INFERENZ_TARIFE: InferenzTarif[] = [
   {

@@ -1,7 +1,6 @@
 ---
 import Site from '../layouts/Site.astro';
 import Kette from '../components/Kette.astro';
-import HeroBlock from '@justinguese/astro-kit/HeroBlock.astro';
 import RekordKarte from '../components/RekordKarte.astro';
 import Playground from '../components/Playground.astro';
 import LeiterTabelle from '../components/LeiterTabelle.astro';
@@ -13,31 +12,41 @@ import ConversionTracking from '@justinguese/astro-kit/ConversionTracking.astro'
 import FaqBlock from '@justinguese/astro-kit/FaqBlock.astro';
 import CtaBand from '@justinguese/astro-kit/CtaBand.astro';
 import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
+import ProduktDreieck from '../components/ProduktDreieck.astro';
+import WerkzeugTabs from '../components/WerkzeugTabs.astro';
 import { buildChain } from '../lib/kette';
 import { LEITER } from '../lib/preise';
 import { KONTINGENT, frei } from '../lib/kontingent';
-import { site } from '../config/site';
+import { site, apiUrl } from '../config/site';
+import { WERKZEUGE } from '../lib/werkzeuge';
+
+/**
+ * Das Kaufargument im ersten Viewport: der Wechsel kostet eine Zeile. Die URL
+ * kommt aus `apiUrl()`, damit Hero und `WERKZEUGE` nie auseinanderlaufen.
+ */
+const heroWechsel = `- base_url="https://api.openai.com/v1"
++ base_url="${apiUrl('/v1')}"
+
+# sonst ändert sich nichts.`;
 
 /**
  * Reihenfolge folgt der Trichterlogik, nicht der Produktlogik — überarbeitet
- * 2026-08-24: Sidecar (Prüfspur über bestehende Cloud) ist jetzt das
- * Hauptangebot, nicht mehr ein Abschnitt für „Vorsichtige". Vollständig
- * gehostete Inferenz (Angebote/Zugang) ist der Eskalationspfad, nicht der
- * Einstieg — siehe MARKETING.md „Infra & architecture critique". Zielgruppe
- * ist breit (jedes Unternehmen mit DSB oder Betriebsrat), § 203 StGB bleibt
- * eine bediente, benannte Nische statt der gesamten Ansprache — siehe
- * MARKETING.md „One vertical, not three".
+ * 2026-08-26: drei gleichrangige Bezugswege (Deutschland-Inferenz, Router, Sidecar)
+ * ersetzen die alte Sidecar-first-Reihung. Erst-CTA ist das
+ * Einstufungs-Quiz, nicht mehr ein einzelnes Produkt — siehe MARKETING.md.
+ * Zielgruppe bleibt breit (jedes Unternehmen mit DSB oder Betriebsrat), §203
+ * StGB bleibt eine bediente, benannte Nische statt der gesamten Ansprache.
  */
 const abschnitte = [
-  { id: 'hero', label: 'Einstieg' },
+  { id: 'hero', label: 'Drei Produkte' },
   { id: 'problem', label: 'Das Problem' },
-  { id: 'sidecar', label: 'Sidecar' },
+  { id: 'werkzeuge', label: 'Werkzeuge' },
+  { id: 'lock-in', label: 'Kein Lock-in' },
   { id: 'playground', label: 'Playground' },
   { id: 'nachweis', label: 'Der Nachweis' },
   { id: 'unterlagen', label: 'Unterlagen' },
   { id: 'checkliste', label: 'Checkliste' },
-  { id: 'integrationen', label: 'Integrationen' },
-  { id: 'angebote', label: 'Angebote' },
+  { id: 'leiter', label: 'Einstieg wählen' },
   { id: 'zugang', label: 'Zugang' },
   { id: 'faq', label: 'FAQ' },
   { id: 'abschluss', label: 'Abschluss' },
@@ -52,20 +61,38 @@ const exporte = [
 ];
 
 /**
- * Für #angebote: Leiter ohne die €39-Dossier-Stufe (die bleibt als SKU voll
+ * Für #leiter: Leiter ohne die €39-Dossier-Stufe (die bleibt als SKU voll
  * erreichbar — Ratgeber-Upsell, direkter Link — nur nicht mehr auf der
  * Startseite gezeigt), Compliance hervorgehoben. Kopie, nie die geteilten
  * LEITER-Objekte mutieren — ArtikelUpsell.astro liest dieselben Objekte
  * positionsbasiert (LEITER.slice(0,2)).
  */
-const angeboteLeiter = LEITER.filter((s) => s.tarifId !== 'dossier').map((s) =>
+const leiterAnzeige = LEITER.filter((s) => s.tarifId !== 'dossier').map((s) =>
   s.tarifId === 'compliance' ? { ...s, hervorgehoben: true } : s
 );
+
+const kanaele = ['Microsoft Teams', 'Slack', 'WhatsApp Business', 'E-Mail', 'Webhook / REST'];
+
+/** Die drei Auslöser, die einen Anbieterwechsel erzwingen — siehe #lock-in. */
+const lockIn = [
+  {
+    ausloeser: 'Konzernvorgabe',
+    folge: 'Ihr Mutterkonzern untersagt einen bestimmten Anbieter — etwa nach einem Sicherheitsvorfall oder einer neuen Konzernrichtlinie.',
+  },
+  {
+    ausloeser: 'Geänderte Bedingungen',
+    folge: 'Ein Anbieter ändert seine Nutzungs- oder Trainingsbedingungen und passt damit nicht mehr in die Schutzstufe, auf die Sie sich festgelegt haben.',
+  },
+  {
+    ausloeser: 'Ausfall',
+    folge: 'Ein Anbieter ist nicht erreichbar. Innerhalb Ihrer Stufe wird umgeschaltet, unterhalb davon nie — dann schlägt die Anfrage fehl.',
+  },
+];
 
 const faq = [
   {
     frage: 'Kann ich mit meiner bestehenden Cloud starten?',
-    antwort: 'Ja, genau das ist der Sidecar-Ansatz: Nachweis läuft neben Ihrer bestehenden Azure-OpenAI-, Bedrock- oder Cloud-Inferenz und übernimmt nur die Prüfspur — Sie ändern nichts an Ihrer Infrastruktur. Reicht Ihre eigene Cloud für einen Fall nicht aus (z. B. kein passendes EU-Modell, ein besonders sensibles Mandat), hosten wir die Inferenz stattdessen vollständig — siehe „Angebote".',
+    antwort: 'Ja, genau das ist der Sidecar-Weg: Der Sidecar legt sich vor Ihre bestehende Azure-OpenAI-, Bedrock- oder Cloud-Anbindung und erzwingt Ihre gewählte Schutzstufe — Sie ändern nichts an Ihrer Infrastruktur. Brauchen Sie die höchste Schutzstufe (nur Deutschland, kein Gateway), leistet das kein Sidecar — dafür gibt es Deutschland-Inferenz auf eigener Hardware.',
   },
   {
     frage: 'Was hat der Betriebsrat damit zu tun?',
@@ -73,23 +100,23 @@ const faq = [
   },
   {
     frage: 'Was, wenn unser bisheriger Anbieter in den USA sitzt?',
-    antwort: 'Dann unterliegt er dem US CLOUD Act — US-Behörden können theoretisch Zugriff auf dort verarbeitete Daten verlangen, unabhängig vom Serverstandort. Unsere Routingliste für gehostete Inferenz ist ausschließlich EU-jurisdiktionell (Scaleway, IONOS, Mistral AI, OVHcloud), ohne Fallback außerhalb.',
+    antwort: 'Dann unterliegt er möglicherweise dem US CLOUD Act — US-Behörden können theoretisch Zugriff auf dort verarbeitete Daten verlangen. Bei Router oder Sidecar legen Sie die Schutzstufe fest, etwa „nur EWR-ansässige Anbieter" — verfügbar ist dann ausschließlich das, ohne Fallback darunter. Für die höchste Stufe ganz ohne Gateway gibt es Deutschland-Inferenz auf eigener deutscher Hardware.',
   },
   {
-    frage: 'Ist Nachweis selbst ein Berufsgeheimnisträger-konformer Subprozessor?',
+    frage: 'Sind Sie selbst ein Berufsgeheimnisträger-konformer Subprozessor?',
     antwort: 'Wir sind Ihr Auftragsverarbeiter nach Art. 28 DSGVO und werden im Rahmen der Zusatzvereinbarung nach § 203 Abs. 3 StGB als mitwirkende Person eingebunden — vorausgesetzt, Sie schließen die entsprechende Vereinbarung mit uns ab. Ein Muster liegt unter „Unterlagen".',
   },
   {
     frage: 'Welche Modelle stehen zur Verfügung?',
-    antwort: 'Im Standardfall laufen Ihre Anfragen auf eigener Infrastruktur der DataFortress.cloud GmbH in Nürnberg — ohne externen Subprozessor. Wer stattdessen das günstigere EU-Anbieter-Autorouting wählt (Säule 1), erhält ausschließlich Modelle, die über Scaleway, IONOS AI Model Hub, Mistral AI oder OVHcloud AI Endpoints in der EU gehostet werden. Die genaue Modellliste ist Teil Ihres Onboardings.',
+    antwort: 'Das hängt vom Produkt und der Schutzstufe ab: Deutschland-Inferenz liefert ein Modell auf eigener deutscher Hardware. Router und Sidecar bieten je nach gewählter Stufe zwischen zwei EWR-Ländern, vier EWR-ansässigen Anbietern oder der vollen, protokollierten Auswahl. Details unter „Router".',
   },
   {
-    frage: 'Was passiert, wenn kein EU-Modell verfügbar ist?',
-    antwort: 'Die Anfrage schlägt fehl — sie wird nicht außerhalb der EU-Routingliste umgeleitet. Sehen Sie sich das im Playground am Beispiel „Was passiert, wenn ich ein US-Modell anfordere?" an.',
+    frage: 'Was passiert, wenn kein Anbieter Ihrer Schutzstufe verfügbar ist?',
+    antwort: 'Die Anfrage schlägt fehl — sie wird nie auf eine niedrigere Stufe heruntergestuft. Sehen Sie sich das im Playground am Beispiel „Was passiert, wenn ich ein US-Modell anfordere?" an.',
   },
   {
     frage: 'Trainieren Sie auf unseren Daten?',
-    antwort: 'Nein. Alle EU-Subprozessoren in unserer Routingliste sind vertraglich zu Zero-Retention bzw. Nicht-Training verpflichtet; das ist Teil unserer Auswahlkriterien.',
+    antwort: 'Für Deutschland-Inferenz und die EU-Stufen bei Router/Sidecar ist Zero-Retention bzw. Nicht-Training vertraglich Teil der Auswahlkriterien. Für die vierte, global-protokollierte Stufe gilt: unbekannte Trainingsbedingungen zählen als nicht-konform und werden entsprechend ausgewiesen, nicht verschwiegen.',
   },
   {
     frage: 'Warum sind die Zugangsschlüssel begrenzt?',
@@ -101,18 +128,18 @@ const faq = [
   },
   {
     frage: 'Was kostet ein Machbarkeits-Check?',
-    antwort: 'Zwischen €1.900 und €9.000 einmalig, abhängig von Umfang und Anzahl der zu integrierenden Kanäle. Details unter „Angebote".',
+    antwort: 'Zwischen €1.900 und €9.000 einmalig, abhängig von Umfang und Anzahl der zu integrierenden Kanäle. Details unter „Einstieg wählen".',
   },
   {
-    frage: 'Ist Nachweis Rechtsberatung?',
-    antwort: 'Nein. Nachweis ersetzt nicht die Prüfung durch Ihre eigene Rechtsberatung im Einzelfall.',
+    frage: 'Ist konforme-ki.de Rechtsberatung?',
+    antwort: 'Nein. Weder das Angebot noch das Einstufungs-Quiz ersetzen die Prüfung durch Ihre eigene Rechtsberatung im Einzelfall.',
   },
   {
     frage: 'Ist der Gateway ein Medizinprodukt?',
     antwort: 'Nein — er verarbeitet, aber bewertet nicht, und ist damit kein Medizinprodukt im Sinne der MDR.',
   },
   {
-    frage: 'Übernimmt Nachweis meine Haftung?',
+    frage: 'Übernehmen Sie meine Haftung?',
     antwort: 'Nein. Ihre Berufspflichten bleiben bei Ihnen. Wir liefern die Infrastruktur und den Nachweis dazu.',
   },
   {
@@ -136,46 +163,76 @@ const faq = [
 
   <Kette gliedes={gliedes} slot="kette" />
 
-  <!-- 1. Hero — Sidecar ist das Hauptangebot; gehostete Inferenz ist der Eskalationspfad. -->
+  <!--
+    1. Hero — die drei Produkte stehen HIER, nicht sechs Sektionen weiter
+    unten. Der Quiz-CTA steht ÜBER dem Dreieck, damit er im ersten Viewport
+    liegt: die drei Karten sind zusammen zu hoch, ein CTA darunter wäre auf
+    einem Laptop erst nach dem Scrollen sichtbar.
+
+    Die Vorspann-Zeile nennt die Kategorie beim Namen („OpenAI-kompatible
+    KI-Schnittstelle"). Vorher stand dort nur „Compliance-Schicht" — das
+    beschreibt auch eine Beratung, und im ersten Viewport fiel nirgends das
+    Wort API. Der base_url-Block daneben ist das eigentliche Kaufargument
+    (Wechselkosten ≈ null) und stand vorher erst drei Abschnitte tiefer.
+
+    Der zweite Quiz-Textlink unter dem Dreieck ist entfallen: Kopfzeile,
+    Sticky-Leiste und der Knopf hier führen bereits an dieselbe Stelle, und
+    sieben Klickziele vor dem zweiten Abschnitt verteilen die Aufmerksamkeit,
+    statt sie zu bündeln.
+  -->
   <section id="hero" class="py-14 sm:py-20 border-b border-line">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <HeroBlock
-        eyebrow="Für Ihre bestehende KI — Azure OpenAI, Bedrock oder eigene Cloud"
-        sub="Nachweis läuft als Sidecar neben Ihrer bestehenden KI — Sie ändern nichts an Ihrer Infrastruktur, wir liefern die exportierbare Prüfspur. Reicht Ihre eigene Cloud für einen Fall nicht aus, hosten wir ihn."
-        cta={{ label: 'Sidecar einrichten', href: '/kontakt?interesse=sidecar', track: 'sidecar' }}
-        bullets={['Kein US-Fallback', 'Kein Training auf Ihren Daten', 'AVV inklusive']}
-      >
-        <Fragment slot="headline">Der Betriebsrat blockt. Der DSB blockt. <span class="text-accent">Wir liefern beiden den Nachweis.</span></Fragment>
+      <div class="grid lg:grid-cols-[1.15fr_1fr] gap-10 lg:gap-14 items-start">
+        <div>
+          <p class="marginalie mb-3">Drei Produkte</p>
+          <h1 class="display display-xl text-ink">
+            Der Betriebsrat blockt. Der DSB blockt. <span class="text-accent">Wir liefern beiden den Nachweis.</span>
+          </h1>
+          <p class="mt-5 text-ink-soft leading-relaxed max-w-2xl">
+            Eine OpenAI-kompatible KI-Schnittstelle, die zu jeder Anfrage die Prüfspur mitschreibt — auf drei Wegen zu haben, vom eigenen deutschen Modell bis zum Sidecar neben Ihrer bestehenden Cloud.
+          </p>
 
-        <div slot="cta-secondary" class="mt-3 flex flex-col gap-2 items-start">
-          <ScarcityBlock
-            class="kontingent-akzent"
-            total={KONTINGENT.plaetze}
-            taken={KONTINGENT.vergeben}
-            layout="badge"
-            badgeText="Noch {left} von {total} Zugangsschlüsseln diesen Monat frei"
-          />
-          <a href="/?tarif=compliance#zugang" class="font-mono text-xs text-ink-faint hover:text-accent underline underline-offset-2" data-cta="hero-hosted-alt">
-            Lieber direkt gehostete Inferenz? Zugangsschlüssel sichern →
-          </a>
-          <a href="/playground" class="font-mono text-xs text-ink-faint hover:text-accent underline underline-offset-2" data-cta="playground-hero">
+          <div class="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
+            <a href="/einstufung" class="knopf knopf-accent" data-cta="einstufung-hero">
+              Passende Stufe finden
+              <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
+            </a>
+            <ScarcityBlock
+              class="kontingent-akzent"
+              total={KONTINGENT.plaetze}
+              taken={KONTINGENT.vergeben}
+              layout="badge"
+              badgeText="Noch {left} von {total} Zugangsschlüsseln diesen Monat frei"
+            />
+          </div>
+          <p class="mt-3 font-mono text-xs text-ink-faint">
+            Vier Fragen · 60 Sekunden · keine Anmeldung — Sie bekommen Produkt, Schutzstufe und die Liste der Unterlagen
+          </p>
+          <p class="mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm text-ink-soft">
+            <span class="marke marke-accent">Kostenlos starten</span>
+            5 Mio. Token pro Monat, ohne Zahlungsmittel.
+          </p>
+        </div>
+
+        <div>
+          <div class="border border-line-deep bg-ink-deep">
+            <p class="border-b border-line-deep px-5 py-2.5 font-mono text-[11px] uppercase tracking-[.16em] text-ink-faint">
+              Der ganze Wechsel
+            </p>
+            <pre class="px-5 py-5 text-sm font-mono text-[#dbe2ef] overflow-x-auto leading-relaxed"><code>{heroWechsel}</code></pre>
+          </div>
+          <p class="mt-3 text-sm text-ink-soft leading-relaxed">
+            Requests, Responses und Streaming bleiben identisch. Claude Code, Cursor, Windsurf, Copilot und jedes OpenAI-SDK sprechen sofort mit uns — <a href="#werkzeuge" class="text-accent font-semibold hover:underline">alle Beispiele ansehen</a>.
+          </p>
+          <a href="/playground" class="mt-3 inline-block font-mono text-xs text-ink-faint hover:text-accent underline underline-offset-2" data-cta="playground-hero">
             Playground öffnen →
           </a>
         </div>
+      </div>
 
-        <RekordKarte
-          kopf="req_8f2a1c93"
-          felder={[
-            { schluessel: 'modell', wert: 'nachweis-llm-70b' },
-            { schluessel: 'subprozessor', wert: 'Keiner — DataFortress.cloud GmbH', ton: 'ok' },
-            { schluessel: 'rechenzentrum', wert: 'Nürnberg, DE · eigenes RZ' },
-            { schluessel: 'retention', wert: 'kein Training · 0 Tage' },
-            { schluessel: 'tokens_in / out', wert: '412 / 96' },
-            { schluessel: 'hash', wert: '7be1c4a9f3d820e6…' },
-          ]}
-          fuss="Jede Anfrage hinterlässt eine Prüfspur — nicht nur Ihre Rechnung."
-        />
-      </HeroBlock>
+      <div class="mt-12 sm:mt-14">
+        <ProduktDreieck />
+      </div>
     </div>
   </section>
 
@@ -203,32 +260,61 @@ const faq = [
     </div>
   </section>
 
-  <!-- 3. Sidecar — das Hauptangebot: Prüfspur über die KI, die Sie schon haben. -->
-  <section id="sidecar" class="py-16 sm:py-20 border-b border-line">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <!-- 3. Werkzeuge — der Wechsel ist eine Zeile Code, plus Kanäle. -->
+  <section id="werkzeuge" class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <SectionHeader
-        eyebrow="Das Angebot"
-        title="Ihre KI, unsere Prüfspur."
-        lead="Sie müssen Ihre bestehende KI-Lösung nicht ersetzen, um zu starten. Nachweis läuft als Sidecar neben Ihrer aktuellen Inferenz — Azure OpenAI, AWS Bedrock oder eigene Cloud — und übernimmt ausschließlich die Prüfspur. Derselbe Nutzen, ohne Umstellungsrisiko und ohne eigene GPU-Kosten."
+        eyebrow="Werkzeuge"
+        title="Der Wechsel ist eine Zeile Code."
+        lead="Alles, was heute gegen OpenAI oder Azure OpenAI spricht, spricht mit einer geänderten base_url stattdessen mit uns — Requests, Responses und Streaming bleiben identisch."
         size="lg"
+        class="mb-8"
       />
-      <div class="mt-10 border border-line bg-surface p-8 sm:p-10 grid lg:grid-cols-[1.2fr_1fr] gap-8 items-center">
-        <div>
-          <SectionHeader
-            as="h3"
-            eyebrow="Wie es funktioniert"
-            title="Sie ändern nichts an Ihrer Infrastruktur."
-            lead="Der Sidecar beobachtet Ihre bestehenden Anfragen und schreibt dieselbe Prüfspur, die Sie im Playground sehen — Modell, Subprozessor, Hash, Zeitstempel. Reicht Ihre eigene Cloud für einen Fall nicht aus, etwa weil kein passendes EU-Modell verfügbar ist oder ein Mandat besonders sensibel ist, hosten wir die Inferenz stattdessen vollständig."
-            size="md"
-          />
-        </div>
-        <a href="/kontakt?interesse=sidecar" class="knopf knopf-accent w-full sm:w-fit sm:ml-auto" data-cta="sidecar">Sidecar einrichten</a>
+      <WerkzeugTabs werkzeuge={WERKZEUGE} />
+
+      <div class="mt-10 flex items-center justify-between gap-4 flex-wrap">
+        <p class="font-mono text-xs uppercase tracking-wider text-ink-faint">Oder da, wo Sie ohnehin schon arbeiten</p>
+        <a href="/integrationen" class="text-sm font-semibold text-accent hover:underline">Alle Kanäle ansehen →</a>
+      </div>
+      <div class="mt-4 flex flex-wrap gap-3">
+        {kanaele.map((k) => (
+          <span class="marke marke-neutral !text-sm !py-1.5 !px-3">{k}</span>
+        ))}
       </div>
     </div>
   </section>
 
-  <!-- 4. Playground -->
-  <section id="playground" class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
+  <!--
+    4. Kein Lock-in — vorher eine angehängte Zeile unter den Werkzeug-Tabs.
+    Das beantwortet einen eigenen Einwand („was, wenn unser Konzern Anbieter X
+    sperrt?") und verdient deshalb einen eigenen Takt. Der Text ist derselbe
+    wie auf /router — eine Quelle, zwei Orte.
+  -->
+  <section id="lock-in" class="py-16 sm:py-20 border-b border-line">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader
+        eyebrow="Kein Lock-in"
+        title="Wird ein Anbieter für Sie gesperrt, merkt Ihr Werkzeug davon nichts."
+        lead="Ihre Werkzeuge zeigen auf eine base_url — nicht auf einen bestimmten Anbieter."
+        size="lg"
+        class="mb-8"
+      />
+      <div class="grid sm:grid-cols-3 gap-px bg-line border border-line">
+        {lockIn.map((fall) => (
+          <div class="bg-surface p-6">
+            <p class="font-mono text-xs text-signal font-semibold">{fall.ausloeser}</p>
+            <p class="mt-2 text-sm text-ink-soft leading-relaxed">{fall.folge}</p>
+          </div>
+        ))}
+      </div>
+      <p class="mt-6 text-sm text-ink-soft max-w-2xl leading-relaxed">
+        In allen drei Fällen wechseln wir die Zuordnung hinter dem Endpunkt. An Ihrer Konfiguration ändert sich nichts — kein Rollout, kein neues Werkzeug, keine erneute Freigabe durch Ihren Datenschutzbeauftragten, weil die Prüfspur dieselbe bleibt.
+      </p>
+    </div>
+  </section>
+
+  <!-- 5. Playground -->
+  <section id="playground" class="py-16 sm:py-20 border-b border-line">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-end justify-between gap-4 flex-wrap mb-8">
         <SectionHeader eyebrow="Playground" title="Probieren Sie den Ernstfall aus." size="lg" />
@@ -238,15 +324,15 @@ const faq = [
     </div>
   </section>
 
-  <!-- 5. Der Nachweis — die größte Fläche der Seite, inkl. Exportformate. -->
-  <section id="nachweis" class="py-16 sm:py-24 border-b border-line">
+  <!-- 6. Der Nachweis — die größte Fläche der Seite, inkl. Exportformate. -->
+  <section id="nachweis" class="py-16 sm:py-24 border-b border-line bg-canvas-deep">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-2 gap-12 items-center">
         <div>
           <p class="marginalie mb-3">Der Nachweis</p>
           <h2 class="display display-l text-ink">Nicht die Tokens sind das Produkt. <span class="text-accent">Diese Zeile ist es.</span></h2>
           <p class="mt-5 text-ink-soft leading-relaxed max-w-lg">
-            Jede EU-Inferenzplattform verkauft Ihnen Tokens und einen PDF-AVV. Keine gibt Ihrem Datenschutzbeauftragten oder Prüfer eine per Anfrage exportierbare Beweiskette. Das ist der Unterschied zwischen „wir sind konform" und „hier ist der Beweis".
+            Jede Deutschland-Inferenzplattform verkauft Ihnen Tokens und einen PDF-AVV. Keine gibt Ihrem Datenschutzbeauftragten oder Prüfer eine per Anfrage exportierbare Beweiskette. Das ist der Unterschied zwischen „wir sind konform" und „hier ist der Beweis".
           </p>
           <dl class="mt-8 space-y-4 text-sm">
             <div class="flex gap-3">
@@ -263,7 +349,7 @@ const faq = [
             </div>
             <div class="flex gap-3">
               <dt class="font-mono text-ink-faint w-32 shrink-0">ablageort</dt>
-              <dd class="text-ink-soft">Prüfspur liegt immer auf eigener DataFortress-Infrastruktur in Nürnberg — ob Sidecar über Ihre Cloud oder vollständig gehostet</dd>
+              <dd class="text-ink-soft">Prüfspur liegt immer auf eigener DataFortress-Infrastruktur in Nürnberg — unabhängig davon, welchen der drei Wege Sie nutzen</dd>
             </div>
           </dl>
         </div>
@@ -297,7 +383,7 @@ const faq = [
       <!-- Handlungspfad mitten im langen Erklärteil, nicht erst nach dem Scrollen. -->
       <div class="mt-10 flex flex-wrap items-center gap-4">
         <a href="/?tarif=compliance#zugang" class="knopf knopf-accent" data-cta="nachweis-inline">Zugangsschlüssel sichern</a>
-        <a href="/eu-inferenz" class="knopf knopf-linie" data-cta="nachweis-eu-inferenz">EU-Inferenz ansehen</a>
+        <a href="/einstufung" class="knopf knopf-linie" data-cta="nachweis-einstufung">Erst die Stufe klären</a>
         <ScarcityBlock
           class="kontingent-akzent"
           total={KONTINGENT.plaetze}
@@ -309,8 +395,8 @@ const faq = [
     </div>
   </section>
 
-  <!-- 6. Unterlagen + Belege, zusammengeführt — Dokumenten-Vertrauen statt Kundenzitate. -->
-  <section id="unterlagen" class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
+  <!-- 7. Unterlagen + Belege, zusammengeführt — Dokumenten-Vertrauen statt Kundenzitate. -->
+  <section id="unterlagen" class="py-16 sm:py-20 border-b border-line">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center">
         <SectionHeader
@@ -337,9 +423,9 @@ const faq = [
   </section>
 
   <!--
-    7. Checkliste — die kostenlose Stufe der Angebotsleiter. Einziges Feld: E-Mail.
+    8. Checkliste — die kostenlose Stufe der Angebotsleiter. Einziges Feld: E-Mail.
   -->
-  <section id="checkliste" class="py-16 sm:py-20 border-b border-line">
+  <section id="checkliste" class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-16 items-center">
         <div>
@@ -370,50 +456,33 @@ const faq = [
     </div>
   </section>
 
-  <!-- 8. Integrationen — Kanäle für den gehosteten Pfad; der Sidecar-Pitch steht bereits oben. -->
-  <section id="integrationen" class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-end justify-between gap-4 flex-wrap">
-        <SectionHeader eyebrow="Integrationen" title="Wenn Sie doch gehostete Inferenz wollen: da, wo Sie ohnehin schon arbeiten." size="lg" />
-        <a href="/integrationen" class="text-sm font-semibold text-accent hover:underline">Alle Kanäle ansehen →</a>
-      </div>
-      <div class="mt-8 flex flex-wrap gap-3">
-        {['Microsoft Teams', 'Slack', 'WhatsApp Business', 'E-Mail', 'Webhook / REST', 'OpenAI-kompatibles SDK'].map((k) => (
-          <span class="marke marke-neutral !text-sm !py-1.5 !px-3">{k}</span>
-        ))}
-      </div>
-    </div>
-  </section>
-
   <!--
-    9. Angebote — der gehostete Pfad, ausdrücklich als Eskalation zum Sidecar
-    gerahmt, nicht als Haupteinstieg. Ersetzt die frühere Token-Preistabelle
-    an dieser Stelle: hier fällt die Kaufentscheidung, Abrechnungsdetails
-    stehen auf /preise.
+    9. Einstieg wählen — die Commitment-Leiter (kostenlos → Dossier → Abo),
+    unabhängig davon, welches der drei Produkte Sie am Ende wählen.
   -->
-  <section id="angebote" class="py-16 sm:py-24 border-b border-line">
+  <section id="leiter" class="py-16 sm:py-24 border-b border-line">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <SectionHeader
-        eyebrow="Angebote"
-        title="Wenn Sie lieber vollständig gehostete Inferenz wollen."
-        lead="Statt eines Sidecars über Ihre bestehende Cloud: drei Stufen, Sie steigen ein, wo Sie stehen. Ein individueller Machbarkeits-Check kostet €1.900–9.000 einmalig — die laufende Prüfspur für €290 im Monat ist der günstigere, sofort startbare Weg dorthin."
+        eyebrow="Einstieg wählen"
+        title="Wie Sie starten — unabhängig vom Produkt."
+        lead="Ob Deutschland-Inferenz, Router oder Sidecar: die Freigabe läuft über dieselbe Leiter. Kostenlose Checkliste, das §203-Dossier zum Festpreis, oder die laufende Prüfspur im Abo — Sie steigen ein, wo Sie stehen."
         size="lg"
       />
 
       <div class="mt-10">
-        <LeiterTabelle stufen={angeboteLeiter} />
+        <LeiterTabelle stufen={leiterAnzeige} />
       </div>
 
       <div class="mt-8 flex flex-wrap items-center justify-between gap-4 border border-line bg-surface px-6 py-4">
         <p class="text-sm text-ink-soft">
-          Tokens werden separat abgerechnet — Pay-per-Token ab €3,50/Mio. oder als Abo mit inkludiertem Kontingent.
+          Tokens werden separat abgerechnet — zum Einkaufspreis plus Compliance-Aufschlag, je nach Produkt und Stufe.
         </p>
         <a href="/preise" class="text-sm font-semibold text-accent hover:underline whitespace-nowrap">Alle Abrechnungsmodelle →</a>
       </div>
     </div>
   </section>
 
-  <!-- 10. Zugang — der Eskalationspfad zur gehosteten Inferenz. -->
+  <!-- 10. Zugang -->
   <section id="zugang" class="py-16 sm:py-20 border-b border-line bg-canvas-deep">
     <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
       <SectionHeader
@@ -450,9 +519,9 @@ const faq = [
   <CtaBand
     id="abschluss"
     title="Ihr Datenschutzbeauftragter wartet auf einen Beleg. Holen Sie ihn sich."
-    body="Sidecar über Ihre bestehende KI oder direkt gehostete Inferenz — beides ohne Zahlungsmittel und ohne Verkaufsgespräch."
-    cta={{ label: 'Sidecar einrichten', href: '/kontakt?interesse=sidecar', track: 'abschluss-sidecar' }}
-    secondary={{ label: 'Direkt gehostete Inferenz', href: '/?tarif=compliance#zugang', track: 'abschluss-zugang' }}
+    body="Vier Fragen, rund 60 Sekunden, dann wissen Sie, welches der drei Produkte passt — oder direkt zum Zugangsschlüssel, wenn Sie schon wissen, was Sie wollen."
+    cta={{ label: 'Passende Stufe finden', href: '/einstufung', track: 'abschluss-einstufung' }}
+    secondary={{ label: 'Direkt Zugang sichern', href: '/?tarif=compliance#zugang', track: 'abschluss-zugang' }}
   >
     <span slot="eyebrow" class="marke marke-dunkel">Noch {frei} Plätze diesen Monat</span>
     <svg slot="cta-icon" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>

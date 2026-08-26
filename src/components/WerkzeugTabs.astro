@@ -1,0 +1,75 @@
+---
+/**
+ * Wie `CodeTabs.astro`, erweitert um ein Statusabzeichen pro Tab (`WerkzeugStatus`
+ * — verfuegbar/in-vorbereitung/auf-anfrage wie bei `KanalKarte`). `CodeTabs`
+ * selbst bleibt für reine Code-Beispiele ohne Status unverändert.
+ */
+import type { Werkzeug, WerkzeugStatus } from '../lib/werkzeuge';
+
+interface Props {
+  werkzeuge: Werkzeug[];
+}
+
+const { werkzeuge } = Astro.props;
+const groupId = `werkzeug-${Math.random().toString(36).slice(2, 8)}`;
+
+const statusLabel: Record<WerkzeugStatus, string> = {
+  verfuegbar: 'Verfügbar',
+  'in-vorbereitung': 'In Vorbereitung',
+  'auf-anfrage': 'Auf Anfrage',
+};
+const statusMarke: Record<WerkzeugStatus, string> = {
+  verfuegbar: 'marke-accent',
+  'in-vorbereitung': 'marke-neutral',
+  'auf-anfrage': 'marke-neutral',
+};
+---
+
+<div class="border border-line-deep bg-ink-deep" data-werkzeug-tabs={groupId}>
+  <div class="flex flex-wrap border-b border-line-deep">
+    {werkzeuge.map((werkzeug, i) => (
+      <button
+        type="button"
+        data-werkzeug-tab={i}
+        class:list={[
+          'px-4 py-2.5 text-xs font-mono uppercase tracking-wider transition-colors border-r border-line-deep',
+          i === 0 ? 'text-accent-bright bg-ink' : 'text-ink-faint hover:text-canvas',
+        ]}
+      >
+        {werkzeug.label}
+      </button>
+    ))}
+  </div>
+  {werkzeuge.map((werkzeug, i) => (
+    <div data-werkzeug-panel={i} class:list={['px-5 py-5', i !== 0 && 'hidden']}>
+      <span class:list={['marke', statusMarke[werkzeug.status]]}>{statusLabel[werkzeug.status]}</span>
+      {werkzeug.code && (
+        <pre class="mt-3 text-sm font-mono text-[#dbe2ef] overflow-x-auto leading-relaxed"><code>{werkzeug.code}</code></pre>
+      )}
+      <p class="mt-3 text-sm text-[#b8c2d9] leading-relaxed">{werkzeug.hinweis}</p>
+    </div>
+  ))}
+</div>
+
+<script>
+  function initWerkzeugTabs() {
+    document.querySelectorAll<HTMLElement>('[data-werkzeug-tabs]').forEach((group) => {
+      if (group.dataset.init) return;
+      group.dataset.init = 'true';
+      const buttons = group.querySelectorAll<HTMLButtonElement>('[data-werkzeug-tab]');
+      const panels = group.querySelectorAll<HTMLElement>('[data-werkzeug-panel]');
+      buttons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const idx = btn.dataset.werkzeugTab;
+          buttons.forEach((b) => b.classList.remove('text-accent-bright', 'bg-ink'));
+          buttons.forEach((b) => b.classList.add('text-ink-faint'));
+          btn.classList.add('text-accent-bright', 'bg-ink');
+          btn.classList.remove('text-ink-faint');
+          panels.forEach((p) => p.classList.toggle('hidden', p.dataset.werkzeugPanel !== idx));
+        });
+      });
+    });
+  }
+  initWerkzeugTabs();
+  document.addEventListener('astro:after-swap', initWerkzeugTabs);
+</script>
