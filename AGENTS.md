@@ -8,7 +8,7 @@ German-only, multi-page site for **konforme-ki.de**: an AI governance/inference 
 
 **The quiz never states which law applies to a visitor** — `rdg-hinweis.md` explicitly disclaims giving legal assessments, so `empfehleStufe()`'s output is always phrased as a product/grade recommendation plus a document checklist, never as "§ 203 StGB applies to you". Don't loosen this wording.
 
-Business context and the funnel design live in `MARKETING.md` at the repo root — read it before making content changes.
+Business context and the funnel design live in `MARKETING.md` at the repo root (there is deliberately **no README** — `MARKETING.md` is the canonical business-context doc) — read it before making content changes. Its **"The selling points, in the order a visitor meets them"** section is the canonical list of what the homepage must keep doing; weakening one of those nine is a regression, not a redesign.
 
 ## The shared plumbing layer: `@justinguese/astro-kit`
 

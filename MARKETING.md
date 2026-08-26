@@ -1,4 +1,12 @@
-# Nachweis (konforme-ki.de) — business plan
+# konforme-ki.de — business plan
+
+> **The brand is the domain.** Until 2026-08-26 `site.name` was `Nachweis` while the
+> header read `konforme-ki.de` and the same word carried the value proposition in body
+> copy ("Wir liefern beiden den Nachweis") — a reader could not tell whether it named
+> the company or the proof trail. *Nachweis* is now exclusively the noun, which is what
+> makes it the strongest word on the site. Never reintroduce it as an absender.
+
+## The rephrase brief (2026-08-26, verbatim — what was asked for)
 
 i want to rephrase my homepage to offer 3 clearly defined products.
 
@@ -22,6 +30,49 @@ the offer should be very very clear. we will aim to be a simple plug an dplay au
 
 also mention that this way you will prevent vendor lock in, or lets say anthropic suddenly gets banned by your company, then our endpoint will easily switch over to another provider without you having to roll out a new tool
 
+## The selling points, in the order a visitor meets them (2026-08-26)
+
+This is the canonical list. A homepage change that weakens one of these is a regression,
+not a redesign. Derived from the brief above plus the clarity/CVR audit that followed it.
+
+1. **Three co-equal products, visible in the first viewport.** `Deutschland-Inferenz`
+   (own German hardware, strictest grade) · `Router` (one endpoint, four selectable
+   grades) · `Sidecar` (same layer in front of the customer's existing cloud). Rendered
+   as a funnel — narrow/high-protection/high-effort at the top, wide/full-choice/low-effort
+   at the bottom. They are alternatives, not tiers of one another; nothing on the page may
+   re-rank them into a single "best" offer.
+2. **The quiz is the freebie and the first CTA — not any product.** `/einstufung`,
+   four questions, ~60 seconds, no signup, result rendered on the page. It outputs a
+   product + a grade + the document list. It never states which law applies (RDG).
+   **Never call it "5 Minuten"** — it is four radio buttons, and overstating the cost of a
+   60-second form manufactures friction against your own funnel.
+3. **Switching costs one line.** `base_url` and you are done — requests, responses and
+   streaming are unchanged. This is the strongest adoption argument and belongs *in the
+   hero*, shown as an actual diff, not described three sections down. Tabs prove it per
+   tool: curl, Python, TypeScript, Cursor, Windsurf, Claude Code, Copilot, plus a
+   ChatGPT-like web UI for non-developers and Teams/Slack/WhatsApp/E-Mail/Webhook channels.
+4. **No vendor lock-in.** Your tools point at a `base_url`, not at a vendor. If a group
+   policy bans a provider, a provider changes its terms out of your grade, or a provider
+   goes down, we re-map behind the endpoint — no rollout, no new tool, no re-approval,
+   because the proof trail is unchanged. This answers a distinct objection and earns its
+   own section, not a trailing sentence.
+5. **The product is the proof trail, not the tokens.** Per request: model, sub-processor,
+   region, retention, tokens, timestamp, hash chained to the previous request. Exportable
+   as an Art. 30 VVT entry, signed PDF, CSV. Everything above is delivery; this is the moat.
+6. **Say the category out loud.** The hero must contain "OpenAI-kompatible KI-Schnittstelle".
+   "Compliance-Schicht" alone also describes a consultancy — before 2026-08-26 the first
+   viewport never contained the word API, and a cold visitor could not tell what was sold.
+7. **One CTA string site-wide: „Passende Stufe finden."** Header, sticky bar, hero,
+   `/router`, closing band. A different label per placement spends the impressions without
+   compounding recognition.
+8. **Prices are comparable but not falsified.** The three products genuinely bill in
+   different units (`ab €0/Monat` · `ab €3,50/Mio. Token` · `ab €290/Monat`); each card
+   carries a sub-line for the nuance. Every figure must have a counterpart in `preise.ts`
+   — never invent one to make the units line up.
+9. **Documents stay ungated, and so does the quiz result.** The DSB downloading the AVV is
+   the qualification event. The email capture sits *below* the finished recommendation as
+   an offer, never as a toll.
+
 ## The niche
 
 EU-hosted inference is already a commodity: Lyceum, IONOS, SimpleLLM, Berget, Cortecs, EUrouter, Infercom, Nebius, Scaleway, Mistral, regolo and others all sell tokens from EU datacenters with a PDF AVV. We don't compete on tokens, price, or "sovereign" — sovereignty is an objection-handler, not a buying trigger, and none of these fifteen-plus providers will ever build the thing that actually unblocks a Datenschutzbeauftragter: **a per-request, exportable proof trail.**
@@ -35,9 +86,34 @@ Positioning: **„Der KI-Endpunkt, der Ihrem Datenschutzbeauftragten die Freigab
 Automotive is a trap (TISAX, 12–24-month cycles, OEMs building in-house). Banking under DORA fails a one-person GmbH at vendor due diligence. **§ 203 StGB Berufsgeheimnisträger** — Ärzte, Kanzleien, Steuerberater, Notare, Psychotherapeuten, Pflegedienste — is the one open lane: a real, narrow, unserved, _legally forced_ buyer. They cannot legally use most AI tooling without a §203-compliant processor arrangement. That original reasoning still holds as a read of which verticals are reachable _right now_ (see the procurement critique's vertical-gate table below — healthcare is still the cheapest gate) — but "don't dilute it with broad copy" is superseded. Two decisions this session changed the actual homepage:
 
 1. **Audience: broad, not narrow.** The homepage hero no longer opens on §203 alone — it leads with the blockers a _general_ EU company actually has (Art. 28 DSGVO, US CLOUD Act/GeschGehG, §87 Abs. 1 Nr. 6 BetrVG Betriebsrat-Mitbestimmung), with §203/Berufsgeheimnisträger kept as a named, still-served niche rather than the whole pitch. Broad top-of-funnel messaging and narrow near-term deal-closing focus aren't in tension — see the note in the procurement critique section.
-2. **Primary offer: Sidecar, not hosted Compliance.** See "Infra & architecture critique" below in full — raw hosted EU inference is a commodity fight against better-capitalized GPU operators; Sidecar (governance/attestation layer over a customer's _existing_ Azure OpenAI/Bedrock/own cloud, zero migration, zero GPU capex) is what's actually differentiated and immediately sellable. The homepage now leads with Sidecar; the hosted Compliance tier is the explicit escalation path for cases a customer's own cloud can't cover.
+2. **Primary offer: Sidecar, not hosted Compliance** — _itself superseded 2026-08-26, see below._ See "Infra & architecture critique" below in full — raw hosted EU inference is a commodity fight against better-capitalized GPU operators; Sidecar (governance/attestation layer over a customer's _existing_ Azure OpenAI/Bedrock/own cloud, zero migration, zero GPU capex) is what's actually differentiated and immediately sellable. The homepage then led with Sidecar; the hosted Compliance tier was the explicit escalation path for cases a customer's own cloud can't cover.
+
+   **Superseded 2026-08-26: there is no single primary offer any more.** The homepage
+   presents three co-equal products and lets the quiz do the routing — a visitor who
+   already owns an Azure contract and a Kanzlei that may not let data leave Germany are
+   not the same buyer, and ranking one offer above the other forced both down the same
+   funnel. The economic reasoning above is unchanged and still correct: Sidecar is still
+   the cheapest thing to sell and carries no GPU capex. What changed is that it is now
+   *selected into* by the questionnaire rather than pushed at everyone.
 
 ## Upstreams — and the mistake that would kill the AVV
+
+> **Read this first — two upstream mechanisms coexist, and the paragraph below is only
+> about one of them.** Everything in this section describes **Säule 1**, the fixed EU-only
+> provider list behind the `/preise` usage tiers (pay-per-token, Chat, Pro). That claim
+> stays absolute there: no OpenRouter, no fallback outside the four.
+> **`Router` and `Sidecar` are the other mechanism** — they run on an OpenRouter-based
+> gateway (`openrouter-sidecar-compliance`) and say so openly, because the honest version
+> of that catalogue is the single strongest asset on `/router`: of 103 reachable providers,
+> 54 are US-headquartered, 29 have unknown jurisdiction at the authoritative source, 12 are
+> China/Singapore, 12 publish no privacy policy, 4 are EEA-resident, and 2 have genuinely
+> clarified retention. That table is the argument *for* a grade system, not something to
+> hide. What made the original warning correct is unchanged: an unqualified "we use a
+> gateway pool" is not a sub-processor register, which is exactly why each grade compiles
+> to a hard pre-egress allowlist *and* to the AVV annex text. Site-wide the promise is
+> **"nie unterhalb Ihrer gewählten Schutzstufe"** (fail-closed per grade) — only
+> `de-only`/Deutschland-Inferenz carries the absolute no-transfer claim, because it is the
+> one grade with no gateway in the path at all.
 
 OpenRouter cannot be the backend. It's US infrastructure with a two-hop path (client → OpenRouter → downstream provider); `eu.openrouter.ai` is enterprise-only, contract-gated, and a vendor self-assertion rather than an audited fact. Naming "OpenRouter Inc., US" in a sub-processor list to a bank or Klinik is disqualifying on the first read.
 
@@ -73,11 +149,17 @@ The biggest risk: building a gateway and discovering the buyer wanted a finished
 
 | #    | Route/Section                                                                                                                               | Purpose                                                                                           |
 | ---- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| 1–14 | `/` (hero → problem → nachweis → playground → export → eu → für-wen → integrationen → sidecar → preise → nicht → unterlagen → zugang → faq) | Full argument, single scroll, one signature element (the hash-chain rail) threading every section |
-| —    | `/playground`                                                                                                                               | Scripted (no-backend) proof that the Nachweis-Panel is real, incl. the fail-closed US-model demo  |
-| —    | `/integrationen`                                                                                                                            | Channel status + the `base_url`-swap pitch to a CTO                                               |
-| —    | `/eu-ki-recht`                                                                                                                              | AI Act / DSGVO / §203 explainer, the SEO/authority page                                           |
-| —    | `/preise`                                                                                                                                   | The three tiers, spelled out                                                                      |
+| 1–12 | `/` (hero → problem → werkzeuge → lock-in → playground → nachweis → unterlagen → checkliste → leiter → zugang → faq → abschluss) | Full argument, single scroll, one signature element (the hash-chain rail) threading every section. **The three products live inside `hero`** as the funnel graphic — there is no separate products section, and that is the point of the 2026-08-26 rephrase |
+| —    | `/einstufung`                                                                                                                   | **The first CTA site-wide.** Four questions → product + grade + document list, client-side, ungated, with the email capture below the result |
+| —    | `/deutschland-inferenz`, `/router`, `/sidecar`                                                                                   | One page per product, matching depth. `/router` carries the 103-provider jurisdiction table; `/sidecar` carries "what it is not" |
+| —    | `/playground`                                                                                                                   | Scripted (no-backend) proof that the Nachweis-Panel is real, incl. the fail-closed US-model demo  |
+| —    | `/integrationen`                                                                                                                | Channel status + the `base_url`-swap pitch to a CTO                                               |
+| —    | `/eu-ki-recht`                                                                                                                  | AI Act / DSGVO / §203 explainer, the SEO/authority page                                           |
+| —    | `/preise`                                                                                                                       | The billing models, spelled out                                                                   |
+
+`/eu-inferenz` was renamed to `/deutschland-inferenz` on 2026-08-26; the old path is a
+static redirect stub (`redirects` in `astro.config.mjs`, since GitHub Pages has no server
+to do it) and is excluded from the sitemap.
 | —    | `/unterlagen`                                                                                                                               | The lead magnet — ungated                                                                         |
 | —    | `/kontakt`                                                                                                                                  | Secondary, reached via `?interesse=`                                                              |
 
