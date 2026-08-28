@@ -529,6 +529,15 @@ const faq = [
 
   <ConversionTracking states={[
     { flag: 'zugang_gesendet', revealId: 'zugang-gesendet', event: 'zugang', label: 'Zugang Waitlist' },
-    { flag: 'infografik_gesendet', revealId: 'checkliste-gesendet', event: 'infografik', label: 'EU-KI-Recht Checkliste' },
+    {
+      flag: 'infografik_gesendet',
+      revealId: 'checkliste-gesendet',
+      event: 'infografik',
+      label: 'EU-KI-Recht Checkliste',
+      // Ein Freebie ist keine Kaufabsicht. Ohne eigenes Event optimiert Meta
+      // die Anzeigenauslieferung sonst auf Gratis-Downloader statt auf Leads.
+      metaEvent: 'FreeDownload',
+      metaCustom: true,
+    },
   ]} />
 </Site>

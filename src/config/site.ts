@@ -34,6 +34,22 @@ export const site = defineSiteConfig({
   metaPixelId: '1590666016030768',
   formspreeId: 'maewgpzk',
 
+  /**
+   * Formulare laufen über die eigene Funnel-API statt über Formspree.
+   *
+   * Damit liegen Kontaktdaten nicht mehr bei einem US-Dienstleister, und jede
+   * Einsendung feuert serverseitig eine Conversion — was der Browser-Pixel
+   * hinter dem Cookie-Banner für einen großen Teil des Traffics nicht kann.
+   * `formspreeId` bleibt als Rückfallebene stehen: ein Formular, das
+   * `formsBase` nicht durchreicht, geht weiterhin an Formspree statt ins Leere.
+   *
+   * `PUBLIC_FORMS_BASE` überschreibt das zur Build-Zeit, damit man lokal gegen
+   * eine laufende Funnel-API testen kann, ohne echte Einsendungen zu erzeugen.
+   */
+  formsBase:
+    import.meta.env.PUBLIC_FORMS_BASE ||
+    'https://ecommerce-api.datafortress.cloud/v1/forms/konforme-ki',
+
   privacyHref: '/datenschutz',
 });
 
@@ -44,3 +60,17 @@ export const site = defineSiteConfig({
  */
 export const API_HOST = 'api.konforme-ki.de';
 export const apiUrl = (path: string) => `https://${API_HOST}${path}`;
+
+/**
+ * Die Funnel-API: Formulare, Verteiler und Checkout für alle Properties.
+ *
+ * Bewusst ein anderer Host als `API_HOST`. Der ist der Inferenz-Endpunkt —
+ * `/v1/chat/completions`, den `werkzeuge.ts` in Code-Beispiele zum Kopieren
+ * druckt. Marketing-Endpunkte auf demselben Hostnamen wären die falsche Naht:
+ * beides sind „die API", aber sie gehören verschiedenen Diensten.
+ */
+export const MARKETING_HOST = 'ecommerce-api.datafortress.cloud';
+export const marketingUrl = (path: string) => `https://${MARKETING_HOST}${path}`;
+
+/** Schlüssel dieser Website in der Funnel-Registry (`sites.yaml`). */
+export const FUNNEL_SITE = 'konforme-ki';

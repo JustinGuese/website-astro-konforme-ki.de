@@ -22,13 +22,19 @@ export interface Tarif {
 export const zugangHref = (tarifId: string) => `/?tarif=${tarifId}#zugang`;
 
 /**
- * Das §203-Freigabedossier (€39) läuft vorerst über dasselbe
- * Formspree-Zugangsformular wie alle anderen Stufen — kein Zahlungsanbieter
- * angebunden. Die Bestellung ist über `tarif=dossier` eindeutig zuordenbar;
- * Rechnung und Auslieferung erfolgen manuell. Sobald ein Payment-Link
- * existiert, wird nur diese eine Konstante ausgetauscht.
+ * `/kasse` mit Produkt-Auswahl — für die drei Tarife mit fixem Stripe-Preis
+ * (Dossier, Chat, Pro). Alles andere (Compliance, Onboarding) bleibt beim
+ * Formular: beide erfordern einen gegengezeichneten AVV bzw. eine
+ * individuelle §203-Zusatzvereinbarung, was kein Self-Serve-Checkout leistet.
  */
-export const dossierHref = zugangHref('dossier');
+export const kaufHref = (produktKey: string) => `/kasse?produkt=${produktKey}`;
+
+/**
+ * Das §203-Freigabedossier (€39) läuft über Stripe Checkout. `dossierHref`
+ * bleibt als Name erhalten, damit an dieser einen Stelle nichts anderes
+ * anzupassen ist, falls der Produkt-Key sich einmal ändert.
+ */
+export const dossierHref = kaufHref('dossier');
 
 /**
  * Die Angebotsleiter — das, was ein Besucher der Startseite vergleichen soll.
@@ -147,7 +153,7 @@ export const NUTZUNGSMODELLE: Tarif[] = [
       'EU-Routing (Säule 1)',
       'Fair-Use Nachrichtenlimit',
     ],
-    cta: { label: 'Zugangsschlüssel sichern', href: zugangHref('chat') },
+    cta: { label: 'Jetzt abonnieren', href: kaufHref('chat') },
     hervorgehoben: true,
   },
   {
@@ -162,7 +168,7 @@ export const NUTZUNGSMODELLE: Tarif[] = [
       'Säule 1 oder 2 wählbar',
       'Priorisierte Warteschlange',
     ],
-    cta: { label: 'Zugangsschlüssel sichern', href: zugangHref('pro') },
+    cta: { label: 'Jetzt abonnieren', href: kaufHref('pro') },
   },
 ];
 
@@ -220,3 +226,19 @@ export function tarifAlsTier(tarif: Tarif): Tier {
     features: tarif.leistungen,
   };
 }
+
+/**
+ * Die drei über Stripe kaufbaren Tarife — Dossier, Chat, Pro. `/kasse` sucht
+ * hierüber Name/Preis/Beschreibung, statt sie ein zweites Mal zu pflegen.
+ * Bewusst eine feste Liste statt eines Felds auf `Tarif`: welche Tarife
+ * kaufbar sind, ist eine Entscheidung dieser einen Stelle, keine, die über
+ * die Preisdaten verteilt sein sollte.
+ */
+const KAUFBARE_TARIFE: Record<string, Tarif> = {
+  dossier: LEITER.find((t) => t.tarifId === 'dossier')!,
+  chat: NUTZUNGSMODELLE.find((t) => t.tarifId === 'chat')!,
+  pro: NUTZUNGSMODELLE.find((t) => t.tarifId === 'pro')!,
+};
+
+export const findKaufTarif = (produktKey: string | null): Tarif | undefined =>
+  produktKey ? KAUFBARE_TARIFE[produktKey] : undefined;

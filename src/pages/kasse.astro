@@ -1,0 +1,108 @@
+---
+import Site from '../layouts/Site.astro';
+import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
+
+const title = 'Kasse | konforme-ki.de';
+const description = 'Zahlung über Stripe abschließen.';
+
+/**
+ * Statischer Build (GitHub Pages, kein Server) — welches Produkt gekauft
+ * wird, steht erst zur Laufzeit in `?produkt=` und wird darum im Client
+ * gelesen (siehe Script unten), nicht hier im Frontmatter.
+ */
+---
+<Site title={title} description={description} noindex>
+  <section class="bg-canvas-deep border-b border-line">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 text-center">
+      <SectionHeader
+        as="h1"
+        eyebrow="Kasse"
+        title="Fast geschafft."
+        lead="Sie werden zu Stripe weitergeleitet, unserem Zahlungsanbieter. Die Zahlung selbst läuft vollständig auf deren gesicherten Seiten."
+        size="lg"
+        align="center"
+      />
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
+      <div id="kasse-lade" class="bg-surface border border-line p-6 sm:p-8 text-center text-sm text-ink-faint">
+        Lädt …
+      </div>
+
+      <div id="kasse-produkt" class="hidden bg-surface border border-line p-6 sm:p-8 space-y-5">
+        <div>
+          <p class="font-mono text-xs uppercase tracking-wider text-ink-faint mb-1.5">Ihre Auswahl</p>
+          <p class="font-display font-bold text-ink text-xl" id="kasse-name"></p>
+          <p class="text-ink-soft text-sm mt-1" id="kasse-beschreibung"></p>
+        </div>
+        <div class="flex items-baseline gap-1.5 border-t border-line pt-4">
+          <span class="display display-m text-ink" id="kasse-preis"></span>
+          <span class="text-ink-faint text-sm" id="kasse-einheit"></span>
+        </div>
+
+        <button type="button" id="kasse-weiter" class="knopf knopf-accent w-full !py-4">
+          <span id="kasse-weiter-label">Weiter zur sicheren Bezahlung</span>
+          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
+        </button>
+
+        <p class="font-mono text-xs text-ink-faint text-center">
+          Zahlungsabwicklung über Stripe. Mit dem Fortfahren stimmen Sie unserer <a href="/datenschutz" class="underline hover:text-ink">Datenschutzerklärung</a> zu.
+        </p>
+      </div>
+
+      <div id="kasse-fehler" class="hidden border border-line bg-surface p-6 sm:p-8 text-center space-y-4">
+        <p class="text-ink text-sm" id="kasse-fehler-text">Dieses Produkt konnte nicht gefunden werden.</p>
+        <a href="/?tarif=compliance#zugang" class="knopf knopf-linie">Stattdessen Zugangsschlüssel anfragen</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import { findKaufTarif } from '../lib/preise';
+    import { startCheckout } from '../lib/kasse';
+
+    (async () => {
+      const lade = document.getElementById('kasse-lade');
+      const produktBlock = document.getElementById('kasse-produkt');
+      const fehlerBlock = document.getElementById('kasse-fehler');
+      const fehlerText = document.getElementById('kasse-fehler-text');
+
+      const params = new URLSearchParams(window.location.search);
+      const produktKey = params.get('produkt');
+      const tarif = findKaufTarif(produktKey);
+
+      lade?.classList.add('hidden');
+
+      if (!tarif) {
+        fehlerBlock?.classList.remove('hidden');
+        return;
+      }
+
+      document.getElementById('kasse-name')!.textContent = tarif.name;
+      document.getElementById('kasse-beschreibung')!.textContent = tarif.beschreibung;
+      document.getElementById('kasse-preis')!.textContent = tarif.preis;
+      document.getElementById('kasse-einheit')!.textContent = tarif.einheit;
+      produktBlock?.classList.remove('hidden');
+
+      const weiterBtn = document.getElementById('kasse-weiter') as HTMLButtonElement | null;
+      const weiterLabel = document.getElementById('kasse-weiter-label');
+
+      weiterBtn?.addEventListener('click', async () => {
+        weiterBtn.disabled = true;
+        if (weiterLabel) weiterLabel.textContent = 'Wird geladen …';
+
+        const result = await startCheckout(produktKey!);
+        if (!result.ok) {
+          weiterBtn.disabled = false;
+          if (weiterLabel) weiterLabel.textContent = 'Weiter zur sicheren Bezahlung';
+          produktBlock?.classList.add('hidden');
+          if (fehlerText) fehlerText.textContent = result.message;
+          fehlerBlock?.classList.remove('hidden');
+        }
+        // Bei Erfolg navigiert startCheckout selbst weiter (window.location).
+      });
+    })();
+  </script>
+</Site>

@@ -1,0 +1,29 @@
+---
+import Site from '../layouts/Site.astro';
+import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
+
+const title = 'Zahlung erfolgreich | konforme-ki.de';
+const description = 'Ihre Zahlung ist eingegangen. Wir melden uns in Kürze mit den nächsten Schritten.';
+
+/**
+ * Feuert bewusst KEIN Browser-`Purchase` — das Server-Event aus dem
+ * Stripe-Webhook ist die Quelle der Wahrheit. Ein Client-Event, dessen
+ * Wert aus einem Query-Parameter käme, wäre fälschbar; das echte Event
+ * kennt `amount_total` direkt von Stripe.
+ */
+---
+<Site title={title} description={description} noindex>
+  <section class="bg-canvas-deep border-b border-line">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 text-center">
+      <SectionHeader
+        as="h1"
+        eyebrow="Angekommen"
+        title="Zahlung erfolgreich."
+        lead="Vielen Dank! Ihre Zahlung ist eingegangen. Sie erhalten in Kürze eine Bestätigung per E-Mail — bei den beiden Abo-Tarifen mit den Zugangsdaten, beim Dossier mit den Unterlagen."
+        size="lg"
+        align="center"
+      />
+      <a href="/" class="knopf knopf-accent mt-6 inline-flex">Zur Startseite</a>
+    </div>
+  </section>
+</Site>
