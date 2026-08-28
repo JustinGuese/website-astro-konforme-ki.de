@@ -150,7 +150,21 @@ const description = 'Fragen zum Onboarding, zum Sidecar-Einsatz oder zum Complia
     })();
   </script>
 
+  {/*
+    `metaEvent: 'Contact'` muss zum serverseitigen Event in `sites.yaml`
+    (kontakt -> Contact) passen. Meta dedupliziert über Name UND event_id
+    gemeinsam: ohne den Namen zählt dieselbe Einsendung nicht doppelt, sondern
+    als zwei verschiedene Conversions — ein Lead aus dem Browser und ein
+    Contact vom Server. Das sieht in Events Manager plausibel aus und fällt
+    darum schwerer auf als eine verdoppelte Zahl.
+  */}
   <ConversionTracking states={[
-    { flag: 'kontakt_gesendet', revealId: 'sent-banner', event: 'kontakt', label: 'Contact Form Submission' },
+    {
+      flag: 'kontakt_gesendet',
+      revealId: 'sent-banner',
+      event: 'kontakt',
+      label: 'Contact Form Submission',
+      metaEvent: 'Contact',
+    },
   ]} />
 </Site>

@@ -2,7 +2,7 @@
   "name": "ki-nachweis-de",
   "type": "module",
   "version": "0.0.1",
-  "description": "konforme-ki.de (Nachweis): EU-Inferenz-Gateway mit exportierbarer, hash-verketteter Prüfspur für Berufsgeheimnisträger nach § 203 StGB.",
+  "description": "konforme-ki.de (Nachweis): EU-Inferenz-Gateway mit exportierbarer, hash-verketteter Pr\u00fcfspur f\u00fcr Berufsgeheimnistr\u00e4ger nach \u00a7 203 StGB.",
   "repository": {
     "type": "git",
     "url": "https://github.com/JustinGuese/website-ai-router-de.git"
@@ -21,7 +21,7 @@
   "dependencies": {
     "@astrojs/check": "^0.9.10",
     "@astrojs/sitemap": "^3.7.3",
-    "@justinguese/astro-kit": "^0.5.0",
+    "@justinguese/astro-kit": "^0.6.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.1.6",
     "sharp": "^0.35.3",

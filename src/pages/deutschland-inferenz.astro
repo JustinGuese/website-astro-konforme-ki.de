@@ -6,6 +6,7 @@ import CompareBlock from '@justinguese/astro-kit/CompareBlock.astro';
 import ArticleGrid from '@justinguese/astro-kit/ArticleGrid.astro';
 import CtaBand from '@justinguese/astro-kit/CtaBand.astro';
 import CodeTabs from '../components/CodeTabs.astro';
+import { apiUrl } from '../config/site';
 import { INFERENZ_TARIFE, INFERENZ_VERGLEICH_SPALTEN, INFERENZ_VERGLEICH_ZEILEN, inferenzHref } from '../lib/deutschlandInferenz';
 
 const title = 'Deutschland-Inferenz — Qwen3.8-27B, gehostet in Deutschland | konforme-ki.de';
@@ -36,7 +37,9 @@ const nachweise = [
   },
 ];
 
-const curl = `curl https://api.konforme-ki.de/v1/chat/completions \\
+// Über `apiUrl()`, nicht hart verdrahtet: genau diese Zeile hatte den alten
+// Hostnamen konserviert, während `site.ts` bereits umgezogen war.
+const curl = `curl ${apiUrl('/v1/chat/completions')} \\
   -H "Authorization: Bearer $NACHWEIS_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{"model": "qwen3.8-27b", "messages": [{"role": "user", "content": "..."}]}'`;

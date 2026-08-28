@@ -54,11 +54,18 @@ export const site = defineSiteConfig({
 });
 
 /**
- * Einheitlicher API-Hostname. Vorher liefen `/integrationen` und
- * `/deutschland-inferenz` mit zwei verschiedenen Namen (`gateway.` bzw. `api.`) für
- * denselben Endpunkt — hier auf einen konsolidiert.
+ * Einheitlicher API-Hostname für die Inferenz. Vorher liefen `/integrationen`
+ * und `/deutschland-inferenz` mit zwei verschiedenen Namen (`gateway.` bzw.
+ * `api.`) für denselben Endpunkt — hier auf einen konsolidiert.
+ *
+ * Das war bis zuletzt `api.konforme-ki.de` — ein Hostname, der überhaupt nicht
+ * auflöst. Der Sidecar hört ausschließlich auf `ai-sidecar-api.…`. Das fällt
+ * nicht als Fehler auf der Website auf, weil sie den Host nur *abdruckt*: jedes
+ * Code-Beispiel unter `/werkzeuge`, `/integrationen` und
+ * `/deutschland-inferenz` war zum Kopieren gedacht und lief beim Leser in einen
+ * DNS-Fehler.
  */
-export const API_HOST = 'api.konforme-ki.de';
+export const API_HOST = 'ai-sidecar-api.datafortress.cloud';
 export const apiUrl = (path: string) => `https://${API_HOST}${path}`;
 
 /**

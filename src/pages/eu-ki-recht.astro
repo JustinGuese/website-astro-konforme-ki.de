@@ -157,7 +157,23 @@ const zeitstrahl = [
     </div>
   </section>
 
+  {/*
+    `metaEvent` muss hier gesetzt sein, sonst feuert der Default `Lead`. Das
+    infografik-Formular steht auf zwei Seiten (`/` und hier); auf `/` war der
+    FreeDownload-Split gesetzt, hier fehlte er — dieselbe Checkliste meldete je
+    nach Landingpage einen Gratis-Download oder einen Lead. Genau die
+    Verwässerung, die der Split verhindern soll: die Optimierung lernt sonst,
+    den häufigeren (kostenlosen) Abschluss zu suchen. Serverseitig steht in
+    `sites.yaml` ohnehin FreeDownload, die beiden liefen also auseinander.
+  */}
   <ConversionTracking states={[
-    { flag: 'infografik_gesendet', revealId: 'infografik-gesendet', event: 'infografik', label: 'EU-KI-Recht Checkliste' },
+    {
+      flag: 'infografik_gesendet',
+      revealId: 'infografik-gesendet',
+      event: 'infografik',
+      label: 'EU-KI-Recht Checkliste',
+      metaEvent: 'FreeDownload',
+      metaCustom: true,
+    },
   ]} />
 </Site>
