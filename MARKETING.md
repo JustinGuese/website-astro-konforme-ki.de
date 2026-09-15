@@ -3,8 +3,85 @@
 > **The brand is the domain.** Until 2026-08-26 `site.name` was `Nachweis` while the
 > header read `konforme-ki.de` and the same word carried the value proposition in body
 > copy ("Wir liefern beiden den Nachweis") — a reader could not tell whether it named
-> the company or the proof trail. *Nachweis* is now exclusively the noun, which is what
+> the company or the proof trail. _Nachweis_ is now exclusively the noun, which is what
 > makes it the strongest word on the site. Never reintroduce it as an absender.
+
+## review 15.9.26
+
+"The only compliant one" is off by roughly a dozen
+
+The German market is one of the most crowded in Europe for this:
+
+IONOS — first German cloud provider with BSI C5 Type 1 + ISO 27001 per BSI IT-Grundschutz, since November 2023. AI Model Hub, H200 VMs, hourly pricing, no minimum term.
+STACKIT (Schwarz Group) — datacenters exclusively in Germany and Austria, German group with no US parent, C5-attested, and contractually doesn't evaluate requests.
+T-Systems AI Foundation Services — Industrial AI Cloud in Munich, one of Europe's largest AI datacenters with 10,000 B200 GPUs, 51 models, 100% German hosting, ISO 27001, BSI C5, Gaia-X, plus a published EU AI Act compliance framework.
+Aleph Alpha — Heidelberg, PhariaAI for highest-compliance sectors, already selling to Bosch, Deutsche Bank, SAP and federal agencies.
+plusserver, Mittwald, LLMBase, plus Scaleway, OVH, Infomaniak, Gcore across the EU.
+
+And critically: for procurement and data-protection reviews, IONOS and STACKIT already have everything on the table — AVV, subprocessor list, C5 attestation. That proof block I told you to build is the thing they hand over as an audited artifact.
+
+The barrier is attestation, and it's expensive
+
+BSI C5 is a third-party attestation by a Wirtschaftsprüfer — mid five figures and months of process, requiring documented operations you don't yet have. DORA additionally requires banks to maintain ICT third-party registers with contractual audit rights, subcontracting controls and exit plans. A single-person GmbH with one GPU and no redundancy cannot satisfy a bank's DORA register, at any price. Automotive and banking are effectively closed to you until you're a multi-person operation with certifications.
+
+Worse for the premise: a German provider isn't required for DSGVO at all. What matters is an EU server location, an AVV, and no training on inputs. "Deutsche GmbH" is a trust signal, not a legal necessity — and three of your competitors have it plus a C5 certificate.
+
+Where there is a genuine gap
+
+§203 StGB. It's criminal law, not regulatory, and it requires the provider's personnel to be formally obligated to secrecy under §203 Abs. 4. Large providers' legal departments generally won't sign that addendum — personal criminal liability isn't something an enterprise counsel approves. A one-person operation can, and that's a real, structural advantage that doesn't shrink as competitors grow.
+
+But notice what that implies. The §203 market is Anwälte, Notare, Steuerberater, Ärzte, Psychotherapeuten — small practices buying a solution to a specific problem, not per-token inference. They won't evaluate your endpoint against IONOS's; they'll buy something that answers a Prüfanfrage or drafts an Aktenvermerk without their Schweigepflicht being breached.
+
+Which means the defensible shape isn't "German LLM provider." It's a §203-bound vertical application with inference as an implementation detail the customer never sees. That's pruefanfrage.de, and you've already built the landing page for it.
+
+The realistic plan is therefore to stop selling tokens and sell the §203 addendum with a working application on top — same GPU, same stack, but the compliance artifact is the product and the model is plumbing. Competing with T-Systems on inference is a fight you lose; being the only provider who'll sign a Schweigepflicht-Verpflichtung is one you win by default.
+
+## Repositionierung 2026-09-15 — the homepage sells §203, not "compliant AI for everyone"
+
+**Supersedes selling points 1, 2 and 7 below** (three co-equal products in the hero, the
+quiz as first CTA, „Passende Stufe finden" as the one CTA string). Points 3–6, 8, 9 still hold.
+
+Why: the broad pitch ("Der Betriebsrat blockt. Der DSB blockt.") targets exactly the buyer
+that IONOS, STACKIT and T-Systems win — BSI C5, ISO 27001, redundancy, published AI Act
+frameworks. A one-GPU GmbH loses that comparison on procurement, not on copy. DORA closes
+banking outright. What a small operator *can* offer credibly is a §203 Verschwiegenheits-
+vereinbarung for Deutschland-Inferenz, signed by the person who runs the servers, with no
+foreign model provider in the chain.
+
+**Do not claim to be the only one who signs.** Microsoft (incl. Azure OpenAI), Open Telekom
+Cloud, STACKIT and vertical tools (Beck-Noxtua, Taxy.io, Logicc, ASCADI) offer §203
+agreements. The defensible differences are: no US parent (CLOUD Act), the signer operates the
+servers with personal Verpflichtungserklärungen (Anlage 1), no third-party model provider,
+and the per-request proof trail. The homepage says this openly (#unterschrift, #grenzen).
+
+Rules that follow:
+
+1. **Hero audience: Kanzleien, Steuerberatung, Praxen.** Router and Sidecar stay full
+   products but live in `#weitere-wege` after `#zugang`, not in the first viewport.
+2. **§203 is offered for Deutschland-Inferenz only.** Router/Säule 1 route to providers we
+   cannot bind (§ 203 Abs. 4 S. 2 Nr. 2 StGB makes *us* liable if they aren't); Sidecar sends
+   data to the customer's own cloud. Every tier line mentioning the addendum says
+   „(bei Deutschland-Inferenz)".
+3. **One CTA string: „Kostenlos testen"** → `/kontakt?interesse=de-inferenz-test`. Secondary:
+   „Vereinbarung lesen" → `/unterlagen/203-zusatzvereinbarung`.
+4. **`#grenzen` stays.** Telling C5/DORA/HA/frontier-model buyers to go elsewhere is the
+   credibility, not a leak.
+5. **Infrastructure claims must match production**, which a DSB can check with `dig`. As of
+   2026-09-15 they did not — see "Open blockers" below.
+
+### Open blockers (2026-09-15) — the pitch is not true in production yet
+
+- `ai-sidecar-api.datafortress.cloud` runs through a **Cloudflare Tunnel**: Cloudflare, Inc.
+  (US) terminates TLS and sees prompts. It is not in the Subprozessorenliste and contradicts
+  "keine US-Beteiligung". Fix: serve the endpoint directly (own TLS on the origin) or list it.
+- The gateway runs on the k3s VPS in **Frankfurt (AS58087)**, not Hetzner Nürnberg; that
+  hoster is not in the Subprozessorenliste.
+- The deployed gateway has **no `SELFHOSTED_BASE_URL`** — the public endpoint is not wired to
+  the German GPU, so Deutschland-Inferenz is not served through it.
+- Gateway defaults `STORE_CONTENT_DEFAULT=true`, `DEFAULT_RETENTION_DAYS=180` (OpenRouter
+  plane; the self-hosted plane defaults to off). Router copy must not imply 0-day retention.
+- The §203 addendum is still `ENTWURF` — needs legal review, and Anlage 1 declarations need
+  to actually be signed.
 
 ## The rephrase brief (2026-08-26, verbatim — what was asked for)
 
@@ -47,8 +124,8 @@ not a redesign. Derived from the brief above plus the clarity/CVR audit that fol
    **Never call it "5 Minuten"** — it is four radio buttons, and overstating the cost of a
    60-second form manufactures friction against your own funnel.
 3. **Switching costs one line.** `base_url` and you are done — requests, responses and
-   streaming are unchanged. This is the strongest adoption argument and belongs *in the
-   hero*, shown as an actual diff, not described three sections down. Tabs prove it per
+   streaming are unchanged. This is the strongest adoption argument and belongs _in the
+   hero_, shown as an actual diff, not described three sections down. Tabs prove it per
    tool: curl, Python, TypeScript, Cursor, Windsurf, Claude Code, Copilot, plus a
    ChatGPT-like web UI for non-developers and Teams/Slack/WhatsApp/E-Mail/Webhook channels.
 4. **No vendor lock-in.** Your tools point at a `base_url`, not at a vendor. If a group
@@ -70,7 +147,7 @@ not a redesign. Derived from the brief above plus the clarity/CVR audit that fol
    carries a sub-line for the nuance. Every figure must have a counterpart in `preise.ts`
    — never invent one to make the units line up.
 9. **Documents stay ungated, and so does the quiz result.** The DSB downloading the AVV is
-   the qualification event. The email capture sits *below* the finished recommendation as
+   the qualification event. The email capture sits _below_ the finished recommendation as
    an offer, never as a toll.
 
 ## The niche
@@ -94,7 +171,7 @@ Automotive is a trap (TISAX, 12–24-month cycles, OEMs building in-house). Bank
    not the same buyer, and ranking one offer above the other forced both down the same
    funnel. The economic reasoning above is unchanged and still correct: Sidecar is still
    the cheapest thing to sell and carries no GPU capex. What changed is that it is now
-   *selected into* by the questionnaire rather than pushed at everyone.
+   _selected into_ by the questionnaire rather than pushed at everyone.
 
 ## Upstreams — and the mistake that would kill the AVV
 
@@ -107,10 +184,10 @@ Automotive is a trap (TISAX, 12–24-month cycles, OEMs building in-house). Bank
 > of that catalogue is the single strongest asset on `/router`: of 103 reachable providers,
 > 54 are US-headquartered, 29 have unknown jurisdiction at the authoritative source, 12 are
 > China/Singapore, 12 publish no privacy policy, 4 are EEA-resident, and 2 have genuinely
-> clarified retention. That table is the argument *for* a grade system, not something to
+> clarified retention. That table is the argument _for_ a grade system, not something to
 > hide. What made the original warning correct is unchanged: an unqualified "we use a
 > gateway pool" is not a sub-processor register, which is exactly why each grade compiles
-> to a hard pre-egress allowlist *and* to the AVV annex text. Site-wide the promise is
+> to a hard pre-egress allowlist _and_ to the AVV annex text. Site-wide the promise is
 > **"nie unterhalb Ihrer gewählten Schutzstufe"** (fail-closed per grade) — only
 > `de-only`/Deutschland-Inferenz carries the absolute no-transfer claim, because it is the
 > one grade with no gateway in the path at all.
@@ -147,21 +224,21 @@ The biggest risk: building a gateway and discovering the buyer wanted a finished
 
 ## Page structure (this repo)
 
-| #    | Route/Section                                                                                                                               | Purpose                                                                                           |
-| ---- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| #    | Route/Section                                                                                                                    | Purpose                                                                                                                                                                                                                                                      |
+| ---- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 1–12 | `/` (hero → problem → werkzeuge → lock-in → playground → nachweis → unterlagen → checkliste → leiter → zugang → faq → abschluss) | Full argument, single scroll, one signature element (the hash-chain rail) threading every section. **The three products live inside `hero`** as the funnel graphic — there is no separate products section, and that is the point of the 2026-08-26 rephrase |
-| —    | `/einstufung`                                                                                                                   | **The first CTA site-wide.** Four questions → product + grade + document list, client-side, ungated, with the email capture below the result |
-| —    | `/deutschland-inferenz`, `/router`, `/sidecar`                                                                                   | One page per product, matching depth. `/router` carries the 103-provider jurisdiction table; `/sidecar` carries "what it is not" |
-| —    | `/playground`                                                                                                                   | Scripted (no-backend) proof that the Nachweis-Panel is real, incl. the fail-closed US-model demo  |
-| —    | `/integrationen`                                                                                                                | Channel status + the `base_url`-swap pitch to a CTO                                               |
-| —    | `/eu-ki-recht`                                                                                                                  | AI Act / DSGVO / §203 explainer, the SEO/authority page                                           |
-| —    | `/preise`                                                                                                                       | The billing models, spelled out                                                                   |
+| —    | `/einstufung`                                                                                                                    | **The first CTA site-wide.** Four questions → product + grade + document list, client-side, ungated, with the email capture below the result                                                                                                                 |
+| —    | `/deutschland-inferenz`, `/router`, `/sidecar`                                                                                   | One page per product, matching depth. `/router` carries the 103-provider jurisdiction table; `/sidecar` carries "what it is not"                                                                                                                             |
+| —    | `/playground`                                                                                                                    | Scripted (no-backend) proof that the Nachweis-Panel is real, incl. the fail-closed US-model demo                                                                                                                                                             |
+| —    | `/integrationen`                                                                                                                 | Channel status + the `base_url`-swap pitch to a CTO                                                                                                                                                                                                          |
+| —    | `/eu-ki-recht`                                                                                                                   | AI Act / DSGVO / §203 explainer, the SEO/authority page                                                                                                                                                                                                      |
+| —    | `/preise`                                                                                                                        | The billing models, spelled out                                                                                                                                                                                                                              |
 
 `/eu-inferenz` was renamed to `/deutschland-inferenz` on 2026-08-26; the old path is a
 static redirect stub (`redirects` in `astro.config.mjs`, since GitHub Pages has no server
 to do it) and is excluded from the sitemap.
-| —    | `/unterlagen`                                                                                                                               | The lead magnet — ungated                                                                         |
-| —    | `/kontakt`                                                                                                                                  | Secondary, reached via `?interesse=`                                                              |
+| — | `/unterlagen` | The lead magnet — ungated |
+| — | `/kontakt` | Secondary, reached via `?interesse=` |
 
 ## Instrument these numbers
 

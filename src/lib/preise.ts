@@ -97,7 +97,7 @@ export const LEITER: Stufe[] = [
       'Automatischer Art. 30 VVT-Eintrag pro Anfrage',
       'Subprozessor-Änderungsbenachrichtigung',
       'Gegengezeichneter AVV',
-      'Individuelle §203-Zusatzvereinbarung',
+      '§203-Zusatzvereinbarung (bei Deutschland-Inferenz)',
     ],
     cta: { label: 'Zugangsschlüssel sichern', href: zugangHref('compliance') },
   },
@@ -114,7 +114,7 @@ export const ANKER: Tarif = {
   leistungen: [
     'Prüfung Ihrer bestehenden Systeme',
     'Integration in Ihren primären Kanal',
-    'Individuelle §203-Zusatzvereinbarung',
+    'Individuelle §203-Zusatzvereinbarung (bei Deutschland-Inferenz)',
     'Begleitung bis zur DSB-Freigabe',
     'Optional: dedizierte Server in Ihrem Rechenzentrum (Säule 3)',
   ],
@@ -146,7 +146,7 @@ export const NUTZUNGSMODELLE: Tarif[] = [
     name: 'Chat',
     preis: '€29',
     einheit: '/ Monat',
-    beschreibung: 'Web-Oberfläche wie ChatGPT/Claude — für den Einstieg in Kanzlei oder Praxis.',
+    beschreibung: 'Web-Oberfläche wie ChatGPT/Claude — für Teams ohne Berufsgeheimnisse.',
     leistungen: [
       '~15 Mio. Token/Monat inklusive',
       'Chat-Oberfläche, kein API-Setup nötig',
@@ -155,6 +155,7 @@ export const NUTZUNGSMODELLE: Tarif[] = [
     ],
     cta: { label: 'Jetzt abonnieren', href: kaufHref('chat') },
     hervorgehoben: true,
+    hinweis: 'Ohne §203-Zusatzvereinbarung: Säule 1 routet an EU-Anbieter, die wir nicht zur Verschwiegenheit verpflichten können. Für Berufsgeheimnisse: Deutschland-Inferenz.',
   },
   {
     tarifId: 'pro',
@@ -185,7 +186,7 @@ export const SERVICE_TARIFE: Tarif[] = [
       'Automatischer Art. 30 VVT-Eintrag',
       'Subprozessor-Änderungsbenachrichtigung',
       'Gegengezeichneter AVV',
-      '§203-Zusatzvereinbarung',
+      '§203-Zusatzvereinbarung (bei Deutschland-Inferenz)',
     ],
     cta: { label: 'Zugangsschlüssel sichern', href: zugangHref('compliance') },
     hervorgehoben: true,
@@ -199,7 +200,7 @@ export const SERVICE_TARIFE: Tarif[] = [
     leistungen: [
       'Prüfung Ihrer bestehenden Systeme',
       'Integration in Ihren primären Kanal',
-      'Individuelle §203-Zusatzvereinbarung',
+      'Individuelle §203-Zusatzvereinbarung (bei Deutschland-Inferenz)',
       'Begleitung bis zur Freigabe durch Ihren DSB',
       'Optional: dedizierte Server in Ihrem Rechenzentrum (Säule 3) — individuell kalkuliert',
     ],

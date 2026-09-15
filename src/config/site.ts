@@ -19,7 +19,7 @@ export const site = defineSiteConfig({
   legalName: 'DataFortress.cloud GmbH',
   url: 'https://konforme-ki.de',
   description:
-    'Drei Wege zur selben Compliance-Schicht — Deutschland-Inferenz, Router oder Sidecar. Nie unterhalb der von Ihnen gewählten Schutzstufe. Exportierbare, hash-verkettete Beweiskette für Datenschutzbeauftragte und Betriebsrat.',
+    'KI für Mandanten- und Patientendaten: Sprachmodell auf Servern in Deutschland, §203-Verschwiegenheitsvereinbarung mit Belehrung, deutsche GmbH ohne US-Muttergesellschaft, Protokoll zu jeder Anfrage.',
   locale: 'de_DE',
   lang: 'de',
   address: {

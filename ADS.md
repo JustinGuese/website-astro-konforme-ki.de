@@ -136,7 +136,7 @@ Das ist die Frage, an der Anbietergespräche kippen. Die ehrliche Antwort der me
 
 Hier lautet sie anders - die Anfrage **schlägt fehl**. 🛑
 
-🇩🇪 Nur Deutschland - eigene Hardware, kein Gateway, kein Transfer
+🇩🇪 Nur Deutschland - eigene Server, kein fremder Modellanbieter, kein Transfer
 🇪🇺 Nur EWR-ansässige Anbieter - namentlich benannt, keine Ausweichroute
 🌍 Oder volle Auswahl, dafür lückenlos protokolliert
 📄 Jede Stufe zeigt offen, was sie _nicht_ leistet - nicht nur das Versprechen
@@ -436,7 +436,7 @@ Die meisten Gateways beantworten das mit einem Fallback. Bequem - und genau der 
 
 Hier schlägt die Anfrage fehl. Sie wird nie auf eine niedrigere Stufe heruntergestuft.
 
-🇩🇪 Nur Deutschland - eigene Hardware, kein Gateway
+🇩🇪 Nur Deutschland - eigene Server, kein fremder Modellanbieter
 🇪🇺 EWR-Region - Rechenzentrum auf ein Land gepinnt
 🌍 EU-Anbieter - ausschließlich EWR-ansässige Entitäten, namentlich
 🌐 Global, protokolliert - volle Auswahl, lückenlos aufgezeichnet
@@ -515,12 +515,12 @@ Serverstandort und Eigentümerstruktur sind zwei verschiedene Dinge. Ein Anbiete
 
 Für personenbezogene Daten ist das eine DSGVO-Frage. Für Konstruktionsunterlagen, Kalkulationen und Lieferantenkonditionen ist es eine Frage nach dem GeschGehG, und die löst eine EU-AVV allein nicht.
 
-🇩🇪 Eigene Hardware in Deutschland, betrieben von einer deutschen GmbH
-🚫 Kein Subprozessor, kein Transfer, keine Ausweichroute
+🇩🇪 Eigene Server in Deutschland, betrieben von einer deutschen GmbH
+🚫 Kein fremder Modellanbieter, kein Transfer, keine Ausweichroute
 🔒 Kein Logging, kein Training auf Ihren Inhalten
 ⚖️ Deutscher Gerichtsstand, deutsches Recht, ein Ansprechpartner mit Namen
 
-⚡ Die einzige Stufe, die kein Gateway der Welt liefern kann - dafür braucht es eigene Rechner.
+⚡ Jede beteiligte Stelle steht namentlich in der Subprozessorenliste - lesen Sie sie vor dem ersten Gespräch.
 
 👉 https://konforme-ki.de/deutschland-inferenz
 

@@ -26,7 +26,7 @@ const { stufen = LEITER } = Astro.props;
     <div class:list={['flex flex-col p-6 sm:p-7', stufe.hervorgehoben ? 'bg-ink-deep text-canvas' : 'bg-surface']}>
       <div class="flex items-center justify-between gap-3">
         <p class:list={['marginalie', stufe.hervorgehoben ? 'text-accent-bright' : '']}>Stufe {stufe.nummer}</p>
-        {stufe.hervorgehoben && <span class="marke marke-dunkel">Beliebtester Einstieg</span>}
+        {stufe.hervorgehoben && <span class="marke marke-dunkel">Empfohlener Einstieg</span>}
       </div>
 
       <p class:list={['mt-4 font-display font-bold', stufe.hervorgehoben ? 'text-canvas' : 'text-ink']} style="font-variation-settings: 'wdth' 90;">

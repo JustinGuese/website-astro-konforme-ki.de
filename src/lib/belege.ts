@@ -18,7 +18,7 @@
  * im Gegensatz zu Kundenzahlen, die wir (noch) nicht haben.
  */
 export const SIEGEL: { wert: string; label: string }[] = [
-  { wert: '4', label: 'geprüfte EU-Subprozessoren, namentlich gelistet' },
+  { wert: '1', label: 'Subprozessor bei Deutschland-Inferenz, namentlich gelistet' },
   { wert: '0', label: 'Tage Retention, kein Training auf Ihren Daten' },
   { wert: '5', label: 'Unterlagen ungated herunterladbar, ohne E-Mail' },
   { wert: 'DE', label: 'Anbieter mit Sitz und Gerichtsstand in Deutschland' },
