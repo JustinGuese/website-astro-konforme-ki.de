@@ -56,7 +56,7 @@ export const PRODUKTE: Produkt[] = [
     aufwand: 'Zugangsschlüssel anfordern, keine Infrastrukturänderung nötig.',
     kosten: 'ab €0 / Monat',
     kostenZusatz: '5 Mio. Token inklusive, ohne Zahlungsmittel',
-    cta: { label: 'Kostenlos testen', href: '/kontakt?interesse=de-inferenz-test' },
+    cta: { label: 'Kostenlos testen', href: '/deutschland-inferenz#zugang' },
     akzent: 'premium',
   },
   {

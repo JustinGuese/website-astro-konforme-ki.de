@@ -24,7 +24,7 @@ export interface InferenzTarif {
   hervorgehoben?: boolean;
 }
 
-export const inferenzHref = (tarifId: string) => `/kontakt?interesse=de-inferenz-${tarifId}`;
+export const inferenzHref = (tarifId: string) => `/deutschland-inferenz?tarif=de-inferenz-${tarifId}#zugang`;
 
 export const INFERENZ_TARIFE: InferenzTarif[] = [
   {

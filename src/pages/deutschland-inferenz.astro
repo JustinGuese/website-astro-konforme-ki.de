@@ -5,7 +5,9 @@ import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
 import CompareBlock from '@justinguese/astro-kit/CompareBlock.astro';
 import ArticleGrid from '@justinguese/astro-kit/ArticleGrid.astro';
 import CtaBand from '@justinguese/astro-kit/CtaBand.astro';
+import ConversionTracking from '@justinguese/astro-kit/ConversionTracking.astro';
 import CodeTabs from '../components/CodeTabs.astro';
+import ZugangForm from '../components/ZugangForm.astro';
 import { apiUrl } from '../config/site';
 import { INFERENZ_TARIFE, INFERENZ_VERGLEICH_SPALTEN, INFERENZ_VERGLEICH_ZEILEN, inferenzHref } from '../lib/deutschlandInferenz';
 
@@ -56,11 +58,11 @@ const curl = `curl ${apiUrl('/v1/chat/completions')} \\
         size="lg"
       />
 
-      <!-- Handlungspfad direkt unter dem Aufmacher: der Test-Tarif kostet
-           nichts und verlangt kein Zahlungsmittel — das ist das Angebot, das
-           hier oben stehen muss, nicht erst hinter sechs Sektionen. -->
+      <!-- Anker auf das Formular derselben Seite, nicht auf /kontakt: der
+           Absprung dorthin war der teuerste Schritt im Trichter — bezahlte
+           Klicks landeten auf einer Seite, die erst noch weiterverwies. -->
       <div class="mt-8 flex flex-wrap items-center gap-4">
-        <a href="/kontakt?interesse=de-inferenz-test" class="knopf knopf-accent" data-cta="de-inferenz-hero-test">Kostenlos testen</a>
+        <a href="#zugang" class="knopf knopf-accent" data-cta="de-inferenz-hero-zugang">Kostenlos testen</a>
         <a href="#nachweise" class="knopf knopf-linie" data-cta="de-inferenz-hero-nachweise">Unterlagen für Ihren DSB</a>
         <span class="font-mono text-xs text-ink-faint">5 Mio. Token/Monat · kein Zahlungsmittel nötig</span>
       </div>
@@ -189,10 +191,29 @@ const curl = `curl ${apiUrl('/v1/chat/completions')} \\
     </div>
   </section>
 
+  <section id="zugang" class="py-16 sm:py-20 border-b border-line">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader
+        eyebrow="Kostenlos testen"
+        title="Zugangsschlüssel sichern."
+        lead="5 Mio. Token pro Monat, keine Kreditkarte, kein Verkaufsgespräch. Zugangsschlüssel per E-Mail, werktags binnen 24 Stunden."
+        size="lg"
+        align="center"
+      />
+      <div class="mt-8">
+        <ZugangForm zielPfad="/deutschland-inferenz" absendenLabel="Kostenlos testen" />
+      </div>
+    </div>
+  </section>
+
   <CtaBand
     title="Prüfen, ob Deutschland-Inferenz für Sie infrage kommt."
     body="Kein Zahlungsmittel für den Test-Tarif nötig — und für Compliance oder eine dedizierte GPU klärt ein kurzes Gespräch mehr als jede Seite."
-    cta={{ label: 'Kostenlos testen', href: '/kontakt?interesse=de-inferenz-test', track: 'de-inferenz-abschluss' }}
+    cta={{ label: 'Kostenlos testen', href: '#zugang', track: 'de-inferenz-abschluss' }}
     secondary={{ label: 'Unterlagen ansehen', href: '/unterlagen', track: 'de-inferenz-unterlagen' }}
   />
+
+  <ConversionTracking states={[
+    { flag: 'zugang_gesendet', revealId: 'zugang-gesendet', event: 'zugang', label: 'Deutschland-Inferenz Vereinbarung' },
+  ]} />
 </Site>
