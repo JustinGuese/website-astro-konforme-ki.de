@@ -527,3 +527,55 @@
 }
 
 .druck-kopf { display: none; }
+
+/* ---------------------------------------------------------------------------
+   Ampelbericht (Mittelstand) — Rot heißt hier wirklich „Handlungsbedarf".
+   Farben nur aus den bestehenden Tokens; Gelb nutzt die Premium-Töne, weil
+   diese Seite Premium nur auf der §203-Ebene braucht, nicht im Ampelbericht.
+   ------------------------------------------------------------------------ */
+
+.ampel-zeile {
+  display: grid;
+  grid-template-columns: 1.5rem 1fr auto;
+  gap: 0.85rem;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--color-line);
+}
+.ampel-zeile:last-child { border-bottom: 0; }
+.ampel-lampe {
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 9999px;
+  background: var(--lampe, var(--color-line));
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--lampe, var(--color-line)) 22%, transparent);
+}
+.ampel-lampe[data-status='gruen'] { --lampe: var(--color-accent-bright); }
+.ampel-lampe[data-status='gelb']  { --lampe: var(--color-premium-bright); }
+.ampel-lampe[data-status='rot']   { --lampe: var(--color-signal-bright); }
+.ampel-status {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-faint);
+}
+
+/* Formularfelder der Mittelstand-Seiten: große Tippflächen fürs Handy. */
+.feld {
+  width: 100%;
+  border: 1.5px solid var(--color-line);
+  background: var(--color-surface);
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
+  color: var(--color-ink);
+  min-height: 3.25rem;
+}
+.feld:focus { outline: none; border-color: var(--color-accent); }
+.feld::placeholder { color: var(--color-ink-faint); }
+.feld-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+}

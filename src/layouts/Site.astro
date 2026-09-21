@@ -17,6 +17,22 @@ interface Props {
   noindex?: boolean;
   /** Setzt og:type=article und die Artikel-Metadaten. */
   artikel?: { veroeffentlicht?: string; geaendert?: string; kategorie?: string };
+  /** Eigene Kopfzeilen-Navigation (z. B. Mittelstand); Standard ist die §203-Navigation. */
+  nav?: NavItem[];
+  /** Kopfzeilen-CTA; Standard ist „Kostenlos testen“ der Deutschland-Inferenz. */
+  headerCta?: { href: string; label: string; kurz: string; track: string };
+  /** Sticky-Leiste; `false` blendet sie aus. Standard: Deutschland-Inferenz mit Kontingent. */
+  sticky?: false | { href: string; cta: string; note?: string; label: string; hideNear?: string[] };
+  /** Footer-Variante: `mittelstand` ersetzt Produktspalte und Kurztext. */
+  footerVariante?: 'standard' | 'mittelstand';
+}
+
+interface NavItem {
+  href: string;
+  label: string;
+  kinder?: { href: string; label: string; kurz: string }[];
+  topEyebrow?: string;
+  topLabel?: string;
 }
 
 const {
@@ -24,6 +40,16 @@ const {
   description = 'Drei Wege zur selben Compliance-Schicht — Deutschland-Inferenz, Router oder Sidecar. Nie unterhalb der von Ihnen gewählten Schutzstufe. Exportierbare, hash-verkettete Beweiskette für Datenschutzbeauftragte und Betriebsrat.',
   noindex = false,
   artikel,
+  nav: navProp,
+  headerCta = { href: '/deutschland-inferenz#zugang', label: 'Kostenlos testen', kurz: 'Testen', track: 'header' },
+  sticky = {
+    href: '/deutschland-inferenz#zugang',
+    cta: 'sticky',
+    note: `Noch ${frei} von ${KONTINGENT.plaetze} Zugangsschlüsseln diesen Monat frei`,
+    label: 'Kostenlos testen',
+    hideNear: ['hero', 'zugang'],
+  },
+  footerVariante = 'standard',
 } = Astro.props;
 
 /**
@@ -32,13 +58,7 @@ const {
  * oben im Aufklappmenü — pro Eintrag unterschiedlich, weil „Produkte" auf
  * die Einstufung führt (der Erst-CTA), „Ratgeber" auf die Artikelübersicht.
  */
-const nav: {
-  href: string;
-  label: string;
-  kinder?: { href: string; label: string; kurz: string }[];
-  topEyebrow?: string;
-  topLabel?: string;
-}[] = [
+const standardNav: NavItem[] = [
   {
     href: '/einstufung',
     label: 'Produkte',
@@ -63,6 +83,7 @@ const nav: {
   },
   { href: '/unterlagen', label: 'Unterlagen' },
 ];
+const nav = navProp ?? standardNav;
 /**
  * EU-KI-Recht, Integrationen und Preise bewusst nicht in der Kopfzeile: die
  * auf jeder Sektion sichtbare Navigation soll nicht mit dem einen CTA
@@ -161,11 +182,11 @@ const nav: {
           )))}
         </div>
 
-        <a href="/deutschland-inferenz#zugang" class="knopf knopf-accent !py-2 !px-3 sm:!px-4 !text-sm shrink-0" data-cta="header">
+        <a href={headerCta.href} class="knopf knopf-accent !py-2 !px-3 sm:!px-4 !text-sm shrink-0" data-cta={headerCta.track}>
           <!-- Auf sehr schmalen Geräten würde die Langform Kopfzeile und Seite
                horizontal aufschieben; unten steht ohnehin die Sticky-Leiste. -->
-          <span class="sm:hidden">Testen</span>
-          <span class="hidden sm:inline">Kostenlos testen</span>
+          <span class="sm:hidden">{headerCta.kurz}</span>
+          <span class="hidden sm:inline">{headerCta.label}</span>
         </a>
       </nav>
     </header>
@@ -180,18 +201,33 @@ const nav: {
         <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-8 text-sm">
           <div>
             <span class="font-display text-sm font-bold text-ink" style="font-variation-settings: 'wdth' 90;">konforme-ki<span class="text-accent">.de</span></span>
-            <p class="mt-3 text-ink-faint leading-relaxed">KI für Berufsgeheimnisträger — mit unterschriebener Schweigepflicht nach § 203 StGB.</p>
+            <p class="mt-3 text-ink-faint leading-relaxed">
+              {footerVariante === 'mittelstand'
+                ? 'Website, Telefon-Assistent und technische Website-Prüfung für den Mittelstand.'
+                : 'KI für Berufsgeheimnisträger — mit unterschriebener Schweigepflicht nach § 203 StGB.'}
+            </p>
           </div>
           <div>
             <p class="marginalie mb-3">Produkte</p>
             <div class="flex flex-col gap-2 text-ink-soft">
-              {PRODUKTE.map((p) => (
-                <a href={p.href} class="hover:text-ink">{p.name}</a>
-              ))}
-              <a href="/einstufung" class="hover:text-ink">Einstufung</a>
-              <a href="/integrationen" class="hover:text-ink">Integrationen</a>
-              <a href="/preise" class="hover:text-ink">Preise</a>
-              <a href="/playground" class="hover:text-ink">Playground</a>
+              {footerVariante === 'mittelstand' ? (
+                <>
+                  <a href="/mittelstand/website" class="hover:text-ink">Ihre Website</a>
+                  <a href="/mittelstand/digitales-buero" class="hover:text-ink">Ihr digitales Büro</a>
+                  <a href="/mittelstand/rechtssicher-online" class="hover:text-ink">Rechtssicher online</a>
+                  <a href="/mittelstand/check" class="hover:text-ink">Website-Check</a>
+                </>
+              ) : (
+                <>
+                  {PRODUKTE.map((p) => (
+                    <a href={p.href} class="hover:text-ink">{p.name}</a>
+                  ))}
+                  <a href="/einstufung" class="hover:text-ink">Einstufung</a>
+                  <a href="/integrationen" class="hover:text-ink">Integrationen</a>
+                  <a href="/preise" class="hover:text-ink">Preise</a>
+                  <a href="/playground" class="hover:text-ink">Playground</a>
+                </>
+              )}
             </div>
           </div>
           <div>
@@ -239,12 +275,14 @@ const nav: {
       }}
     />
 
-    <StickyCta
-      href="/deutschland-inferenz#zugang"
-      cta="sticky"
-      strings={{ note: `Noch ${frei} von ${KONTINGENT.plaetze} Zugangsschlüsseln diesen Monat frei`, ctaLabel: 'Kostenlos testen' }}
-      hideNear={['hero', 'zugang']}
-    />
+    {sticky && (
+      <StickyCta
+        href={sticky.href}
+        cta={sticky.cta}
+        strings={{ note: sticky.note, ctaLabel: sticky.label }}
+        hideNear={sticky.hideNear ?? []}
+      />
+    )}
 
     <Attribution storageKey="nw_attribution" />
     <FunnelTracking />

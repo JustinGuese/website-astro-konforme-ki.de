@@ -1,0 +1,10 @@
+---
+import Mittelstand from '../../layouts/Mittelstand.astro';
+import MittelstandProdukt from '../../components/mittelstand/MittelstandProdukt.astro';
+import { findMittelstand } from '../../lib/mittelstand';
+
+const produkt = findMittelstand('website');
+---
+<Mittelstand title="Website für Ihr Unternehmen ab €49/Monat | konforme-ki.de" description="Website Start, Plus und Pro: mobil, einfach betreut, mit Kontaktbutton, Formular und Bewertungen. Aufbau ab €0.">
+  <MittelstandProdukt produkt={produkt} />
+</Mittelstand>

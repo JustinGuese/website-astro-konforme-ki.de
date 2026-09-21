@@ -1,0 +1,38 @@
+---
+/**
+ * Hülle für die Mittelstand-Seiten: dieselbe Site.astro (Consent, SEO,
+ * Tracking), aber eigene Navigation, eigener Kopfzeilen-CTA und Sticky-Leiste.
+ */
+import Site from './Site.astro';
+import { PRODUKTE_MITTELSTAND } from '../lib/mittelstand';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Sticky-Leiste ausblenden, solange diese Ids sichtbar sind. */
+  hideNear?: string[];
+}
+const { title, description, hideNear = ['hero', 'check', 'rueckruf'] } = Astro.props;
+
+const nav = [
+  {
+    href: '/mittelstand',
+    label: 'Angebote',
+    topEyebrow: 'Alles auf einen Blick',
+    topLabel: 'Zur Übersicht →',
+    kinder: PRODUKTE_MITTELSTAND.map((p) => ({ href: p.href, label: p.name, kurz: `${p.einstieg}: ${p.einstiegPreis}` })),
+  },
+  { href: '/mittelstand/check', label: 'Website-Check' },
+  { href: '/kontakt', label: 'Kontakt' },
+];
+---
+<Site
+  title={title}
+  description={description}
+  nav={nav}
+  headerCta={{ href: '/mittelstand/check', label: 'Website prüfen', kurz: 'Prüfen', track: 'header-mittelstand' }}
+  sticky={{ href: '/mittelstand/check', cta: 'sticky-mittelstand', label: 'Website kostenlos prüfen', hideNear }}
+  footerVariante="mittelstand"
+>
+  <slot />
+</Site>

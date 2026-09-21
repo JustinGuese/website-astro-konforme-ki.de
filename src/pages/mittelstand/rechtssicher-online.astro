@@ -1,0 +1,10 @@
+---
+import Mittelstand from '../../layouts/Mittelstand.astro';
+import MittelstandProdukt from '../../components/mittelstand/MittelstandProdukt.astro';
+import { findMittelstand } from '../../lib/mittelstand';
+
+const produkt = findMittelstand('rechtssicher-online');
+---
+<Mittelstand title="Website-Check kostenlos: Ampelbericht | konforme-ki.de" description="Kostenlose technische Prüfung von Cookie-Banner, Impressum, Datenschutzerklärung und KI-Kennzeichnung mit Ampelbericht.">
+  <MittelstandProdukt produkt={produkt} />
+</Mittelstand>

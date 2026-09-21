@@ -1,0 +1,30 @@
+---
+import Mittelstand from '../../layouts/Mittelstand.astro';
+import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
+import ConversionTracking from '@justinguese/astro-kit/ConversionTracking.astro';
+import AmpelKarte from '../../components/mittelstand/AmpelKarte.astro';
+import CheckForm from '../../components/mittelstand/CheckForm.astro';
+
+const title = 'Website-Check kostenlos | konforme-ki.de';
+const description = 'Web-Adresse eingeben und einen Ampelbericht zu Cookie-Banner, Impressum, Datenschutzerklärung und KI-Kennzeichnung bekommen.';
+---
+<Mittelstand title={title} description={description}>
+  <section id="hero" class="bg-canvas-deep border-b border-line">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 grid lg:grid-cols-2 gap-10 items-start">
+      <div>
+        <SectionHeader as="h1" eyebrow="Website-Check" title="Ist Ihre Website in Ordnung?" lead="Adresse und E-Mail genügen. Den Ampelbericht schicken wir Ihnen. Er ist kostenlos, und Sie müssen danach nichts bestellen." size="lg" />
+        <div class="mt-7 bg-surface border border-line p-5 sm:p-6 shadow-[var(--shadow-karte)]">
+          <CheckForm />
+        </div>
+      </div>
+      <div>
+        <AmpelKarte />
+        <p class="mt-3 text-sm text-ink-soft">Bei gelb und rot bieten wir die Reparatur an (€290–490 einmalig, Festpreis vorab). Ihr Bericht bleibt in jedem Fall Ihrer.</p>
+      </div>
+    </div>
+  </section>
+
+  <ConversionTracking states={[
+    { flag: 'check_gesendet', revealId: 'check-gesendet', event: 'website_check', label: 'Website-Check Submission', metaEvent: 'Lead' },
+  ]} />
+</Mittelstand>

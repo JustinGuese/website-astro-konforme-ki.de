@@ -1,0 +1,10 @@
+---
+import Mittelstand from '../../layouts/Mittelstand.astro';
+import MittelstandProdukt from '../../components/mittelstand/MittelstandProdukt.astro';
+import { findMittelstand } from '../../lib/mittelstand';
+
+const produkt = findMittelstand('digitales-buero');
+---
+<Mittelstand title="Telefon-Assistent und Rückruf-Retter | konforme-ki.de" description="Verpasste Anrufe automatisch beantworten: vom Rückruf-Retter ab €79 bis zum Büro-Komplett mit Telefon und E-Mail.">
+  <MittelstandProdukt produkt={produkt} />
+</Mittelstand>

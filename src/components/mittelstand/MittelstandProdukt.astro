@@ -1,0 +1,103 @@
+---
+/**
+ * Gemeinsame Vorlage der drei Produkt-Unterseiten. Alles Inhaltliche kommt aus
+ * `lib/mittelstand.ts`; hier steht nur die Reihenfolge der Sektionen:
+ * Problem → Stufen → Ablauf → FAQ → eine Aktion → die anderen zwei Produkte.
+ */
+import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
+import PricingCards from '@justinguese/astro-kit/PricingCards.astro';
+import FaqBlock from '@justinguese/astro-kit/FaqBlock.astro';
+import CtaBand from '@justinguese/astro-kit/CtaBand.astro';
+import ConversionTracking from '@justinguese/astro-kit/ConversionTracking.astro';
+import CheckForm from './CheckForm.astro';
+import RueckrufForm from './RueckrufForm.astro';
+import AmpelKarte from './AmpelKarte.astro';
+import { PRODUKTE_MITTELSTAND, stufeAlsTier, type MittelstandProdukt } from '../../lib/mittelstand';
+
+interface Props { produkt: MittelstandProdukt }
+const { produkt } = Astro.props;
+
+const ziel = produkt.aktion === 'check' ? '#check' : '#rueckruf';
+const tiers = produkt.stufen.map((s) => stufeAlsTier(s, { label: produkt.aktionLabel, href: ziel }));
+const andere = PRODUKTE_MITTELSTAND.filter((p) => p.id !== produkt.id);
+const states = produkt.aktion === 'check'
+  ? [{ flag: 'check_gesendet', revealId: 'check-gesendet', event: 'website_check', label: 'Website-Check Submission', metaEvent: 'Lead' }]
+  : [{ flag: 'rueckruf_gesendet', revealId: 'rueckruf-gesendet', event: 'rueckruf', label: 'Rueckruf Submission', metaEvent: 'Lead' }];
+---
+<section id="hero" class="bg-canvas-deep border-b border-line">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20 grid lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center">
+    <div>
+      <p class="marginalie">{produkt.eyebrow}</p>
+      <h1 class="display display-xl mt-3">{produkt.name}</h1>
+      <p class="mt-5 text-xl text-ink leading-snug max-w-xl">{produkt.einzeiler}</p>
+      <p class="mt-4 text-ink-soft max-w-xl">{produkt.problem}</p>
+      <div class="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
+        <a href={ziel} class="knopf knopf-accent" data-cta={`${produkt.id}-hero`}>{produkt.aktionLabel}</a>
+        <span class="text-sm text-ink-soft">{produkt.einstieg}: <strong class="text-ink">{produkt.einstiegPreis}</strong></span>
+      </div>
+    </div>
+    {produkt.id === 'rechtssicher-online' && <AmpelKarte />}
+  </div>
+</section>
+
+<section class="py-16">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionHeader eyebrow="Stufen" title="Sie fangen klein an und wachsen, wenn es passt." size="md" />
+    <div class="mt-8"><PricingCards tiers={tiers} footnote="Alle Preise zzgl. gesetzlicher Umsatzsteuer." /></div>
+  </div>
+</section>
+
+<section class="py-16 bg-canvas-deep border-y border-line">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionHeader eyebrow="Ablauf" title="So läuft es." size="md" />
+    <ol class="mt-8 grid md:grid-cols-3 gap-6">
+      {produkt.schritte.map((s, i) => (
+        <li class="bg-surface border border-line p-6">
+          <span class="display-m text-accent">{i + 1}</span>
+          <h3 class="mt-2 font-semibold text-ink">{s.titel}</h3>
+          <p class="mt-2 text-sm text-ink-soft">{s.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<section class="py-16">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionHeader eyebrow="Fragen" title="Häufige Fragen" size="md" />
+    <div class="mt-8"><FaqBlock items={produkt.faq} openIndex={-1} /></div>
+  </div>
+</section>
+
+<section class="pb-16">
+  <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-surface border border-line p-6 sm:p-8">
+      <h2 class="display display-l">{produkt.aktion === 'check' ? 'Jetzt kostenlos prüfen lassen' : 'Wir rufen Sie zurück'}</h2>
+      <p class="mt-2 mb-6 text-ink-soft">
+        {produkt.aktion === 'check'
+          ? 'Adresse und E-Mail genügen. Den Ampelbericht bekommen Sie per E-Mail.'
+          : 'Name und Telefonnummer genügen. Wir klären alles Weitere am Telefon.'}
+      </p>
+      {produkt.aktion === 'check'
+        ? <CheckForm />
+        : <RueckrufForm produkt={produkt.id} submitLabel={produkt.aktionLabel} />}
+    </div>
+  </div>
+</section>
+
+<section class="pb-16">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <p class="marginalie mb-4">Weitere Angebote</p>
+    <div class="grid sm:grid-cols-2 gap-4">
+      {andere.map((p) => (
+        <a href={p.href} class="block bg-surface border border-line p-5 hover:border-ink transition-colors">
+          <span class="font-semibold text-ink">{p.name}</span>
+          <span class="block mt-1 text-sm text-ink-soft">{p.einzeiler}</span>
+          <span class="block mt-3 text-sm text-accent">{p.einstieg}: {p.einstiegPreis}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<ConversionTracking states={states} />

@@ -1,0 +1,56 @@
+---
+/**
+ * Rückruf-Formular: Name, Telefon, Branche. Feuert serverseitig `Lead`
+ * (sites.yaml: mittelstand-rueckruf). `produkt` markiert, von welcher Seite
+ * die Anfrage kam.
+ */
+import FormBlock from '@justinguese/astro-kit/FormBlock.astro';
+import { site } from '../../config/site';
+
+interface Props {
+  produkt?: 'allgemein' | 'website' | 'digitales-buero' | 'rechtssicher-online';
+  submitLabel?: string;
+}
+const { produkt = 'allgemein', submitLabel = 'Rückruf anfordern' } = Astro.props;
+---
+<div id="rueckruf">
+  <div id="rueckruf-gesendet" class="hidden p-5 border border-accent bg-accent-pale text-ink">
+    <span class="marke marke-accent mb-2">Angekommen</span>
+    <p class="mt-2 font-semibold">Wir rufen Sie zurück.</p>
+    <p class="mt-1 text-sm text-ink-soft">In der Regel innerhalb eines Werktages.</p>
+  </div>
+
+  <FormBlock
+    formsBase={site.formsBase}
+    variant="mittelstand-rueckruf"
+    name="mittelstand-rueckruf"
+    success={{ flag: 'rueckruf_gesendet', anchor: 'rueckruf' }}
+    submitLabel={submitLabel}
+    class="rueckruf-form space-y-4"
+  >
+    <input type="hidden" name="produkt" value={produkt} />
+    <div>
+      <label for="rr-name" class="feld-label">Name</label>
+      <input id="rr-name" name="name" type="text" required autocomplete="name" class="feld" placeholder="Ihr Name" />
+    </div>
+    <div>
+      <label for="rr-telefon" class="feld-label">Telefon</label>
+      <input id="rr-telefon" name="telefon" type="tel" required autocomplete="tel" class="feld" placeholder="+49 …" />
+    </div>
+    <div>
+      <label for="rr-branche" class="feld-label">Was machen Sie? <span class="font-normal text-ink-faint">(optional)</span></label>
+      <input id="rr-branche" name="branche" type="text" class="feld" placeholder="z. B. Sanitär, Steuerberatung, Schreinerei" />
+    </div>
+    <svg slot="submit-icon" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd"/></svg>
+    <p slot="note" class="mt-3 text-xs text-ink-faint">
+      Wir rufen einmal an. Es gilt unsere <a href="/datenschutz" class="underline hover:text-ink">Datenschutzerklärung</a>.
+    </p>
+  </FormBlock>
+</div>
+
+<script is:inline>
+  if (new URLSearchParams(location.search).get('rueckruf_gesendet') === '1') {
+    document.getElementById('rueckruf-gesendet')?.classList.remove('hidden');
+    document.querySelector('.rueckruf-form')?.classList.add('hidden');
+  }
+</script>

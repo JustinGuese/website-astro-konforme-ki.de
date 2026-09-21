@@ -1,0 +1,33 @@
+---
+/**
+ * Beispiel-Ampelbericht. Zeigt, wie das Ergebnis des Website-Checks aussieht —
+ * ausdrücklich als Beispiel beschriftet, kein echtes Prüfergebnis.
+ */
+import { CHECK_PUNKTE } from '../../lib/mittelstand';
+
+const beispiel: Record<string, { status: 'gruen' | 'gelb' | 'rot'; text: string }> = {
+  cookie: { status: 'rot', text: 'Tracker laden vor der Zustimmung' },
+  impressum: { status: 'gruen', text: 'Gefunden und vollständig' },
+  datenschutz: { status: 'gelb', text: 'Vorhanden, aber nicht von jeder Seite verlinkt' },
+  ki: { status: 'gruen', text: 'Kein KI-Chatbot im Einsatz' },
+};
+const wort = { gruen: 'grün', gelb: 'gelb', rot: 'rot' } as const;
+---
+<figure class="bg-surface border border-line shadow-[var(--shadow-karte)]" aria-label="Beispiel eines Ampelberichts">
+  <figcaption class="flex items-center justify-between gap-3 px-4 py-3 border-b border-line bg-canvas-deep">
+    <span class="text-sm font-semibold text-ink">Website-Check: mustermann-sanitaer.de</span>
+    <span class="marke marke-neutral">Beispiel</span>
+  </figcaption>
+  <div>
+    {CHECK_PUNKTE.map((p) => (
+      <div class="ampel-zeile">
+        <span class="ampel-lampe" data-status={beispiel[p.schluessel].status} aria-hidden="true"></span>
+        <div>
+          <p class="text-sm font-semibold text-ink">{p.name}</p>
+          <p class="text-sm text-ink-soft">{beispiel[p.schluessel].text}</p>
+        </div>
+        <span class="ampel-status">{wort[beispiel[p.schluessel].status]}</span>
+      </div>
+    ))}
+  </div>
+</figure>

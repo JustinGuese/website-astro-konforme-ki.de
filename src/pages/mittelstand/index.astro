@@ -1,0 +1,124 @@
+---
+import Mittelstand from '../../layouts/Mittelstand.astro';
+import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
+import FaqBlock from '@justinguese/astro-kit/FaqBlock.astro';
+import CtaBand from '@justinguese/astro-kit/CtaBand.astro';
+import ConversionTracking from '@justinguese/astro-kit/ConversionTracking.astro';
+import AmpelKarte from '../../components/mittelstand/AmpelKarte.astro';
+import CheckForm from '../../components/mittelstand/CheckForm.astro';
+import RueckrufForm from '../../components/mittelstand/RueckrufForm.astro';
+import { CHECK_PUNKTE, WEGE, findMittelstand } from '../../lib/mittelstand';
+
+const title = 'Website, Telefon-Assistent und Website-Check für den Mittelstand | konforme-ki.de';
+const description = 'Kostenlos prüfen, ob Ihre Website in Ordnung ist. Dazu Website ab €49/Monat und ein Telefon-Assistent, der verpasste Anrufe auffängt.';
+
+const faq = [
+  { q: 'Was kostet der Website-Check?', a: 'Nichts. Sie geben Ihre Web-Adresse und E-Mail ein und bekommen einen Ampelbericht. Danach müssen Sie nichts tun.' },
+  { q: 'Ist das Rechtsberatung?', a: 'Nein. Wir prüfen technisch und setzen um. Rechtsberatung darf nur ein Anwalt leisten. Mehr im RDG-Hinweis.' },
+  { q: 'Wo liegen meine Daten?', a: 'Auf Servern in der EU.' },
+  { q: 'Muss ich mich langfristig binden?', a: 'Der Check ist unverbindlich. Für die Angebote nennen wir Ihnen Preis und Kündigungsfrist, bevor Sie bestellen.' },
+  { q: 'Woher weiß der Anrufer, dass er mit einer KI spricht?', a: 'Der Telefon-Assistent sagt es gleich in der Begrüßung. Der KI-Hinweis (Art. 50 KI-Verordnung) ist immer eingebaut.' },
+];
+---
+<Mittelstand title={title} description={description}>
+  <section id="hero" class="bg-canvas-deep border-b border-line">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-14 items-start">
+      <div>
+        <h1 class="display display-l">Kunden finden Sie bei Google. Ist Ihre Website in Ordnung?</h1>
+        <p class="mt-5 text-lg text-ink-soft max-w-xl">
+          Wir prüfen sie kostenlos auf Cookie-Banner, Impressum, Datenschutzerklärung und KI-Kennzeichnung. Sie bekommen einen Ampelbericht: grün, gelb oder rot.
+        </p>
+        <div class="mt-7 bg-surface border border-line p-5 sm:p-6 max-w-xl shadow-[var(--shadow-karte)]">
+          <CheckForm />
+        </div>
+        <p class="mt-4 text-sm text-ink-soft">
+          Noch keine Website? <a href="#rueckruf" class="text-accent font-semibold underline underline-offset-4" data-cta="hero-rueckruf">Rückruf anfordern</a>
+        </p>
+      </div>
+      <div class="lg:pt-2">
+        <AmpelKarte />
+        <p class="mt-3 text-sm text-ink-soft">So sieht Ihr Bericht aus: ein Punkt pro Prüfung, klar sortiert.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader eyebrow="Der Check" title="Vier Punkte, die Sie selbst schnell übersehen." size="md" />
+      <div class="mt-8 grid sm:grid-cols-2 gap-4">
+        {CHECK_PUNKTE.map((p) => (
+          <div class="bg-surface border border-line p-5">
+            <h3 class="font-semibold text-ink">{p.name}</h3>
+            <p class="mt-1 text-sm text-ink-soft">{p.frage}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="angebote" class="py-16 bg-canvas-deep border-y border-line">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader eyebrow="Drei Wege" title="Wo stehen Sie gerade?" lead="Jeder Weg beginnt klein. Die volle Leiter sehen Sie auf der jeweiligen Seite." size="md" />
+      <div class="mt-8 grid md:grid-cols-3 gap-5">
+        {WEGE.map((w) => {
+          const p = findMittelstand(w.id);
+          return (
+            <a href={p.href} class="block bg-surface border border-line p-6 hover:border-ink transition-colors" data-cta={`weg-${w.id}`}>
+              <p class="marginalie">{w.frage}</p>
+              <h3 class="display display-m mt-2">{p.name}</h3>
+              <p class="mt-2 text-sm text-ink-soft">{p.einzeiler}</p>
+              <p class="mt-4 text-sm"><strong class="text-ink">{w.antwort}</strong><span class="text-ink-soft"> · {w.preis}</span></p>
+            </a>
+          );
+        })}
+      </div>
+      <p class="mt-6 text-sm text-ink-soft">Ab Website Plus ist das Rechtssicher-Abo (monatliche Prüfung) im Preis enthalten.</p>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-6">
+      <div>
+        <h3 class="font-semibold text-ink">Server in der EU</h3>
+        <p class="mt-1 text-sm text-ink-soft">Ihre Daten und die Ihrer Kunden bleiben in der EU.</p>
+      </div>
+      <div>
+        <h3 class="font-semibold text-ink">KI wird gekennzeichnet</h3>
+        <p class="mt-1 text-sm text-ink-soft">Der Telefon-Assistent sagt gleich in der Begrüßung, dass er eine KI ist.</p>
+      </div>
+      <div>
+        <h3 class="font-semibold text-ink">Technische Prüfung, keine Rechtsberatung</h3>
+        <p class="mt-1 text-sm text-ink-soft">Wir prüfen und setzen um. Rechtliche Fragen gehören zum Anwalt. <a href="/rdg-hinweis" class="underline">RDG-Hinweis</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-16">
+    <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-surface border border-line p-6 sm:p-8">
+        <h2 class="display display-l">Wir rufen Sie zurück</h2>
+        <p class="mt-2 mb-6 text-ink-soft">Name und Telefonnummer genügen. Wir klären alles Weitere am Telefon.</p>
+        <RueckrufForm />
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-16">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader eyebrow="Fragen" title="Häufige Fragen" size="md" />
+      <div class="mt-8"><FaqBlock items={faq} openIndex={-1} /></div>
+    </div>
+  </section>
+
+  <CtaBand
+    id="abschluss"
+    title="Wissen, wo Ihre Website steht."
+    body="Adresse eingeben, Ampelbericht bekommen. Kostenlos und unverbindlich."
+    cta={{ label: 'Website kostenlos prüfen', href: '#check', track: 'abschluss-check' }}
+  />
+
+  <ConversionTracking states={[
+    { flag: 'check_gesendet', revealId: 'check-gesendet', event: 'website_check', label: 'Website-Check Submission', metaEvent: 'Lead' },
+    { flag: 'rueckruf_gesendet', revealId: 'rueckruf-gesendet', event: 'rueckruf', label: 'Rueckruf Submission', metaEvent: 'Lead' },
+  ]} />
+</Mittelstand>
