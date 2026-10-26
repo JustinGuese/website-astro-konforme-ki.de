@@ -22,17 +22,35 @@ const faq = [
 ---
 <Mittelstand title={title} description={description}>
   <section id="hero" class="bg-canvas-deep border-b border-line">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-14 items-start">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+      <h1 class="display display-l max-w-3xl">Website, Telefon und Website-Prüfung für Ihren Betrieb.</h1>
+      <p class="mt-4 text-lg text-ink-soft max-w-2xl">Kunden finden Sie bei Google. Ohne Website rufen sie den Nächsten an. Wählen Sie, wo Sie anfangen.</p>
+      <div class="mt-8 grid md:grid-cols-3 gap-5">
+        {WEGE.map((w) => {
+          const p = findMittelstand(w.id);
+          return (
+            <a href={p.href} class="block bg-surface border border-line p-6 hover:border-ink transition-colors shadow-[var(--shadow-karte)]" data-cta={`weg-${w.id}`}>
+              <p class="marginalie">{w.frage}</p>
+              <h2 class="display display-m mt-2 hyphens-none">{p.name}</h2>
+              <p class="mt-2 text-sm text-ink-soft">{p.einzeiler}</p>
+              <p class="mt-4 text-sm"><strong class="text-ink">{w.antwort}</strong><span class="text-ink-soft"> · {w.preis}</span></p>
+            </a>
+          );
+        })}
+      </div>
+      <p class="mt-5 text-sm text-ink-soft">Ab Website Plus ist das Rechtssicher-Abo (monatliche Prüfung) im Preis enthalten.</p>
+    </div>
+  </section>
+
+  <section id="check-bereich" class="py-16 border-b border-line">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-14 items-start">
       <div>
-        <h1 class="display display-l">Kunden finden Sie bei Google. Ist Ihre Website in Ordnung?</h1>
-        <p class="mt-5 text-lg text-ink-soft max-w-xl">
-          Wir prüfen sie kostenlos auf Cookie-Banner, Impressum, Datenschutzerklärung und KI-Kennzeichnung. Sie bekommen einen Ampelbericht: grün, gelb oder rot.
-        </p>
+        <SectionHeader eyebrow="Kostenloser Website-Check" title="Ist Ihre Website in Ordnung?" lead="Wir prüfen sie auf Cookie-Banner, Impressum, Datenschutzerklärung und KI-Kennzeichnung. Sie bekommen einen Ampelbericht: grün, gelb oder rot." size="md" />
         <div class="mt-7 bg-surface border border-line p-5 sm:p-6 max-w-xl shadow-[var(--shadow-karte)]">
           <CheckForm />
         </div>
         <p class="mt-4 text-sm text-ink-soft">
-          Noch keine Website? <a href="#rueckruf" class="text-accent font-semibold underline underline-offset-4" data-cta="hero-rueckruf">Rückruf anfordern</a>
+          Noch keine Website? <a href="#rueckruf" class="text-accent font-semibold underline underline-offset-4" data-cta="check-rueckruf">Rückruf anfordern</a>
         </p>
       </div>
       <div class="lg:pt-2">
@@ -53,26 +71,6 @@ const faq = [
           </div>
         ))}
       </div>
-    </div>
-  </section>
-
-  <section id="angebote" class="py-16 bg-canvas-deep border-y border-line">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <SectionHeader eyebrow="Drei Wege" title="Wo stehen Sie gerade?" lead="Jeder Weg beginnt klein. Die volle Leiter sehen Sie auf der jeweiligen Seite." size="md" />
-      <div class="mt-8 grid md:grid-cols-3 gap-5">
-        {WEGE.map((w) => {
-          const p = findMittelstand(w.id);
-          return (
-            <a href={p.href} class="block bg-surface border border-line p-6 hover:border-ink transition-colors" data-cta={`weg-${w.id}`}>
-              <p class="marginalie">{w.frage}</p>
-              <h3 class="display display-m mt-2">{p.name}</h3>
-              <p class="mt-2 text-sm text-ink-soft">{p.einzeiler}</p>
-              <p class="mt-4 text-sm"><strong class="text-ink">{w.antwort}</strong><span class="text-ink-soft"> · {w.preis}</span></p>
-            </a>
-          );
-        })}
-      </div>
-      <p class="mt-6 text-sm text-ink-soft">Ab Website Plus ist das Rechtssicher-Abo (monatliche Prüfung) im Preis enthalten.</p>
     </div>
   </section>
 

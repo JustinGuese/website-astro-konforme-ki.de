@@ -23,42 +23,42 @@ const { stufen = LEITER } = Astro.props;
 
 <div class:list={['grid gap-px bg-line border border-line', stufen.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3']}>
   {stufen.map((stufe) => (
-    <div class:list={['flex flex-col p-6 sm:p-7', stufe.hervorgehoben ? 'bg-ink-deep text-canvas' : 'bg-surface']}>
+    <div class:list={['flex flex-col p-6 sm:p-7 glass-card', stufe.hervorgehoben ? 'border-accent/40 bg-[#0f1420]' : 'bg-surface']}>
       <div class="flex items-center justify-between gap-3">
-        <p class:list={['marginalie', stufe.hervorgehoben ? 'text-accent-bright' : '']}>Stufe {stufe.nummer}</p>
-        {stufe.hervorgehoben && <span class="marke marke-dunkel">Empfohlener Einstieg</span>}
+        <p class:list={['marginalie', stufe.hervorgehoben ? 'text-accent' : '']}>Stufe {stufe.nummer}</p>
+        {stufe.hervorgehoben && <span class="marke marke-accent">Empfohlener Einstieg</span>}
       </div>
 
-      <p class:list={['mt-4 font-display font-bold', stufe.hervorgehoben ? 'text-canvas' : 'text-ink']} style="font-variation-settings: 'wdth' 90;">
+      <p class:list={['mt-4 font-display font-bold text-lg sm:text-xl', stufe.hervorgehoben ? 'text-white' : 'text-ink']} style="font-variation-settings: 'wdth' 90;">
         {stufe.name}
       </p>
 
       <p class="mt-3 flex items-baseline gap-2">
-        <span class:list={['display display-m', stufe.hervorgehoben ? 'text-canvas' : 'text-ink']}>{stufe.preis}</span>
-        <span class={stufe.hervorgehoben ? 'text-canvas/60 text-sm' : 'text-ink-faint text-sm'}>{stufe.einheit}</span>
+        <span class:list={['display display-m', stufe.hervorgehoben ? 'text-white' : 'text-ink']}>{stufe.preis}</span>
+        <span class={stufe.hervorgehoben ? 'text-slate-400 text-sm' : 'text-ink-faint text-sm'}>{stufe.einheit}</span>
       </p>
 
-      <p class:list={['mt-3 text-sm leading-relaxed', stufe.hervorgehoben ? 'text-canvas/75' : 'text-ink-soft']}>
+      <p class:list={['mt-3 text-sm leading-relaxed', stufe.hervorgehoben ? 'text-slate-300' : 'text-ink-soft']}>
         {stufe.beschreibung}
       </p>
 
       <ul class="mt-6 space-y-2.5 flex-1">
         {stufe.leistungen.map((leistung) => (
-          <li class:list={['flex items-start gap-2.5 text-sm', stufe.hervorgehoben ? 'text-canvas/90' : 'text-ink-soft']}>
-            <span class:list={['mt-1.5 h-1.5 w-1.5 shrink-0', stufe.hervorgehoben ? 'bg-accent-bright' : 'bg-accent']}></span>
+          <li class:list={['flex items-start gap-2.5 text-sm', stufe.hervorgehoben ? 'text-slate-200' : 'text-ink-soft']}>
+            <span class:list={['mt-1.5 h-1.5 w-1.5 shrink-0', stufe.hervorgehoben ? 'bg-accent' : 'bg-accent']}></span>
             {leistung}
           </li>
         ))}
       </ul>
 
-      <p class:list={['mt-5 text-xs leading-relaxed', stufe.hervorgehoben ? 'text-canvas/60' : 'text-ink-faint']}>
+      <p class:list={['mt-5 text-xs leading-relaxed', stufe.hervorgehoben ? 'text-slate-400' : 'text-ink-faint']}>
         {stufe.eignung}
       </p>
 
       {stufe.hinweis && (
         <p class:list={[
-          'mt-3 text-xs leading-relaxed px-3 py-2',
-          stufe.hervorgehoben ? 'text-accent-bright border border-accent-bright/40' : 'text-accent bg-accent-pale',
+          'mt-3 text-xs leading-relaxed px-3 py-2 rounded-lg',
+          stufe.hervorgehoben ? 'text-accent bg-accent/10 border border-accent/30' : 'text-accent bg-accent-pale',
         ]}>
           {stufe.hinweis}
         </p>
@@ -66,14 +66,14 @@ const { stufen = LEITER } = Astro.props;
 
       <a
         href={stufe.cta.href}
-        class:list={['knopf mt-6 w-full', stufe.hervorgehoben ? 'knopf-dunkel !border-accent-bright !text-accent-bright' : 'knopf-linie']}
+        class:list={['knopf mt-6 w-full', stufe.hervorgehoben ? 'knopf-accent' : 'knopf-linie']}
         data-cta={stufe.tarifId}
       >
         {stufe.cta.label}
       </a>
 
       {stufe.tarifId === 'dossier' && (
-        <p class="mt-2 font-mono text-[0.68rem] text-canvas/50 text-center">
+        <p class="mt-2 font-mono text-[0.68rem] text-slate-400 text-center">
           Bestellung per Formular, Rechnung per E-Mail.
         </p>
       )}

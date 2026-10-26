@@ -66,6 +66,7 @@ const standardNav: NavItem[] = [
     topLabel: 'In vier Fragen einstufen →',
     kinder: PRODUKTE.map((p) => ({ href: p.href, label: p.name, kurz: p.einzeiler })),
   },
+  { href: '/mittelstand', label: 'Mittelstand' },
   { href: '/playground', label: 'Playground' },
   {
     href: '/ratgeber',
@@ -226,6 +227,7 @@ const nav = navProp ?? standardNav;
                   <a href="/integrationen" class="hover:text-ink">Integrationen</a>
                   <a href="/preise" class="hover:text-ink">Preise</a>
                   <a href="/playground" class="hover:text-ink">Playground</a>
+                  <a href="/mittelstand" class="hover:text-ink">Für den Mittelstand</a>
                 </>
               )}
             </div>

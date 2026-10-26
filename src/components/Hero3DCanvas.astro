@@ -1,0 +1,142 @@
+---
+// Hero 3D Cryptographic Lattice Canvas Component (Awwwards-tier Three.js WebGL Animation)
+---
+
+<div id="hero-3d-container" class="absolute inset-0 pointer-events-none overflow-hidden z-0">
+  <canvas id="hero-webgl-canvas" class="w-full h-full block opacity-70"></canvas>
+  <div class="absolute inset-0 bg-gradient-to-t from-[#07090e] via-transparent to-[#07090e]/80 pointer-events-none"></div>
+</div>
+
+<script type="module">
+  import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+
+  const container = document.getElementById('hero-3d-container');
+  const canvas = document.getElementById('hero-webgl-canvas');
+  if (container && canvas) {
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.z = 22;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Create cryptographic lattice / node network
+    const group = new THREE.Group();
+    scene.add(group);
+
+    // Central glowing core (Icosahedron wireframe + solid inner)
+    const coreGeo = new THREE.IcosahedronGeometry(4.5, 1);
+    const coreMat = new THREE.MeshBasicMaterial({
+      color: 0x00f0ff,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.4,
+    });
+    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+    group.add(coreMesh);
+
+    const innerCoreGeo = new THREE.SphereGeometry(2.8, 32, 32);
+    const innerCoreMat = new THREE.MeshBasicMaterial({
+      color: 0x37a98c,
+      transparent: true,
+      opacity: 0.2,
+    });
+    const innerMesh = new THREE.Mesh(innerCoreGeo, innerCoreMat);
+    group.add(innerMesh);
+
+    // Orbiting hash blocks (nodes)
+    const nodeCount = 50;
+    const nodeGeo = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+    const nodeMat = new THREE.MeshBasicMaterial({
+      color: 0x00f0ff,
+      transparent: true,
+      opacity: 0.75,
+    });
+
+    const nodes = [];
+    const lineMaterial = new THREE.LineBasicMaterial({
+      color: 0x00f0ff,
+      transparent: true,
+      opacity: 0.18,
+    });
+
+    for (let i = 0; i < nodeCount; i++) {
+      const mesh = new THREE.Mesh(nodeGeo, nodeMat);
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos((Math.random() * 2) - 1);
+      const radius = 6.5 + Math.random() * 7.5;
+
+      mesh.position.x = radius * Math.sin(phi) * Math.cos(theta);
+      mesh.position.y = radius * Math.sin(phi) * Math.sin(theta);
+      mesh.position.z = radius * Math.cos(phi);
+
+      group.add(mesh);
+      nodes.push(mesh);
+    }
+
+    // Connecting lines between nearby nodes (Hash chain lattice)
+    const lineGeometry = new THREE.BufferGeometry();
+    const linePositions = [];
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dist = nodes[i].position.distanceTo(nodes[j].position);
+        if (dist < 4.8) {
+          linePositions.push(
+            nodes[i].position.x, nodes[i].position.y, nodes[i].position.z,
+            nodes[j].position.x, nodes[j].position.y, nodes[j].position.z
+          );
+        }
+      }
+    }
+    lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+    const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
+    group.add(lines);
+
+    // Mouse interaction
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetX = 0;
+    let targetY = 0;
+
+    window.addEventListener('mousemove', (event) => {
+      mouseX = (event.clientX - window.innerWidth / 2) * 0.0009;
+      mouseY = (event.clientY - window.innerHeight / 2) * 0.0009;
+    });
+
+    // Resize handling
+    window.addEventListener('resize', () => {
+      if (!container) return;
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    });
+
+    // Animation loop
+    const clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const elapsedTime = clock.getElapsedTime();
+
+      // Smooth camera/group rotation
+      targetX += (mouseX - targetX) * 0.05;
+      targetY += (mouseY - targetY) * 0.05;
+
+      group.rotation.y = elapsedTime * 0.12 + targetX * 3;
+      group.rotation.x = elapsedTime * 0.08 + targetY * 3;
+
+      coreMesh.rotation.y -= 0.005;
+      innerMesh.rotation.z += 0.003;
+
+      // Pulse nodes
+      nodes.forEach((node, idx) => {
+        const scale = 1 + Math.sin(elapsedTime * 2 + idx) * 0.25;
+        node.scale.set(scale, scale, scale);
+      });
+
+      renderer.render(scene, camera);
+    }
+    animate();
+  }
+</script>
