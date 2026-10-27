@@ -1,0 +1,222 @@
+[
+ {
+  "id": "P001",
+  "name": "Finn",
+  "age": 30,
+  "segment": "Partner in Mid-Sized Law/Tax Firm",
+  "income": 130000,
+  "behaviour": "Risk-Averse Generalist",
+  "behaviour_how": "Consults the regional bar/chamber (Rechtsanwaltskammer / Steuerberaterkammer) before adopting any new software.",
+  "objection": "I don't have time to configure custom API endpoints or Python code.",
+  "habit": "you read legal trade journals (BRAK-Mitteilungen, DStR) and industry newsletters"
+ },
+ {
+  "id": "P002",
+  "name": "Min",
+  "age": 62,
+  "segment": "Solo Practitioner / Independent Consultant",
+  "income": 70000,
+  "behaviour": "Compliance Skeptic",
+  "behaviour_how": "Distrusts tech startups claiming legal compliance without signed contractual guarantees and verifiable audit trails.",
+  "objection": "Why not just use Microsoft Copilot / Azure OpenAI with enterprise agreements?",
+  "habit": "you bill by the hour or case and value time-saving tools that reduce admin load"
+ },
+ {
+  "id": "P003",
+  "name": "Grace",
+  "age": 51,
+  "segment": "Partner in Mid-Sized Law/Tax Firm",
+  "income": 244000,
+  "behaviour": "Compliance Skeptic",
+  "behaviour_how": "Distrusts tech startups claiming legal compliance without signed contractual guarantees and verifiable audit trails.",
+  "objection": "Does a signed contract from a small GmbH protect me against a criminal probe under § 203 StGB?",
+  "habit": "you are extremely protective of client confidentiality and client trust"
+ },
+ {
+  "id": "P004",
+  "name": "Lucia",
+  "age": 48,
+  "segment": "Solo Practitioner / Independent Consultant",
+  "income": 116000,
+  "behaviour": "Efficiency Seeker",
+  "behaviour_how": "Wants to use LLMs for contract drafting, document analysis, and patient summary prep, but blocked by data privacy fears.",
+  "objection": "Is €290/month too high when OpenAI API tokens cost pennies?",
+  "habit": "you are extremely protective of client confidentiality and client trust"
+ },
+ {
+  "id": "P005",
+  "name": "Hana",
+  "age": 54,
+  "segment": "Medical Practice Physician / Clinic Director",
+  "income": 137000,
+  "behaviour": "Efficiency Seeker",
+  "behaviour_how": "Wants to use LLMs for contract drafting, document analysis, and patient summary prep, but blocked by data privacy fears.",
+  "objection": "Does a signed contract from a small GmbH protect me against a criminal probe under § 203 StGB?",
+  "habit": "you read legal trade journals (BRAK-Mitteilungen, DStR) and industry newsletters"
+ },
+ {
+  "id": "P006",
+  "name": "Lina",
+  "age": 36,
+  "segment": "Partner in Mid-Sized Law/Tax Firm",
+  "income": 224000,
+  "behaviour": "Efficiency Seeker",
+  "behaviour_how": "Wants to use LLMs for contract drafting, document analysis, and patient summary prep, but blocked by data privacy fears.",
+  "objection": "Does a signed contract from a small GmbH protect me against a criminal probe under § 203 StGB?",
+  "habit": "you bill by the hour or case and value time-saving tools that reduce admin load"
+ },
+ {
+  "id": "P007",
+  "name": "Olivia",
+  "age": 65,
+  "segment": "Solo Practitioner / Independent Consultant",
+  "income": 98000,
+  "behaviour": "Risk-Averse Generalist",
+  "behaviour_how": "Consults the regional bar/chamber (Rechtsanwaltskammer / Steuerberaterkammer) before adopting any new software.",
+  "objection": "Is €290/month too high when OpenAI API tokens cost pennies?",
+  "habit": "you read legal trade journals (BRAK-Mitteilungen, DStR) and industry newsletters"
+ },
+ {
+  "id": "P008",
+  "name": "Ines",
+  "age": 55,
+  "segment": "Solo Practitioner / Independent Consultant",
+  "income": 83000,
+  "behaviour": "Compliance Skeptic",
+  "behaviour_how": "Distrusts tech startups claiming legal compliance without signed contractual guarantees and verifiable audit trails.",
+  "objection": "I don't have time to configure custom API endpoints or Python code.",
+  "habit": "you are extremely protective of client confidentiality and client trust"
+ },
+ {
+  "id": "P009",
+  "name": "Amara",
+  "age": 42,
+  "segment": "Partner in Mid-Sized Law/Tax Firm",
+  "income": 157000,
+  "behaviour": "Risk-Averse Generalist",
+  "behaviour_how": "Consults the regional bar/chamber (Rechtsanwaltskammer / Steuerberaterkammer) before adopting any new software.",
+  "objection": "Does a signed contract from a small GmbH protect me against a criminal probe under § 203 StGB?",
+  "habit": "you bill by the hour or case and value time-saving tools that reduce admin load"
+ },
+ {
+  "id": "P010",
+  "name": "Rafael",
+  "age": 33,
+  "segment": "Partner in Mid-Sized Law/Tax Firm",
+  "income": 179000,
+  "behaviour": "Efficiency Seeker",
+  "behaviour_how": "Wants to use LLMs for contract drafting, document analysis, and patient summary prep, but blocked by data privacy fears.",
+  "objection": "Why not just use Microsoft Copilot / Azure OpenAI with enterprise agreements?",
+  "habit": "you read legal trade journals (BRAK-Mitteilungen, DStR) and industry newsletters"
+ },
+ {
+  "id": "P011",
+  "name": "Quinn",
+  "age": 41,
+  "segment": "Partner in Mid-Sized Law/Tax Firm",
+  "income": 245000,
+  "behaviour": "Tech-Savvy Innovator",
+  "behaviour_how": "Already tried ChatGPT or Claude but stopped due to GDPR and § 203 StGB criminal liability concerns.",
+  "objection": "Does a signed contract from a small GmbH protect me against a criminal probe under § 203 StGB?",
+  "habit": "you rely on established software vendors (Lexoffice, RA-MICRO, DATEV) rather than startups"
+ },
+ {
+  "id": "P012",
+  "name": "Priya",
+  "age": 54,
+  "segment": "Solo Practitioner / Independent Consultant",
+  "income": 112000,
+  "behaviour": "Tech-Savvy Innovator",
+  "behaviour_how": "Already tried ChatGPT or Claude but stopped due to GDPR and § 203 StGB criminal liability concerns.",
+  "objection": "I don't have time to configure custom API endpoints or Python code.",
+  "habit": "you rely on established software vendors (Lexoffice, RA-MICRO, DATEV) rather than startups"
+ },
+ {
+  "id": "P013",
+  "name": "Zoe",
+  "age": 62,
+  "segment": "Partner in Mid-Sized Law/Tax Firm",
+  "income": 187000,
+  "behaviour": "Risk-Averse Generalist",
+  "behaviour_how": "Consults the regional bar/chamber (Rechtsanwaltskammer / Steuerberaterkammer) before adopting any new software.",
+  "objection": "Why not just use Microsoft Copilot / Azure OpenAI with enterprise agreements?",
+  "habit": "you bill by the hour or case and value time-saving tools that reduce admin load"
+ },
+ {
+  "id": "P014",
+  "name": "Declan",
+  "age": 36,
+  "segment": "Medical Practice Physician / Clinic Director",
+  "income": 168000,
+  "behaviour": "Risk-Averse Generalist",
+  "behaviour_how": "Consults the regional bar/chamber (Rechtsanwaltskammer / Steuerberaterkammer) before adopting any new software.",
+  "objection": "Why not just use Microsoft Copilot / Azure OpenAI with enterprise agreements?",
+  "habit": "you read legal trade journals (BRAK-Mitteilungen, DStR) and industry newsletters"
+ },
+ {
+  "id": "P015",
+  "name": "Leila",
+  "age": 31,
+  "segment": "Medical Practice Physician / Clinic Director",
+  "income": 114000,
+  "behaviour": "Efficiency Seeker",
+  "behaviour_how": "Wants to use LLMs for contract drafting, document analysis, and patient summary prep, but blocked by data privacy fears.",
+  "objection": "I don't have time to configure custom API endpoints or Python code.",
+  "habit": "you read legal trade journals (BRAK-Mitteilungen, DStR) and industry newsletters"
+ },
+ {
+  "id": "P016",
+  "name": "Cole",
+  "age": 47,
+  "segment": "Medical Practice Physician / Clinic Director",
+  "income": 161000,
+  "behaviour": "Tech-Savvy Innovator",
+  "behaviour_how": "Already tried ChatGPT or Claude but stopped due to GDPR and § 203 StGB criminal liability concerns.",
+  "objection": "Is €290/month too high when OpenAI API tokens cost pennies?",
+  "habit": "you read legal trade journals (BRAK-Mitteilungen, DStR) and industry newsletters"
+ },
+ {
+  "id": "P017",
+  "name": "Rohan",
+  "age": 37,
+  "segment": "Partner in Mid-Sized Law/Tax Firm",
+  "income": 132000,
+  "behaviour": "Risk-Averse Generalist",
+  "behaviour_how": "Consults the regional bar/chamber (Rechtsanwaltskammer / Steuerberaterkammer) before adopting any new software.",
+  "objection": "How do I know data is not routed through US-owned cloud infrastructure?",
+  "habit": "you are extremely protective of client confidentiality and client trust"
+ },
+ {
+  "id": "P018",
+  "name": "Ezra",
+  "age": 36,
+  "segment": "Solo Practitioner / Independent Consultant",
+  "income": 115000,
+  "behaviour": "Tech-Savvy Innovator",
+  "behaviour_how": "Already tried ChatGPT or Claude but stopped due to GDPR and § 203 StGB criminal liability concerns.",
+  "objection": "Does a signed contract from a small GmbH protect me against a criminal probe under § 203 StGB?",
+  "habit": "you bill by the hour or case and value time-saving tools that reduce admin load"
+ },
+ {
+  "id": "P019",
+  "name": "Nora",
+  "age": 52,
+  "segment": "Medical Practice Physician / Clinic Director",
+  "income": 122000,
+  "behaviour": "Efficiency Seeker",
+  "behaviour_how": "Wants to use LLMs for contract drafting, document analysis, and patient summary prep, but blocked by data privacy fears.",
+  "objection": "Is €290/month too high when OpenAI API tokens cost pennies?",
+  "habit": "you bill by the hour or case and value time-saving tools that reduce admin load"
+ },
+ {
+  "id": "P020",
+  "name": "Maya",
+  "age": 37,
+  "segment": "Solo Practitioner / Independent Consultant",
+  "income": 90000,
+  "behaviour": "Efficiency Seeker",
+  "behaviour_how": "Wants to use LLMs for contract drafting, document analysis, and patient summary prep, but blocked by data privacy fears.",
+  "objection": "Is €290/month too high when OpenAI API tokens cost pennies?",
+  "habit": "you are extremely protective of client confidentiality and client trust"
+ }
+]

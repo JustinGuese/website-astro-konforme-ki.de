@@ -176,6 +176,21 @@ export const NUTZUNGSMODELLE: Tarif[] = [
 /** Die Compliance-Schicht — orthogonal zum Nutzungsmodell, oben. */
 export const SERVICE_TARIFE: Tarif[] = [
   {
+    tarifId: 'dossier',
+    name: '§203-Freigabedossier',
+    preis: '€39',
+    einheit: 'einmalig',
+    beschreibung: 'Der komplette Dokumentensatz, unterschriftsreif für Ihren Datenschutzbeauftragten.',
+    leistungen: [
+      'AVV-Vorlage nach Art. 28 DSGVO',
+      '§ 203 Abs. 3 StGB-Zusatzvereinbarung',
+      'Vorausgefüllter Art. 30 VVT-Eintrag',
+      'DSB-Freigabevorlage mit Begründungstext',
+      'Vollständig anrechenbar auf das spätere Compliance-Abo',
+    ],
+    cta: { label: 'Dossier bestellen', href: dossierHref },
+  },
+  {
     tarifId: 'compliance',
     name: 'Compliance',
     preis: '€290',

@@ -1,0 +1,59 @@
+{
+  "business": "konforme-ki.de (German AI inference & compliance platform for professional secrecy holders)",
+  "target": "German lawyers, tax advisors, medical practitioners, and notaries (§ 203 StGB) handling confidential client/patient data",
+  "where": "Germany (online and Nürnberg sovereign infrastructure)",
+  "age": [30, 65],
+  "segments": [
+    {
+      "name": "Partner in Mid-Sized Law/Tax Firm",
+      "share": 0.40,
+      "income": [100000, 250000]
+    },
+    {
+      "name": "Solo Practitioner / Independent Consultant",
+      "share": 0.35,
+      "income": [60000, 120000]
+    },
+    {
+      "name": "Medical Practice Physician / Clinic Director",
+      "share": 0.25,
+      "income": [80000, 180000]
+    }
+  ],
+  "behaviours": [
+    {
+      "name": "Risk-Averse Generalist",
+      "how": "Consults the regional bar/chamber (Rechtsanwaltskammer / Steuerberaterkammer) before adopting any new software.",
+      "share": 0.30
+    },
+    {
+      "name": "Efficiency Seeker",
+      "how": "Wants to use LLMs for contract drafting, document analysis, and patient summary prep, but blocked by data privacy fears.",
+      "share": 0.35
+    },
+    {
+      "name": "Tech-Savvy Innovator",
+      "how": "Already tried ChatGPT or Claude but stopped due to GDPR and § 203 StGB criminal liability concerns.",
+      "share": 0.20
+    },
+    {
+      "name": "Compliance Skeptic",
+      "how": "Distrusts tech startups claiming legal compliance without signed contractual guarantees and verifiable audit trails.",
+      "share": 0.15
+    }
+  ],
+  "objections": [
+    "Does a signed contract from a small GmbH protect me against a criminal probe under § 203 StGB?",
+    "Why not just use Microsoft Copilot / Azure OpenAI with enterprise agreements?",
+    "Is €290/month too high when OpenAI API tokens cost pennies?",
+    "How do I know data is not routed through US-owned cloud infrastructure?",
+    "Will using AI violate my professional liability insurance (Berufshaftpflicht)?",
+    "I don't have time to configure custom API endpoints or Python code."
+  ],
+  "habits": [
+    "you read legal trade journals (BRAK-Mitteilungen, DStR) and industry newsletters",
+    "you are extremely protective of client confidentiality and client trust",
+    "you bill by the hour or case and value time-saving tools that reduce admin load",
+    "you rely on established software vendors (Lexoffice, RA-MICRO, DATEV) rather than startups"
+  ]
+}

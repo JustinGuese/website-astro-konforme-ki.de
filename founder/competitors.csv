@@ -1,0 +1,7 @@
+name,type,url,location_or_channel,price_of_comparable_item,what_it_sells,positioning_line,rating,review_count,source_date
+IONOS AI Model Hub,Direct,https://www.ionos.de,Online,Pay-per-hour / token,Sovereign AI models hosted in German data centers with BSI C5 attestation,Künstliche Intelligenz aus deutschen Rechenzentren mit ISO 27001 und BSI C5,4.5,150,2026-09-15
+STACKIT (Schwarz Group),Direct,https://www.stackit.de,Online,Enterprise pricing,Sovereign cloud & AI infrastructure exclusively in Germany/Austria,Die digitale Souveränität für Ihre Organisation,4.4,200,2026-09-15
+T-Systems AI Foundation Services,Direct,https://www.t-systems.com,Online,Enterprise contract,Industrial AI cloud in Munich with BSI C5, ISO 27001 and Gaia-X,4.3,80,2026-09-15
+Aleph Alpha (PhariaAI),Direct,https://aleph-alpha.com,Online,Enterprise contract,Explainable sovereign AI for government and highly regulated enterprises,Sovereign AI for critical infrastructure and enterprises,4.4,120,2026-09-15
+Beck-Noxtua,Indirect,https://beck-noxtua.de,Online,Subscription per user,AI assistant for legal professionals built on Beck online library,Die KI-Kanzleilösung für juristische Recherchen und Entwürfe,4.6,90,2026-09-15
+Ollama / Local LLM (Self-Hosted),Substitute,https://ollama.com,Open source,Free / hardware cost,Run open-source models locally on hardware under complete control,Get up and running with large language models locally,4.8,5000,2026-09-15

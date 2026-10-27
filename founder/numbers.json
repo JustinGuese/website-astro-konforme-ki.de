@@ -1,0 +1,23 @@
+{
+  "business": "konforme-ki.de",
+  "unit": "client-month",
+  "price": 290.00,
+  "variable": [
+    { "label": "GPU Inference & Token Compute (Nürnberg)", "cost": 35.00 },
+    { "label": "Payment Processing & Stripe Fees", "cost": 8.00 },
+    { "label": "Compliance Audit Logging & Storage", "cost": 2.00 }
+  ],
+  "fixed_monthly": [
+    { "label": "Dedicated Bare-Metal Hosting (Nürnberg)", "cost": 1200.00 },
+    { "label": "Legal Advisory & Compliance Retainer", "cost": 1000.00 },
+    { "label": "SaaS Tools & Infrastructure Monitoring", "cost": 300.00 }
+  ],
+  "startup": [
+    { "label": "Initial Legal Review of Anlage 1 & AVV Templates", "cost": 3000.00 },
+    { "label": "Infrastructure Hardening & TLS Setup", "cost": 2000.00 }
+  ],
+  "days_per_month": 30,
+  "capacity_per_day": 10,
+  "plan_per_day": 2.0,
+  "ramp_per_day": [0.5, 0.8, 1.2, 1.6, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0]
+}
