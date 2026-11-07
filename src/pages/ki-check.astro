@@ -1,0 +1,36 @@
+---
+import Site from '../layouts/Site.astro';
+import SectionHeader from '@justinguese/astro-kit/SectionHeader.astro';
+import KiCheck from '../components/KiCheck.astro';
+
+const title = 'KI-Check nach § 203 StGB: Risiken prüfen | konforme-ki.de';
+const description = 'Acht Fragen, sofortiges Ergebnis im Browser: Prüfen Sie die berufsrechtliche Sicherheit Ihres KI-Einsatzes nach § 203 StGB und DSGVO.';
+---
+
+<Site title={title} description={description}>
+  <section class="py-14 sm:py-20 border-b border-line bg-canvas-deep">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeader
+        as="h1"
+        eyebrow="KI-Check"
+        title="KI-Check nach § 203 StGB: Acht Fragen zu Ihrem Risiko."
+        lead="Prüfen Sie in zwei Minuten, ob Ihr aktueller KI-Einsatz mit der Schweigepflicht vereinbar ist oder offene Flanken aufweist. Die Auswertung erfolgt rein lokal im Browser, ohne Registrierung und ohne Datenerfassung."
+        size="lg"
+      />
+    </div>
+  </section>
+
+  <section class="py-14 sm:py-20 border-b border-line">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <KiCheck />
+    </div>
+  </section>
+
+  <section class="py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 article-body">
+      <p class="text-sm text-ink-faint">
+        Dieser Selbst-Check dient der ersten Orientierung und stellt keine Rechtsberatung dar. Wir prüfen keine konkrete Sach- oder Rechtslage im Einzelfall. Details dazu im <a href="/rdg-hinweis">RDG-Hinweis</a>. Für eine verbindliche rechtliche Bewertung Ihres Einzelfalls wenden Sie sich an Ihre eigene Rechtsberatung.
+      </p>
+    </div>
+  </section>
+</Site>

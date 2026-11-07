@@ -1,0 +1,415 @@
+---
+/**
+ * KI-Check nach § 203 StGB.
+ * Serverseitig gerendertes 8-Fragen-Formular mit clientseitiger Auswertung
+ * rein im Browser. Keine Datenübertragung, keine E-Mail-Pflicht.
+ */
+
+interface Option {
+  label: string;
+  wert: string;
+}
+
+interface Frage {
+  id: string;
+  frage: string;
+  hinweis?: string;
+  optionen: Option[];
+}
+
+const FRAGEN: Frage[] = [
+  {
+    id: 'mandantendaten',
+    frage: '1. Werden in KI-Diensten vertrauliche Mandanten- oder Patientendaten verarbeitet?',
+    hinweis: 'Dazu zählen Klarnamen, Schriftsätze, Gutachten, medizinische Befunde oder eingereichte Dokumente (z. B. PDF-Uploads in ChatGPT, Claude oder Microsoft Copilot).',
+    optionen: [
+      { label: 'Ja, es werden konkrete Akten- oder Patientendaten eingegeben', wert: 'ja' },
+      { label: 'Nein, nur abstrakte Rechtsfragen, allgemeine Entwürfe oder strikt anonymisierte Texte', wert: 'nein' },
+    ],
+  },
+  {
+    id: 'zusatzvereinbarung',
+    frage: '2. Liegt eine schriftliche Zusatzvereinbarung nach § 203 Abs. 3 und 4 StGB mit dem KI-Anbieter vor?',
+    hinweis: 'Eine gewöhnliche Standard-Auftragsverarbeitung (AVV nach Art. 28 DSGVO) genügt berufsrechtlich nicht, um das strafbewehrte Berufsgeheimnis abzusichern.',
+    optionen: [
+      { label: 'Ja, eine Vereinbarung zur Verpflichtung auf das Berufsgeheimnis (§ 203 StGB) ist unterzeichnet', wert: 'ja' },
+      { label: 'Nein oder unklar, es gibt nur Standard-AGB oder eine gewöhnliche AVV', wert: 'nein' },
+    ],
+  },
+  {
+    id: 'training',
+    frage: '3. Ist das Training künftiger KI-Modelle mit Ihren Daten vertraglich und technisch ausgeschlossen?',
+    hinweis: 'Viele Anbieter verwenden Eingaben standardmäßig zur Modellverbesserung, sofern dies nicht in Business-Verträgen explizit abbedungen wurde.',
+    optionen: [
+      { label: 'Ja, Weiterverwendung und Training mit unseren Eingaben sind garantiert ausgeschlossen', wert: 'ja' },
+      { label: 'Nein oder unklar, das Modelltraining durch den Anbieter ist nicht sicher ausgeschlossen', wert: 'nein' },
+    ],
+  },
+  {
+    id: 'drittland',
+    frage: '4. Werden Daten auf Servern außerhalb der EU verarbeitet (z. B. in den USA unter dem CLOUD Act)?',
+    hinweis: 'Bei US-Servern können US-Behörden Zugriff ohne deutschen Richterbeschluss verlangen. Für Berufsgeheimnisträger ist das ein zentrales Risiko.',
+    optionen: [
+      { label: 'Ja oder unklar, Inferenz oder Speicherung finden auch in den USA bzw. Drittstaaten statt', wert: 'ja' },
+      { label: 'Nein, Inferenz und Datenhaltung erfolgen ausschließlich in Deutschland oder der EU', wert: 'nein' },
+    ],
+  },
+  {
+    id: 'subdienstleister',
+    frage: '5. Sind auch Mitarbeiter und Subdienstleister des Anbieters zur Geheimhaltung verpflichtet?',
+    hinweis: 'Nach § 203 Abs. 4 StGB müssen alle mitwirkenden Personen vertraglich und strafbewehrt zur Geheimhaltung verpflichtet sein.',
+    optionen: [
+      { label: 'Ja, die Verpflichtungskette aller beteiligten Personen ist vertraglich zugesichert', wert: 'ja' },
+      { label: 'Nein oder unbekannt, die Subdienstleister-Kette ist nicht gesondert geregelt', wert: 'nein' },
+    ],
+  },
+  {
+    id: 'audit',
+    frage: '6. Gibt es eine revisionssichere Protokollierung für jede getätigte KI-Abfrage?',
+    hinweis: 'Ein lückenloser Prüfpfad weist nach, wann welche Daten verarbeitet wurden, falls Kammern, Mandanten oder Behörden Auskunft verlangen.',
+    optionen: [
+      { label: 'Ja, ein unveränderlicher Audit-Trail hält Anfragen und Verarbeitungsorte fest', wert: 'ja' },
+      { label: 'Nein, Abfragen werden nicht revisionssicher nachgewiesen oder gehen nach kurzer Zeit verloren', wert: 'nein' },
+    ],
+  },
+  {
+    id: 'richtlinie',
+    frage: '7. Gibt es eine interne Kanzlei- oder Praxis-Richtlinie und eine Belehrung des Teams?',
+    hinweis: 'Ohne verbindliche Dienstanweisung zur KI-Nutzung droht der Kanzleileitung bei Verstößen von Mitarbeitern ein Organisationsverschulden.',
+    optionen: [
+      { label: 'Ja, schriftliche Richtlinie existiert und alle Mitarbeitenden sind belehrt', wert: 'ja' },
+      { label: 'Nein, das Team nutzt KI nach eigenem Ermessen ohne formale Leitplanken', wert: 'nein' },
+    ],
+  },
+  {
+    id: 'schatten_it',
+    frage: '8. Werden private Konten oder kostenlose Standard-Accounts beruflich genutzt?',
+    hinweis: 'Privates ChatGPT, Gratis-Web-Accounts oder Microsoft-Logins ohne B2B-Vertrag unterliegen meist weder AVV noch § 203-Schutz.',
+    optionen: [
+      { label: 'Ja oder nicht ausgeschlossen, Mitarbeitende nutzen gelegentlich eigene Logins', wert: 'ja' },
+      { label: 'Nein, es werden ausnahmslos zentral verwaltete, vertraglich geprüfte B2B-Zugänge genutzt', wert: 'nein' },
+    ],
+  },
+];
+---
+
+<div data-ki-check>
+  <form data-ki-check-form class="space-y-8">
+    {FRAGEN.map((frage) => (
+      <fieldset class="border border-line bg-surface p-5 sm:p-6">
+        <legend class="font-display font-bold text-ink px-1" style="font-variation-settings: 'wdth' 90;">{frage.frage}</legend>
+        {frage.hinweis && <p class="mt-1.5 text-xs text-ink-faint">{frage.hinweis}</p>}
+        <div class="mt-4 flex flex-col gap-2.5">
+          {frage.optionen.map((option) => (
+            <label class="flex items-start gap-2.5 text-sm text-ink-soft cursor-pointer">
+              <input
+                type="radio"
+                name={frage.id}
+                value={option.wert}
+                required
+                class="mt-0.5 accent-[var(--color-accent)]"
+              />
+              <span>{option.label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+    ))}
+
+    <div class="flex flex-col sm:flex-row items-center gap-4">
+      <button type="submit" class="knopf knopf-accent w-full sm:w-fit" data-cta="ki-check-auswerten">
+        Risiko jetzt auswerten
+      </button>
+      <span class="font-mono text-xs text-ink-faint">
+        Keine Datenübertragung: Die Prüfung erfolgt ausschließlich lokal in Ihrem Browser.
+      </span>
+    </div>
+  </form>
+
+  <noscript>
+    <div class="mt-8 border border-line bg-canvas-deep p-6">
+      <p class="text-sm text-ink-soft">
+        Für die interaktive Risiko-Berechnung wird JavaScript benötigt. Sie können unsere Unterlagen und Muster-Vereinbarungen auch direkt einsehen:
+      </p>
+      <div class="mt-4 flex flex-wrap gap-3">
+        <a href="/unterlagen/203-zusatzvereinbarung" class="knopf knopf-accent">Muster-Zusatzvereinbarung nach § 203 StGB</a>
+        <a href="/kontakt" class="knopf knopf-linie">Kontakt aufnehmen</a>
+      </div>
+    </div>
+  </noscript>
+
+  <div data-ki-check-ergebnis class="hidden mt-10"></div>
+</div>
+
+<script>
+  interface KiCheckAntworten {
+    mandantendaten: boolean;
+    zusatzvereinbarung: boolean;
+    training: boolean;
+    drittland: boolean;
+    subdienstleister: boolean;
+    audit: boolean;
+    richtlinie: boolean;
+    schatten_it: boolean;
+  }
+
+  interface Befund {
+    typ: 'kritisch' | 'warnung' | 'positiv';
+    titel: string;
+    text: string;
+  }
+
+  interface CheckErgebnis {
+    ampel: 'rot' | 'gelb' | 'gruen';
+    statusTitel: string;
+    beschreibung: string;
+    befunde: Befund[];
+  }
+
+  function werteAus(antworten: KiCheckAntworten): CheckErgebnis {
+    const befunde: Befund[] = [];
+
+    if (antworten.mandantendaten && !antworten.zusatzvereinbarung) {
+      befunde.push({
+        typ: 'kritisch',
+        titel: 'Fehlende Zusatzvereinbarung nach § 203 StGB',
+        text: 'Werden vertrauliche Daten ohne schriftliche Verpflichtung nach § 203 Abs. 3/4 StGB übermittelt, liegt ein straf- und berufsrechtlich relevanter Geheimnisverrat nahe.',
+      });
+    }
+
+    if (antworten.mandantendaten && antworten.schatten_it) {
+      befunde.push({
+        typ: 'kritisch',
+        titel: 'Schatten-IT mit Mandanten- oder Patientendaten',
+        text: 'Die Eingabe von Berufsgeheimnissen über private Accounts oder kostenlose Standard-Dienste verletzt Kanzleipflichten und hebelt Schutzverträge aus.',
+      });
+    } else if (antworten.schatten_it) {
+      befunde.push({
+        typ: 'warnung',
+        titel: 'Schatten-IT durch Mitarbeiter-Accounts',
+        text: 'Auch wenn aktuell keine Klardaten eingegeben werden: Ohne zentrale Steuerung besteht ein hohes Risiko versehentlicher Eingaben.',
+      });
+    }
+
+    if (!antworten.training) {
+      befunde.push({
+        typ: antworten.mandantendaten ? 'kritisch' : 'warnung',
+        titel: 'Modelltraining mit Ihren Eingabedaten',
+        text: 'Wenn der Anbieter Prompts zur Modellverbesserung speichert und nutzt, können geschützte Inhalte in Antworten für Dritte reproduziert werden.',
+      });
+    }
+
+    if (antworten.drittland) {
+      befunde.push({
+        typ: 'warnung',
+        titel: 'Drittstaatenübermittlung und US CLOUD Act',
+        text: 'Bei Verarbeitung in den USA können dortige Behörden Zugriff verlangen. Das kollidiert mit der strengen Verschwiegenheitspflicht deutscher Berufsgeheimnisträger.',
+      });
+    }
+
+    if (!antworten.subdienstleister && antworten.mandantendaten) {
+      befunde.push({
+        typ: 'warnung',
+        titel: 'Ungeklärte Dienstleisterkette',
+        text: 'Nach § 203 Abs. 4 StGB müssen alle mitwirkenden Subunternehmer nachweisbar auf das Berufsgeheimnis verpflichtet werden.',
+      });
+    }
+
+    if (!antworten.audit) {
+      befunde.push({
+        typ: 'warnung',
+        titel: 'Fehlender revisionssicherer Prüfpfad',
+        text: 'Ohne manipulationssichere Protokollierung können Sie gegenüber Kammern, Mandanten oder Datenschutzbehörden nicht belegen, welche Daten geflossen sind.',
+      });
+    }
+
+    if (!antworten.richtlinie) {
+      befunde.push({
+        typ: 'warnung',
+        titel: 'Fehlende interne KI-Richtlinie',
+        text: 'Ohne verbindliche Kanzlei- oder Praxisanweisung und Mitarbeiterschulung droht der Leitungsebene ein persönliches Organisationsverschulden.',
+      });
+    }
+
+    if (antworten.zusatzvereinbarung && antworten.mandantendaten) {
+      befunde.push({
+        typ: 'positiv',
+        titel: 'Schriftliche § 203-Vereinbarung vorhanden',
+        text: 'Sie verfügen über die zentrale vertragliche Grundlage für die Einbeziehung mitwirkender Dienstleister nach § 203 Abs. 3 Satz 2 StGB.',
+      });
+    }
+
+    if (!antworten.drittland) {
+      befunde.push({
+        typ: 'positiv',
+        titel: 'Ausschließlicher Standort in Deutschland / EU',
+        text: 'Die Datenhaltung und Inferenz bleiben im europäischen Rechtsraum geschützt vor extraterritorialen Zugriffen wie dem US CLOUD Act.',
+      });
+    }
+
+    if (!antworten.mandantendaten && !antworten.schatten_it && antworten.richtlinie) {
+      befunde.push({
+        typ: 'positiv',
+        titel: 'Klare Trennung und Verzicht auf Klardaten',
+        text: 'Durch die Beschränkung auf abstrakte Fragen und feste Richtlinien minimieren Sie berufsrechtliche Berührungspunkte.',
+      });
+    }
+
+    const istRot =
+      (antworten.mandantendaten && !antworten.zusatzvereinbarung) ||
+      (antworten.mandantendaten && antworten.schatten_it) ||
+      (antworten.mandantendaten && !antworten.training);
+
+    if (istRot) {
+      return {
+        ampel: 'rot',
+        statusTitel: 'Akutes Berufsrechts- und Haftungsrisiko',
+        beschreibung:
+          'Ihr aktueller KI-Einsatz steht im Konflikt mit § 203 StGB und berufsrechtlichen Vorgaben. Bei der Verarbeitung vertraulicher Daten ohne § 203-Zusatzvereinbarung oder über Privat-Accounts droht der Vorwurf des unbefugten Offenbarens fremder Geheimnisse.',
+        befunde,
+      };
+    }
+
+    const fehlerZahl = [
+      !antworten.zusatzvereinbarung && antworten.mandantendaten,
+      !antworten.training,
+      antworten.drittland,
+      !antworten.subdienstleister,
+      !antworten.audit,
+      !antworten.richtlinie,
+      antworten.schatten_it,
+    ].filter(Boolean).length;
+
+    if (fehlerZahl >= 2 || (antworten.mandantendaten && (antworten.drittland || !antworten.subdienstleister || !antworten.audit))) {
+      return {
+        ampel: 'gelb',
+        statusTitel: 'Mittleres Risiko: Wichtige Schutzlücken vorhanden',
+        beschreibung:
+          'Grundlegende Schutzansätze sind vorhanden oder es werden bisher keine Klardaten verarbeitet. Dennoch bestehen deutliche Lücken bei Richtlinien, Drittstaatenübermittlung oder Audit-Nachweisen, die vor einer umfassenden Nutzung geschlossen werden sollten.',
+        befunde,
+      };
+    }
+
+    return {
+      ampel: 'gruen',
+      statusTitel: 'Geringes Risiko: Berufsrechtlich solide abgesichert',
+      beschreibung:
+        'Ihre Antworten deuten auf einen verantwortungsvollen, strukturierten Umgang mit KI hin. Wesentliche Risiken wie unkontrollierte Schatten-IT oder US-Drittstaatentransfers sind adressiert.',
+      befunde,
+    };
+  }
+
+  function renderErgebnis(root: HTMLElement, ergebnis: CheckErgebnis) {
+    const panel = root.querySelector<HTMLElement>('[data-ki-check-ergebnis]');
+    if (!panel) return;
+
+    const farbKlassen = {
+      rot: {
+        container: 'border-signal bg-signal-pale',
+        marke: 'marke-signal',
+        badgeText: 'Ergebnis: Akuter Handlungsbedarf (Rot)',
+      },
+      gelb: {
+        container: 'border-premium bg-premium-pale',
+        marke: 'marke-premium',
+        badgeText: 'Ergebnis: Mittleres Risiko (Gelb)',
+      },
+      gruen: {
+        container: 'border-accent bg-accent-pale',
+        marke: 'marke-accent',
+        badgeText: 'Ergebnis: Geringes Risiko (Grün)',
+      },
+    }[ergebnis.ampel];
+
+    panel.className = `mt-10 border ${farbKlassen.container} p-6 sm:p-8`;
+
+    panel.innerHTML = `
+      <span class="marke ${farbKlassen.marke}">${farbKlassen.badgeText}</span>
+      <h2 class="mt-3 font-display font-bold text-ink text-xl sm:text-2xl" style="font-variation-settings: 'wdth' 90;">${ergebnis.statusTitel}</h2>
+      <p class="mt-3 text-sm text-ink leading-relaxed">${ergebnis.beschreibung}</p>
+
+      <div class="mt-6 border-t border-line pt-6">
+        <p class="marginalie mb-3">Die wichtigsten Feststellungen zu Ihren Antworten</p>
+        <ul class="space-y-3 text-sm text-ink">
+          ${ergebnis.befunde
+            .map(
+              (b) => `
+            <li class="flex items-start gap-2.5">
+              <span class="font-mono text-xs mt-0.5 ${b.typ === 'kritisch' ? 'text-signal-bright' : b.typ === 'warnung' ? 'text-premium' : 'text-accent'}">
+                ${b.typ === 'kritisch' ? '[!]' : b.typ === 'warnung' ? '[?]' : '[ok]'}
+              </span>
+              <div>
+                <strong class="font-semibold text-ink">${b.titel}:</strong>
+                <span class="text-ink-soft"> ${b.text}</span>
+              </div>
+            </li>`
+            )
+            .join('')}
+        </ul>
+      </div>
+
+      <div class="mt-8 border-t border-line pt-6">
+        <p class="marginalie mb-3">Empfohlene nächste Schritte</p>
+        <div class="flex flex-wrap gap-3">
+          <a href="/unterlagen/203-zusatzvereinbarung" class="knopf knopf-accent" data-cta="ki-check-unterlagen">
+            Muster-Zusatzvereinbarung nach § 203 StGB ansehen
+          </a>
+          <a href="/kontakt?interesse=ki-check" class="knopf knopf-linie" data-cta="ki-check-kontakt">
+            Fachgespräch oder Test anfragen
+          </a>
+          <button type="button" class="knopf knopf-dunkel" data-ki-check-reset>
+            Check wiederholen
+          </button>
+        </div>
+      </div>
+
+      <p class="mt-6 font-mono text-xs text-ink-faint">
+        Hinweis: Dieser KI-Check ist eine automatisierte Selbsteinschätzung und stellt keine Rechtsberatung dar. Wir prüfen keine konkrete Sach- oder Rechtslage im Einzelfall (siehe <a href="/rdg-hinweis" class="underline hover:text-ink">RDG-Hinweis</a>). Es werden keinerlei Daten übertragen oder gespeichert.
+      </p>
+    `;
+
+    panel.classList.remove('hidden');
+
+    const resetBtn = panel.querySelector<HTMLButtonElement>('[data-ki-check-reset]');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        const form = root.querySelector<HTMLFormElement>('[data-ki-check-form]');
+        if (form) form.reset();
+        panel.classList.add('hidden');
+        root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function initKiCheck() {
+    document.querySelectorAll<HTMLElement>('[data-ki-check]').forEach((root) => {
+      if (root.dataset.init) return;
+      root.dataset.init = 'true';
+
+      const form = root.querySelector<HTMLFormElement>('[data-ki-check-form]');
+      if (!form) return;
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const data = new FormData(form);
+        const antworten: KiCheckAntworten = {
+          mandantendaten: data.get('mandantendaten') === 'ja',
+          zusatzvereinbarung: data.get('zusatzvereinbarung') === 'ja',
+          training: data.get('training') === 'ja',
+          drittland: data.get('drittland') === 'ja',
+          subdienstleister: data.get('subdienstleister') === 'ja',
+          audit: data.get('audit') === 'ja',
+          richtlinie: data.get('richtlinie') === 'ja',
+          schatten_it: data.get('schatten_it') === 'ja',
+        };
+        const ergebnis = werteAus(antworten);
+        renderErgebnis(root, ergebnis);
+      });
+    });
+  }
+
+  initKiCheck();
+  document.addEventListener('astro:after-swap', initKiCheck);
+</script>
